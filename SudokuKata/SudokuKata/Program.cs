@@ -5,9 +5,14 @@ using System.Text;
 
 namespace SudokuKata
 {
-    class Program
+    public class Program
     {
         static void Play()
+        {
+            Play(new Random());
+        }
+
+        public static void Play(Random rng)
         {
             #region Construct fully populated board
             // Prepare empty board
@@ -31,7 +36,6 @@ namespace SudokuKata
             };
 
             // Construct board to be solved
-            Random rng = new Random();
 
             // Top element is current state of the board
             Stack<int[]> stateStack = new Stack<int[]>();
