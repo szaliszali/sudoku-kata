@@ -48,6 +48,9 @@ public class Program
 
     public static void Play(Random rng)
     {
+        // Top element is current state of the board
+        Stack<int[]> stateStack = new Stack<int[]>();
+
         #region Construct fully populated board
         // Prepare empty board
         string line = "+---+---+---+";
@@ -70,9 +73,6 @@ public class Program
         };
 
         // Construct board to be solved
-
-        // Top element is current state of the board
-        Stack<int[]> stateStack = new Stack<int[]>();
 
         // Top elements are (row, col) of cell which has been modified compared to previous state
         Stack<int> rowIndexStack = new Stack<int>();
