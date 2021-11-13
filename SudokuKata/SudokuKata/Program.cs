@@ -5,40 +5,6 @@ using System.Text;
 
 namespace SudokuKata;
 
-public class Lol1
-{
-    public int Discriminator { get; }
-    public string Description { get; }
-    public int Index { get; }
-    public int Row { get; }
-    public int Column { get; }
-
-    public Lol1(int discriminator, string description, int index, int row, int column)
-    {
-        Discriminator = discriminator;
-        Description = description;
-        Index = index;
-        Row = row;
-        Column = column;
-    }
-}
-
-public class Lol2
-{
-    public int Mask { get; }
-    public int Discriminator { get; }
-    public string Description { get; }
-    public IGrouping<int, Lol1> Cells { get; }
-
-    public Lol2(int mask, int discriminator, string description, IGrouping<int, Lol1> cells)
-    {
-        Mask = mask;
-        Discriminator = discriminator;
-        Description = description;
-        Cells = cells;
-    }
-}
-
 public class Program
 {
     static void Play()
