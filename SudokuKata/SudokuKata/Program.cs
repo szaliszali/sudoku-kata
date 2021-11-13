@@ -51,6 +51,62 @@ public class Program
         // Top element is current state of the board
         Stack<int[]> stateStack = new Stack<int[]>();
 
+        char[][] board = ConstructFullyPopulatedBoard(rng, stateStack);
+
+        var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack, board, out var finalState);
+
+        #region Prepare lookup structures that will be used in further execution
+        Console.WriteLine();
+        Console.WriteLine(new string('=', 80));
+        Console.WriteLine();
+
+        Dictionary<int, int> maskToOnesCount = new Dictionary<int, int>();
+        maskToOnesCount[0] = 0;
+        for (int i = 1; i < (1 << 9); i++)
+        {
+            int smaller = i >> 1;
+            int increment = i & 1;
+            maskToOnesCount[i] = maskToOnesCount[smaller] + increment;
+        }
+
+        Dictionary<int, int> singleBitToIndex = new Dictionary<int, int>();
+        for (int i = 0; i < 9; i++)
+            singleBitToIndex[1 << i] = i;
+
+        int allOnes = (1 << 9) - 1;
+        #endregion
+
+        bool changeMade = true;
+        while (changeMade)
+        {
+            changeMade = false;
+
+            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard(state, allOnes);
+
+            var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(state);
+
+            bool stepChangeMade = true;
+            while (stepChangeMade)
+            {
+                stepChangeMade = false;
+
+                changeMade = PickCellsWithOnlyOneCandidateLeft(rng, candidateMasks, maskToOnesCount, singleBitToIndex, state, board, changeMade);
+
+                changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(rng, changeMade, candidateMasks, state, board);
+
+                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(maskToOnesCount, changeMade, candidateMasks, cellGroups, stepChangeMade);
+
+                stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade, maskToOnesCount, cellGroups, state, candidateMasks);
+            }
+
+            changeMade = LookIfTheBoardHasMultipleSolutions(rng, changeMade, candidateMasks, maskToOnesCount, finalState, state, board);
+
+            PrintBoardIfChanged(changeMade, board);
+        }
+    }
+
+    private static char[][] ConstructFullyPopulatedBoard(Random rng, Stack<int[]> stateStack)
+    {
         #region Construct fully populated board
         // Prepare empty board
         string line = "+---+---+---+";
@@ -229,57 +285,7 @@ public class Program
         Console.WriteLine("Final look of the solved board:");
         Console.WriteLine(string.Join(Environment.NewLine, board.Select(s => new string(s)).ToArray()));
         #endregion
-
-        var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack, board, out var finalState);
-
-        #region Prepare lookup structures that will be used in further execution
-        Console.WriteLine();
-        Console.WriteLine(new string('=', 80));
-        Console.WriteLine();
-
-        Dictionary<int, int> maskToOnesCount = new Dictionary<int, int>();
-        maskToOnesCount[0] = 0;
-        for (int i = 1; i < (1 << 9); i++)
-        {
-            int smaller = i >> 1;
-            int increment = i & 1;
-            maskToOnesCount[i] = maskToOnesCount[smaller] + increment;
-        }
-
-        Dictionary<int, int> singleBitToIndex = new Dictionary<int, int>();
-        for (int i = 0; i < 9; i++)
-            singleBitToIndex[1 << i] = i;
-
-        int allOnes = (1 << 9) - 1;
-        #endregion
-
-        bool changeMade = true;
-        while (changeMade)
-        {
-            changeMade = false;
-
-            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard(state, allOnes);
-
-            var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(state);
-
-            bool stepChangeMade = true;
-            while (stepChangeMade)
-            {
-                stepChangeMade = false;
-
-                changeMade = PickCellsWithOnlyOneCandidateLeft(rng, candidateMasks, maskToOnesCount, singleBitToIndex, state, board, changeMade);
-
-                changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(rng, changeMade, candidateMasks, state, board);
-
-                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(maskToOnesCount, changeMade, candidateMasks, cellGroups, stepChangeMade);
-
-                stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade, maskToOnesCount, cellGroups, state, candidateMasks);
-            }
-
-            changeMade = LookIfTheBoardHasMultipleSolutions(rng, changeMade, candidateMasks, maskToOnesCount, finalState, state, board);
-
-            PrintBoardIfChanged(changeMade, board);
-        }
+        return board;
     }
 
     private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, Stack<int[]> stateStack, char[][] board,
