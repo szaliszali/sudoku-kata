@@ -3,27 +3,26 @@ using System.IO;
 using ApprovalTests;
 using NUnit.Framework;
 
-namespace SudokuKata.Test
+namespace SudokuKata.Test;
+
+public class Tests
 {
-    public class Tests
+    [SetUp]
+    public void Setup()
     {
-        [SetUp]
-        public void Setup()
+    }
+
+    [Test]
+    public void Test1()
+    {
+        var output = new StringWriter();
+        Console.SetOut(output);
+
+        for (var i = 0; i < 10; i++)
         {
+            Program.Play(new Random(i));
         }
 
-        [Test]
-        public void Test1()
-        {
-            var output = new StringWriter();
-            Console.SetOut(output);
-
-            for (var i = 0; i < 10; i++)
-            {
-                Program.Play(new Random(i));
-            }
-
-            Approvals.Verify(output);
-        }
+        Approvals.Verify(output);
     }
 }
