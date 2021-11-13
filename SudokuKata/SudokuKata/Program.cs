@@ -23,6 +23,22 @@ public class Lol1
     }
 }
 
+public class Lol2
+{
+    public int Mask { get; }
+    public int Discriminator { get; }
+    public string Description { get; }
+    public IGrouping<int, Lol1> Cells { get; }
+
+    public Lol2(int mask, int discriminator, string description, IGrouping<int, Lol1> cells)
+    {
+        Mask = mask;
+        Discriminator = discriminator;
+        Description = description;
+        Cells = cells;
+    }
+}
+
 public class Program
 {
     static void Play()
@@ -498,13 +514,7 @@ public class Program
                                 cellGroups
                                     .Where(group => group.Count(tuple => candidateMasks[tuple.Index] == mask) == 2)
                                     .Where(group => group.Any(tuple => candidateMasks[tuple.Index] != mask && (candidateMasks[tuple.Index] & mask) > 0))
-                                    .Select(group => new
-                                    {
-                                        Mask = mask,
-                                        Discriminator = group.Key,
-                                        Description = group.First().Description,
-                                        Cells = group
-                                    }))
+                                    .Select(group => new Lol2(mask, @group.Key, @group.First().Description, @group)))
                             .ToList();
 
                     if (groups.Any())
