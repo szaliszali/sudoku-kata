@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuKata", "SudokuKata\SudokuKata.csproj", "{BE348366-AAB5-4BFC-8346-3573B2233704}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuKata.Test", "SudokuKata.Test\SudokuKata.Test.csproj", "{F7D84BC6-D81F-4F9D-8D70-2D7512ABDF20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{BE348366-AAB5-4BFC-8346-3573B2233704}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE348366-AAB5-4BFC-8346-3573B2233704}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE348366-AAB5-4BFC-8346-3573B2233704}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D84BC6-D81F-4F9D-8D70-2D7512ABDF20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D84BC6-D81F-4F9D-8D70-2D7512ABDF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D84BC6-D81F-4F9D-8D70-2D7512ABDF20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D84BC6-D81F-4F9D-8D70-2D7512ABDF20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69490940-A654-42C5-9139-9FBD6ECC4993}
 	EndGlobalSection
 EndGlobal
