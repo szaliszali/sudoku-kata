@@ -78,7 +78,6 @@ public class Program
 
     private static char[][] ConstructFullyPopulatedBoard(Random rng, Stack<int[]> stateStack)
     {
-        #region Construct fully populated board
         // Prepare empty board
         string line = "+---+---+---+";
         string middle = "|...|...|...|";
@@ -255,15 +254,13 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Final look of the solved board:");
         Console.WriteLine(string.Join(Environment.NewLine, board.Select(s => new string(s)).ToArray()));
-        #endregion
+
         return board;
     }
 
     private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, Stack<int[]> stateStack, char[][] board,
         out int[] finalState)
     {
-        #region Generate inital board from the completely solved one
-
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
         int remainingDigits = 30;
@@ -311,15 +308,11 @@ public class Program
         Console.WriteLine("Starting look of the board to solve:");
         Console.WriteLine(string.Join("\n", board.Select(s => new string(s)).ToArray()));
 
-        #endregion
-
         return state;
     }
 
     private static int[] CalculateCandidatesForCurrentStateOfTheBoard(int[] state, int allOnes)
     {
-        #region Calculate candidates for current state of the board
-
         int[] candidateMasks = new int[state.Length];
 
         for (int i = 0; i < state.Length; i++)
@@ -347,15 +340,11 @@ public class Program
                 candidateMasks[i] = allOnes & ~colidingNumbers;
             }
 
-        #endregion
-
         return candidateMasks;
     }
 
     private static List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(int[] state)
     {
-        #region Build a collection (named cellGroups) which maps cell indices into distinct groups (rows/columns/blocks)
-
         var rowsIndices = state
             .Select((value, index) => new Lol1(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
@@ -376,16 +365,12 @@ public class Program
 
         var cellGroups = rowsIndices.Concat(columnIndices).Concat(blockIndices).ToList();
 
-        #endregion
-
         return cellGroups;
     }
 
     private static bool PickCellsWithOnlyOneCandidateLeft(Random rng, int[] candidateMasks, Dictionary<int, int> maskToOnesCount,
         Dictionary<int, int> singleBitToIndex, int[] state, char[][] board, bool changeMade)
     {
-        #region Pick cells with only one candidate left
-
         int[] singleCandidateIndices =
             candidateMasks
                 .Select((mask, index) => new
@@ -418,16 +403,12 @@ public class Program
             Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate + 1);
         }
 
-        #endregion
-
         return changeMade;
     }
 
     private static bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(Random rng, bool changeMade,
         int[] candidateMasks, int[] state, char[][] board)
     {
-        #region Try to find a number which can only appear in one place in a row/column/block
-
         if (!changeMade)
         {
             List<string> groupDescriptions = new List<string>();
@@ -528,14 +509,11 @@ public class Program
             }
         }
 
-        #endregion
-
         return changeMade;
     }
 
     private static bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(Dictionary<int, int> maskToOnesCount, bool changeMade, int[] candidateMasks, List<IGrouping<int, Lol1>> cellGroups, bool stepChangeMade)
     {
-        #region Try to find pairs of digits in the same row/column/block and remove them from other colliding cells
         if (!changeMade)
         {
             IEnumerable<int> twoDigitMasks =
@@ -615,15 +593,13 @@ public class Program
             }
 
         }
-        #endregion
+
         return stepChangeMade;
     }
 
     private static bool TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(bool changeMade,
         bool stepChangeMade, Dictionary<int, int> maskToOnesCount, List<IGrouping<int, Lol1>> cellGroups, int[] state, int[] candidateMasks)
     {
-        #region Try to find groups of digits of size N which only appear in N cells within row/column/block
-
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
 
@@ -727,8 +703,6 @@ public class Program
             }
         }
 
-        #endregion
-
         return stepChangeMade;
     }
 
@@ -741,8 +715,6 @@ public class Program
         Stack<bool[]> usedDigitsStack;
         Stack<int> lastDigitStack;
         string command;
-
-        #region Final attempt - look if the board has multiple solutions
 
         if (!changeMade)
         {
@@ -1036,8 +1008,6 @@ public class Program
                     $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState[index1]}->({row1 + 1}, {col1 + 1}), {finalState[index2]}->({row2 + 1}, {col2 + 1}).");
             }
         }
-
-        #endregion
 
         return changeMade;
     }
