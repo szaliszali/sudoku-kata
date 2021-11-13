@@ -1016,21 +1016,26 @@ public class Program
     {
         if (changeMade)
         {
-            #region Print the board as it looks after one change was made to it
-
-            Console.WriteLine(string.Join(Environment.NewLine, board.Select(s => new string(s)).ToArray()));
-            string code =
-                string.Join(string.Empty, board.Select(s => new string(s)).ToArray())
-                    .Replace("-", string.Empty)
-                    .Replace("+", string.Empty)
-                    .Replace("|", string.Empty)
-                    .Replace(".", "0");
-
-            Console.WriteLine("Code: {0}", code);
-            Console.WriteLine();
-
-            #endregion
+            PrintBoard(board);
         }
+    }
+
+    private static void PrintBoard(char[][] board)
+    {
+        #region Print the board as it looks after one change was made to it
+
+        Console.WriteLine(string.Join(Environment.NewLine, board.Select(s => new string(s)).ToArray()));
+        string code =
+            string.Join(string.Empty, board.Select(s => new string(s)).ToArray())
+                .Replace("-", string.Empty)
+                .Replace("+", string.Empty)
+                .Replace("|", string.Empty)
+                .Replace(".", "0");
+
+        Console.WriteLine("Code: {0}", code);
+        Console.WriteLine();
+
+        #endregion
     }
 
     static void Main(string[] args)
