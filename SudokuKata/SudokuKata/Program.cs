@@ -55,6 +55,11 @@ public class Program
 
         var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack, board, out var finalState);
 
+        SolveBoard(rng, board, state, finalState);
+    }
+
+    private static void SolveBoard(Random rng, char[][] board, int[] state, int[]? finalState)
+    {
         #region Prepare lookup structures that will be used in further execution
         Console.WriteLine();
         Console.WriteLine(new string('=', 80));
