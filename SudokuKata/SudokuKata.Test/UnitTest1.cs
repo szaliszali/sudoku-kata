@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using ApprovalTests;
 using NUnit.Framework;
 
 namespace SudokuKata.Test
@@ -12,7 +15,10 @@ namespace SudokuKata.Test
         [Test]
         public void Test1()
         {
-            Assert.Pass();
+            var output = new StringWriter();
+            Console.SetOut(output);
+            Program.Play();
+            Approvals.Verify(output);
         }
     }
 }
