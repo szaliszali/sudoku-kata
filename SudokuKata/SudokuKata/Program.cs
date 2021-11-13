@@ -19,7 +19,7 @@ public class Program
 
         char[][] board = ConstructFullyPopulatedBoard(rng, stateStack);
 
-        var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack, board, out var finalState);
+        var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack.Peek(), board, out var finalState);
 
         SolveBoard(rng, board, state, finalState);
     }
@@ -258,7 +258,7 @@ public class Program
         return board;
     }
 
-    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, Stack<int[]> stateStack, char[][] board,
+    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, char[][] board,
         out int[] finalState)
     {
         // Board is solved at this point.
@@ -267,7 +267,6 @@ public class Program
         int maxRemovedPerBlock = 6;
         int[,] removedPerBlock = new int[3, 3];
         int[] positions = Enumerable.Range(0, 9 * 9).ToArray();
-        int[] state = stateStack.Peek();
 
         finalState = new int[state.Length];
         Array.Copy(state, finalState, finalState.Length);
