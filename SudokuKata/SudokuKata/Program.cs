@@ -362,41 +362,7 @@ public class Program
             {
                 stepChangeMade = false;
 
-                #region Pick cells with only one candidate left
-
-                int[] singleCandidateIndices =
-                    candidateMasks
-                        .Select((mask, index) => new
-                        {
-                            CandidatesCount = maskToOnesCount[mask],
-                            Index = index
-                        })
-                        .Where(tuple => tuple.CandidatesCount == 1)
-                        .Select(tuple => tuple.Index)
-                        .ToArray();
-
-                if (singleCandidateIndices.Length > 0)
-                {
-                    int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
-                    int singleCandidateIndex = singleCandidateIndices[pickSingleCandidateIndex];
-                    int candidateMask = candidateMasks[singleCandidateIndex];
-                    int candidate = singleBitToIndex[candidateMask];
-
-                    int row = singleCandidateIndex / 9;
-                    int col = singleCandidateIndex % 9;
-
-                    int rowToWrite = row + row / 3 + 1;
-                    int colToWrite = col + col / 3 + 1;
-
-                    state[singleCandidateIndex] = candidate + 1;
-                    board[rowToWrite][colToWrite] = (char)('1' + candidate);
-                    candidateMasks[singleCandidateIndex] = 0;
-                    changeMade = true;
-
-                    Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate + 1);
-                }
-
-                #endregion
+                changeMade = PickCellsWithOnlyOneCandidateLeft(rng, candidateMasks, maskToOnesCount, singleBitToIndex, state, board, changeMade);
 
                 changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(rng, changeMade, candidateMasks, state, board);
 
@@ -409,6 +375,48 @@ public class Program
 
             PrintBoardIfChanged(changeMade, board);
         }
+    }
+
+    private static bool PickCellsWithOnlyOneCandidateLeft(Random rng, int[] candidateMasks, Dictionary<int, int> maskToOnesCount,
+        Dictionary<int, int> singleBitToIndex, int[] state, char[][] board, bool changeMade)
+    {
+        #region Pick cells with only one candidate left
+
+        int[] singleCandidateIndices =
+            candidateMasks
+                .Select((mask, index) => new
+                {
+                    CandidatesCount = maskToOnesCount[mask],
+                    Index = index
+                })
+                .Where(tuple => tuple.CandidatesCount == 1)
+                .Select(tuple => tuple.Index)
+                .ToArray();
+
+        if (singleCandidateIndices.Length > 0)
+        {
+            int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
+            int singleCandidateIndex = singleCandidateIndices[pickSingleCandidateIndex];
+            int candidateMask = candidateMasks[singleCandidateIndex];
+            int candidate = singleBitToIndex[candidateMask];
+
+            int row = singleCandidateIndex / 9;
+            int col = singleCandidateIndex % 9;
+
+            int rowToWrite = row + row / 3 + 1;
+            int colToWrite = col + col / 3 + 1;
+
+            state[singleCandidateIndex] = candidate + 1;
+            board[rowToWrite][colToWrite] = (char)('1' + candidate);
+            candidateMasks[singleCandidateIndex] = 0;
+            changeMade = true;
+
+            Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate + 1);
+        }
+
+        #endregion
+
+        return changeMade;
     }
 
     private static bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(Random rng, bool changeMade,
