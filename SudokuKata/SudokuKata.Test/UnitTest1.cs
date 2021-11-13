@@ -17,7 +17,12 @@ namespace SudokuKata.Test
         {
             var output = new StringWriter();
             Console.SetOut(output);
-            Program.Play(new Random(1));
+
+            for (var i = 0; i < 10; i++)
+            {
+                Program.Play(new Random(i));
+            }
+
             Approvals.Verify(output);
         }
     }
