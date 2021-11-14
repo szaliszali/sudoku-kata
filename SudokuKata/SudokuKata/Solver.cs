@@ -53,7 +53,7 @@ internal class Solver
 
             var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
 
-            var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(state);
+            var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
 
             bool stepChangeMade = true;
             while (stepChangeMade)
@@ -106,7 +106,7 @@ internal class Solver
         return candidateMasks;
     }
 
-    private static List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(int[] state)
+    private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
     {
         var rowsIndices = state
             .Select((value, index) => new Lol1(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
