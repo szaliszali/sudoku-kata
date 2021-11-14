@@ -64,7 +64,7 @@ internal class Solver
                 stepChangeMade = false;
                 if (!changeMade) stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells();
 
-                stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade);
+                if (!changeMade && !stepChangeMade) stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade);
             }
 
             changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
@@ -353,11 +353,6 @@ internal class Solver
 
     private bool TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(bool changeMade, bool stepChangeMade)
     {
-        if (changeMade || stepChangeMade)
-        {
-            return stepChangeMade;
-        }
-
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
 
