@@ -18,13 +18,15 @@ public class Program
 
         var finalState = board.State.ShallowCopy();
 
-        GenerateInitalBoardFromTheCompletelySolvedOne(rng, board.State, board);
+        GenerateInitalBoardFromTheCompletelySolvedOne(rng, board);
 
-        SolveBoard(rng, board, board.State, finalState);
+        SolveBoard(rng, board, finalState);
     }
 
-    private static void SolveBoard(Random rng, CharArrayBoard board, int[] state, int[] finalState)
+    private static void SolveBoard(Random rng, CharArrayBoard board, int[] finalState)
     {
+        int[] state = board.State;
+
         #region Prepare lookup structures that will be used in further execution
         Console.WriteLine();
         Console.WriteLine(new string('=', 80));
@@ -86,8 +88,10 @@ public class Program
         return board;
     }
 
-    private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board)
+    private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, CharArrayBoard board)
     {
+        int[] state = board.State;
+
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
         int remainingDigits = 30;
