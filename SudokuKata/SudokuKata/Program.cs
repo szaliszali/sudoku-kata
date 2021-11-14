@@ -16,7 +16,10 @@ public class Program
     {
         (CharArrayBoard board, int[] state) = ConstructFullyPopulatedBoard(rng);
 
-        state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, state, board, out var finalState);
+        var finalState = new int[state.Length];
+        Array.Copy(state, finalState, finalState.Length);
+
+        state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, state, board);
 
         SolveBoard(rng, board, state, finalState);
     }
@@ -84,8 +87,7 @@ public class Program
         return (board, board.State);
     }
 
-    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board,
-        out int[] finalState)
+    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board)
     {
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
@@ -93,9 +95,6 @@ public class Program
         int maxRemovedPerBlock = 6;
         int[,] removedPerBlock = new int[3, 3];
         int[] positions = Enumerable.Range(0, 9 * 9).ToArray();
-
-        finalState = new int[state.Length];
-        Array.Copy(state, finalState, finalState.Length);
 
         int removedPos = 0;
         while (removedPos < 9 * 9 - remainingDigits)
