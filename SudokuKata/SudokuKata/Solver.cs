@@ -67,7 +67,7 @@ internal class Solver
                 if (!changeMade && !stepChangeMade) stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock();
             }
 
-            changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
+            if (!changeMade) changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
 
             PrintBoardIfChanged(changeMade);
         }
@@ -460,11 +460,6 @@ internal class Solver
 
     private bool LookIfTheBoardHasMultipleSolutions(bool changeMade)
     {
-        if (changeMade)
-        {
-            return changeMade;
-        }
-
         Stack<int[]> stateStack;
         Stack<int> rowIndexStack;
         Stack<int> colIndexStack;
