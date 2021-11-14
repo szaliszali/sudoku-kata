@@ -16,6 +16,7 @@ internal class Solver
     #endregion
 
     private int[] candidateMasks;
+    private List<IGrouping<int, Lol1>> cellGroups;
 
     static Solver()
     {
@@ -55,7 +56,7 @@ internal class Solver
 
             candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
 
-            var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
+            cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
 
             bool stepChangeMade = true;
             while (stepChangeMade)
