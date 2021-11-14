@@ -8,6 +8,8 @@ internal class Solver
     private CharArrayBoard board;
     private int[] finalState;
 
+    static readonly int allOnes = (1 << 9) - 1; // bit mask with all bits set
+
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
     {
         this.rng = rng;
@@ -37,7 +39,6 @@ internal class Solver
         for (int i = 0; i < 9; i++)
             singleBitToIndex[1 << i] = i;
 
-        int allOnes = (1 << 9) - 1;
         #endregion
 
         bool changeMade = true;
@@ -45,7 +46,7 @@ internal class Solver
         {
             changeMade = false;
 
-            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard(state, allOnes);
+            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard(state);
 
             var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(state);
 
@@ -68,7 +69,7 @@ internal class Solver
             PrintBoardIfChanged(changeMade, board);
         }
     }
-    private static int[] CalculateCandidatesForCurrentStateOfTheBoard(int[] state, int allOnes)
+    private static int[] CalculateCandidatesForCurrentStateOfTheBoard(int[] state)
     {
         int[] candidateMasks = new int[state.Length];
 
