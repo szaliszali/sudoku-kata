@@ -61,7 +61,7 @@ internal class Solver
 
                 changeMade = PickCellsWithOnlyOneCandidateLeft();
 
-                changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(changeMade);
+                if (!changeMade) changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
 
                 stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade, stepChangeMade);
 
@@ -167,12 +167,9 @@ internal class Solver
         return changeMade;
     }
 
-    private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(bool changeMade)
+    private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
     {
-        if (changeMade)
-        {
-            return changeMade;
-        }
+        bool changeMade = false;
 
         List<string> groupDescriptions = new List<string>();
         List<int> candidateRowIndices = new List<int>();
