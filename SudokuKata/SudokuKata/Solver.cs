@@ -7,6 +7,7 @@ internal class Solver
     private Random rng;
     private CharArrayBoard board;
     private int[] finalState;
+    private int[] state;
 
     #region Lookup structures that will be used in further execution
     static readonly Dictionary<int, int> maskToOnesCount;
@@ -35,12 +36,12 @@ internal class Solver
         this.rng = rng;
         this.board = board;
         this.finalState = finalState;
+
+        state = board.State;
     }
 
     public void SolveBoard()
     {
-        int[] state = board.State;
-
         Console.WriteLine();
         Console.WriteLine(new string('=', 80));
         Console.WriteLine();
