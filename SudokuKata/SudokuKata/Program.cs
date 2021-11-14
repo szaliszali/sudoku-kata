@@ -78,25 +78,7 @@ public class Program
 
     private static CharArrayBoard ConstructFullyPopulatedBoard(Random rng, Stack<int[]> stateStack)
     {
-        // Prepare empty board
-        string line = "+---+---+---+";
-        string middle = "|...|...|...|";
-        CharArrayBoard board = new CharArrayBoard
-        {
-            line.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            line.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            line.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            line.ToCharArray()
-        };
+        CharArrayBoard board = new CharArrayBoard();
 
         // Construct board to be solved
 
