@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ApprovalTests;
 using NUnit.Framework;
 
@@ -18,8 +17,7 @@ internal class BoardTests
     public void RandomBoard()
     {
         var rng = new Random(1);
-        var stateStack = new Stack<int[]>();
-        var sut = new RandomBoard(rng, stateStack);
+        var sut = new RandomBoard(rng);
         Approvals.Verify((sut, sut.Code));
     }
 }

@@ -2,7 +2,12 @@
 
 public class RandomBoard : CharArrayBoard
 {
-    public RandomBoard(Random rng, Stack<int[]> stateStack)
+    // Top element is current state of the board
+    Stack<int[]> stateStack = new Stack<int[]>();
+
+    public int[] State => stateStack.Peek();
+
+    public RandomBoard(Random rng)
     {
         // Construct board to be solved
 

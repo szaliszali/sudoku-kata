@@ -75,16 +75,13 @@ public class Program
 
     private static (CharArrayBoard board, int[] state) ConstructFullyPopulatedBoard(Random rng)
     {
-        // Top element is current state of the board
-        Stack<int[]> stateStack = new Stack<int[]>();
-
-        var board = new RandomBoard(rng, stateStack);
+        var board = new RandomBoard(rng);
 
         Console.WriteLine();
         Console.WriteLine("Final look of the solved board:");
         Console.WriteLine(board);
 
-        return (board, stateStack.Peek());
+        return (board, board.State);
     }
 
     private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board,
