@@ -45,28 +45,28 @@ internal class Solver
 
     public void SolveBoard()
     {
-        bool changeMade = true;
-        while (changeMade)
+        bool changeMade;
+        do
         {
-            changeMade = false;
-
             candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
 
             cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
 
-            bool stepChangeMade = true;
-            while (stepChangeMade)
+            bool stepChangeMade;
+            do
             {
                 changeMade = PickCellsWithOnlyOneCandidateLeft() || TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
 
                 stepChangeMade = false;
                 if (!changeMade) stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells() || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock();
             }
+            while (stepChangeMade);
 
             if (!changeMade) changeMade = LookIfTheBoardHasMultipleSolutions();
 
             PrintBoardIfChanged(changeMade);
         }
+        while (changeMade);
     }
 
     private int[] CalculateCandidatesForCurrentStateOfTheBoard()
