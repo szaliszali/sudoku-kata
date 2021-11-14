@@ -73,6 +73,7 @@ internal class Solver
             PrintBoardIfChanged(changeMade);
         }
     }
+
     private int[] CalculateCandidatesForCurrentStateOfTheBoard()
     {
         int[] candidateMasks = new int[state.Length];
