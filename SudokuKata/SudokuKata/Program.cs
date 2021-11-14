@@ -17,14 +17,14 @@ public class Program
         // Top element is current state of the board
         Stack<int[]> stateStack = new Stack<int[]>();
 
-        char[][] board = ConstructFullyPopulatedBoard(rng, stateStack);
+        CharArrayBoard board = ConstructFullyPopulatedBoard(rng, stateStack);
 
         var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack.Peek(), board, out var finalState);
 
         SolveBoard(rng, board, state, finalState);
     }
 
-    private static void SolveBoard(Random rng, char[][] board, int[] state, int[]? finalState)
+    private static void SolveBoard(Random rng, CharArrayBoard board, int[] state, int[]? finalState)
     {
         #region Prepare lookup structures that will be used in further execution
         Console.WriteLine();
@@ -76,12 +76,12 @@ public class Program
         }
     }
 
-    private static char[][] ConstructFullyPopulatedBoard(Random rng, Stack<int[]> stateStack)
+    private static CharArrayBoard ConstructFullyPopulatedBoard(Random rng, Stack<int[]> stateStack)
     {
         // Prepare empty board
         string line = "+---+---+---+";
         string middle = "|...|...|...|";
-        char[][] board = new char[][]
+        CharArrayBoard board = new CharArrayBoard
         {
             line.ToCharArray(),
             middle.ToCharArray(),
@@ -258,7 +258,7 @@ public class Program
         return board;
     }
 
-    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, char[][] board,
+    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board,
         out int[] finalState)
     {
         // Board is solved at this point.
@@ -368,7 +368,7 @@ public class Program
     }
 
     private static bool PickCellsWithOnlyOneCandidateLeft(Random rng, int[] candidateMasks, Dictionary<int, int> maskToOnesCount,
-        Dictionary<int, int> singleBitToIndex, int[] state, char[][] board, bool changeMade)
+        Dictionary<int, int> singleBitToIndex, int[] state, CharArrayBoard board, bool changeMade)
     {
         int[] singleCandidateIndices =
             candidateMasks
@@ -406,7 +406,7 @@ public class Program
     }
 
     private static bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(Random rng, bool changeMade,
-        int[] candidateMasks, int[] state, char[][] board)
+        int[] candidateMasks, int[] state, CharArrayBoard board)
     {
         if (!changeMade)
         {
@@ -706,7 +706,7 @@ public class Program
     }
 
     private static bool LookIfTheBoardHasMultipleSolutions(Random rng, bool changeMade, int[] candidateMasks,
-        Dictionary<int, int> maskToOnesCount, int[] finalState, int[] state, char[][] board)
+        Dictionary<int, int> maskToOnesCount, int[] finalState, int[] state, CharArrayBoard board)
     {
         Stack<int[]> stateStack;
         Stack<int> rowIndexStack;
@@ -1011,7 +1011,7 @@ public class Program
         return changeMade;
     }
 
-    private static void PrintBoardIfChanged(bool changeMade, char[][] board)
+    private static void PrintBoardIfChanged(bool changeMade, CharArrayBoard board)
     {
         if (changeMade)
         {
@@ -1019,7 +1019,7 @@ public class Program
         }
     }
 
-    private static void PrintBoard(char[][] board)
+    private static void PrintBoard(CharArrayBoard board)
     {
         #region Print the board as it looks after one change was made to it
 
