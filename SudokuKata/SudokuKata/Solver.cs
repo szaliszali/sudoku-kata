@@ -57,14 +57,10 @@ internal class Solver
             bool stepChangeMade = true;
             while (stepChangeMade)
             {
-                changeMade = PickCellsWithOnlyOneCandidateLeft();
-
-                if (!changeMade) changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
+                changeMade = PickCellsWithOnlyOneCandidateLeft() || TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
 
                 stepChangeMade = false;
-                if (!changeMade) stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells();
-
-                if (!changeMade && !stepChangeMade) stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock();
+                if (!changeMade) stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells() || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock();
             }
 
             if (!changeMade) changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
