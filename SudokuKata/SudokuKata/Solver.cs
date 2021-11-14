@@ -51,7 +51,7 @@ internal class Solver
         {
             changeMade = false;
 
-            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard(state);
+            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
 
             var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks(state);
 
@@ -74,7 +74,7 @@ internal class Solver
             PrintBoardIfChanged(changeMade, board);
         }
     }
-    private static int[] CalculateCandidatesForCurrentStateOfTheBoard(int[] state)
+    private int[] CalculateCandidatesForCurrentStateOfTheBoard()
     {
         int[] candidateMasks = new int[state.Length];
 
