@@ -15,6 +15,10 @@ public class Program
 
         GenerateInitalBoardFromTheCompletelySolvedOne(rng, board);
 
+        Console.WriteLine();
+        Console.WriteLine(new string('=', 80));
+        Console.WriteLine();
+
         new Solver(rng, board, finalState).SolveBoard();
     }
 

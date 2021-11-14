@@ -45,10 +45,6 @@ internal class Solver
 
     public void SolveBoard()
     {
-        Console.WriteLine();
-        Console.WriteLine(new string('=', 80));
-        Console.WriteLine();
-
         bool changeMade = true;
         while (changeMade)
         {
