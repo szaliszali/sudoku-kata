@@ -34,7 +34,7 @@ public class RandomBoard : CharArrayBoard
 
                 if (stateStack.Count > 0)
                 {
-                    Array.Copy(stateStack.Peek(), currentState, currentState.Length);
+                    currentState = stateStack.Peek().ShallowCopy();
                 }
 
                 int bestRow = -1;

@@ -16,8 +16,7 @@ public class Program
     {
         (CharArrayBoard board, int[] state) = ConstructFullyPopulatedBoard(rng);
 
-        var finalState = new int[state.Length];
-        Array.Copy(state, finalState, finalState.Length);
+        var finalState = state.ShallowCopy();
 
         state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, state, board);
 
@@ -602,8 +601,7 @@ public class Program
                 int digit1 = candidateDigit1.Dequeue();
                 int digit2 = candidateDigit2.Dequeue();
 
-                int[] alternateState = new int[finalState.Length];
-                Array.Copy(state, alternateState, alternateState.Length);
+                int[] alternateState = state.ShallowCopy();
 
                 if (finalState[index1] == digit1)
                 {
@@ -630,15 +628,15 @@ public class Program
                 {
                     if (command == "expand")
                     {
-                        int[] currentState = new int[9 * 9];
+                        int[] currentState;
 
                         if (stateStack.Any())
                         {
-                            Array.Copy(stateStack.Peek(), currentState, currentState.Length);
+                            currentState = stateStack.Peek().ShallowCopy();
                         }
                         else
                         {
-                            Array.Copy(alternateState, currentState, currentState.Length);
+                            currentState = alternateState.ShallowCopy();
                         }
 
                         int bestRow = -1;
