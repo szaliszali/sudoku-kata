@@ -72,7 +72,7 @@ internal class Solver
                 stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade);
             }
 
-            changeMade = LookIfTheBoardHasMultipleSolutions(rng, changeMade, candidateMasks, maskToOnesCount, finalState, state, board);
+            changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
 
             PrintBoardIfChanged(changeMade, board);
         }
@@ -464,8 +464,7 @@ internal class Solver
         return stepChangeMade;
     }
 
-    private static bool LookIfTheBoardHasMultipleSolutions(Random rng, bool changeMade, int[] candidateMasks,
-        Dictionary<int, int> maskToOnesCount, int[] finalState, int[] state, CharArrayBoard board)
+    private bool LookIfTheBoardHasMultipleSolutions(bool changeMade)
     {
         Stack<int[]> stateStack;
         Stack<int> rowIndexStack;
