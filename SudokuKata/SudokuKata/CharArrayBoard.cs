@@ -25,6 +25,13 @@ public class CharArrayBoard : List<char[]>
         });
     }
 
+    public string Code =>
+        string.Join(string.Empty, this.Select(s => new string(s)).ToArray())
+            .Replace("-", string.Empty)
+            .Replace("+", string.Empty)
+            .Replace("|", string.Empty)
+            .Replace(".", "0");
+
     public override string ToString()
     {
         return string.Join(Environment.NewLine, this.Select(s => new string(s)).ToArray());

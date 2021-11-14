@@ -8,4 +8,7 @@ internal class BoardTests
 {
     [Test]
     public void EmptyBoardToString() => Approvals.Verify(new CharArrayBoard());
+
+    [Test]
+    public void EmptyBoardCode() => Approvals.Verify(new CharArrayBoard().Code);
 }
