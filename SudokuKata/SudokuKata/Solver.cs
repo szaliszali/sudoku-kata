@@ -61,7 +61,8 @@ internal class Solver
 
                 if (!changeMade) changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
 
-                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade);
+                stepChangeMade = false;
+                if (!changeMade) stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells();
 
                 stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade);
             }
@@ -267,13 +268,9 @@ internal class Solver
         return changeMade;
     }
 
-    private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(bool changeMade)
+    private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
     {
         bool stepChangeMade = false;
-        if (changeMade)
-        {
-            return stepChangeMade;
-        }
 
         IEnumerable<int> twoDigitMasks =
             candidateMasks.Where(mask => maskToOnesCount[mask] == 2).Distinct().ToList();
