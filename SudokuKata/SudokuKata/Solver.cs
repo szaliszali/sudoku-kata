@@ -57,13 +57,11 @@ internal class Solver
             bool stepChangeMade = true;
             while (stepChangeMade)
             {
-                stepChangeMade = false;
-
                 changeMade = PickCellsWithOnlyOneCandidateLeft();
 
                 if (!changeMade) changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
 
-                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade, stepChangeMade);
+                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade, false);
 
                 stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade);
             }
