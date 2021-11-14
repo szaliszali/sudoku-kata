@@ -63,7 +63,7 @@ internal class Solver
                 if (!changeMade) stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells() || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock();
             }
 
-            if (!changeMade) changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
+            if (!changeMade) changeMade = LookIfTheBoardHasMultipleSolutions();
 
             PrintBoardIfChanged(changeMade);
         }
@@ -454,8 +454,10 @@ internal class Solver
         return stepChangeMade;
     }
 
-    private bool LookIfTheBoardHasMultipleSolutions(bool changeMade)
+    private bool LookIfTheBoardHasMultipleSolutions()
     {
+        bool changeMade = false;
+
         Stack<int[]> stateStack;
         Stack<int> rowIndexStack;
         Stack<int> colIndexStack;
