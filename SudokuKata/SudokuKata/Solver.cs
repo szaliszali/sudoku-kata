@@ -59,7 +59,7 @@ internal class Solver
             {
                 stepChangeMade = false;
 
-                changeMade = PickCellsWithOnlyOneCandidateLeft(changeMade);
+                changeMade = PickCellsWithOnlyOneCandidateLeft();
 
                 changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(changeMade);
 
@@ -130,8 +130,10 @@ internal class Solver
         return cellGroups;
     }
 
-    private bool PickCellsWithOnlyOneCandidateLeft(bool changeMade)
+    private bool PickCellsWithOnlyOneCandidateLeft()
     {
+        bool changeMade = false;
+
         int[] singleCandidateIndices =
             candidateMasks
                 .Select((mask, index) => new
