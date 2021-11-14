@@ -20,4 +20,21 @@ internal class BoardTests
         var sut = new RandomBoard(rng);
         Approvals.Verify((sut, sut.Code));
     }
+
+    [Test]
+    public void SetCellToDigit()
+    {
+        var sut = new CharArrayBoard();
+        sut.Set(1, 2, 3);
+        Approvals.Verify(sut);
+    }
+
+    [Test]
+    public void ClearCell()
+    {
+        var sut = new CharArrayBoard();
+        sut.Set(1, 2, 3);
+        sut.Set(1, 2, 0);
+        Approvals.Verify(sut);
+    }
 }

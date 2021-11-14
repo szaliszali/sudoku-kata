@@ -25,6 +25,14 @@ public class CharArrayBoard : List<char[]>
         });
     }
 
+    public void Set(int row, int col, int value)
+    {
+        int rowToWrite = row + row / 3 + 1;
+        int colToWrite = col + col / 3 + 1;
+
+        this[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
+    }
+
     public string Code =>
         string.Join(string.Empty, this.Select(s => new string(s)).ToArray())
             .Replace("-", string.Empty)
