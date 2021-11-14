@@ -24,4 +24,9 @@ public class CharArrayBoard : List<char[]>
             line.ToCharArray()
         });
     }
+
+    public override string ToString()
+    {
+        return string.Join(Environment.NewLine, this.Select(s => new string(s)).ToArray());
+    }
 }
