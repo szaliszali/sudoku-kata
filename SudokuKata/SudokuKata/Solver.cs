@@ -62,7 +62,7 @@ internal class Solver
             {
                 stepChangeMade = false;
 
-                changeMade = PickCellsWithOnlyOneCandidateLeft(rng, candidateMasks, maskToOnesCount, singleBitToIndex, state, board, changeMade);
+                changeMade = PickCellsWithOnlyOneCandidateLeft(changeMade);
 
                 changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(rng, changeMade, candidateMasks, state, board);
 
@@ -133,8 +133,7 @@ internal class Solver
         return cellGroups;
     }
 
-    private static bool PickCellsWithOnlyOneCandidateLeft(Random rng, int[] candidateMasks, Dictionary<int, int> maskToOnesCount,
-        Dictionary<int, int> singleBitToIndex, int[] state, CharArrayBoard board, bool changeMade)
+    private bool PickCellsWithOnlyOneCandidateLeft(bool changeMade)
     {
         int[] singleCandidateIndices =
             candidateMasks
