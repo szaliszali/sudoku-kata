@@ -8,7 +8,27 @@ internal class Solver
     private CharArrayBoard board;
     private int[] finalState;
 
+    #region Lookup structures that will be used in further execution
+    static readonly Dictionary<int, int> maskToOnesCount;
+    static readonly Dictionary<int, int> singleBitToIndex;
     static readonly int allOnes = (1 << 9) - 1; // bit mask with all bits set
+    #endregion
+
+    static Solver()
+    {
+        maskToOnesCount = new Dictionary<int, int>();
+        maskToOnesCount[0] = 0;
+        for (int i = 1; i < (1 << 9); i++)
+        {
+            int smaller = i >> 1;
+            int increment = i & 1;
+            maskToOnesCount[i] = maskToOnesCount[smaller] + increment;
+        }
+
+        singleBitToIndex = new Dictionary<int, int>();
+        for (int i = 0; i < 9; i++)
+            singleBitToIndex[1 << i] = i;
+    }
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
     {
@@ -21,25 +41,9 @@ internal class Solver
     {
         int[] state = board.State;
 
-        #region Prepare lookup structures that will be used in further execution
         Console.WriteLine();
         Console.WriteLine(new string('=', 80));
         Console.WriteLine();
-
-        Dictionary<int, int> maskToOnesCount = new Dictionary<int, int>();
-        maskToOnesCount[0] = 0;
-        for (int i = 1; i < (1 << 9); i++)
-        {
-            int smaller = i >> 1;
-            int increment = i & 1;
-            maskToOnesCount[i] = maskToOnesCount[smaller] + increment;
-        }
-
-        Dictionary<int, int> singleBitToIndex = new Dictionary<int, int>();
-        for (int i = 0; i < 9; i++)
-            singleBitToIndex[1 << i] = i;
-
-        #endregion
 
         bool changeMade = true;
         while (changeMade)
