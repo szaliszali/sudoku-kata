@@ -530,10 +530,7 @@ internal class Solver
             // What follows below is a complete copy-paste of the solver which appears at the beginning of this method
             // However, the algorithm couldn't be applied directly and it had to be modified.
             // Implementation below assumes that the board might not have a solution.
-            Stack<int[]> stateStack = new();
-            Stack<int> rowIndexStack = new();
-            Stack<int> colIndexStack = new();
-            Stack<bool[]> usedDigitsStack = new();
+            Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack = new();
             Stack<int> lastDigitStack = new();
 
             string command = "expand";
@@ -543,9 +540,9 @@ internal class Solver
                 {
                     int[] currentState;
 
-                    if (stateStack.Any())
+                    if (combinedStack.Any())
                     {
-                        currentState = stateStack.Peek().ShallowCopy();
+                        currentState = combinedStack.Peek().state.ShallowCopy();
                     }
                     else
                     {
@@ -608,10 +605,7 @@ internal class Solver
 
                     if (!containsUnsolvableCells)
                     {
-                        stateStack.Push(currentState);
-                        rowIndexStack.Push(bestRow);
-                        colIndexStack.Push(bestCol);
-                        usedDigitsStack.Push(bestUsedDigits);
+                        combinedStack.Push((currentState, bestRow, bestCol, bestUsedDigits));
                         lastDigitStack.Push(0); // No digit was tried at this position
                     }
 
@@ -620,25 +614,18 @@ internal class Solver
                 } // if (command == "expand")
                 else if (command == "collapse")
                 {
-                    stateStack.Pop();
-                    rowIndexStack.Pop();
-                    colIndexStack.Pop();
-                    usedDigitsStack.Pop();
+                    combinedStack.Pop();
                     lastDigitStack.Pop();
 
-                    if (stateStack.Any())
+                    if (combinedStack.Any())
                         command = "move"; // Always try to move after collapse
                     else
                         command = "fail";
                 }
                 else if (command == "move")
                 {
-                    int rowToMove = rowIndexStack.Peek();
-                    int colToMove = colIndexStack.Peek();
+                    (int[] currentState, int rowToMove, int colToMove, bool[] usedDigits) = combinedStack.Peek();
                     int digitToMove = lastDigitStack.Pop();
-
-                    bool[] usedDigits = usedDigitsStack.Peek();
-                    int[] currentState = stateStack.Peek();
                     int currentStateIndex = 9 * rowToMove + colToMove;
 
                     int movedToDigit = digitToMove + 1;
