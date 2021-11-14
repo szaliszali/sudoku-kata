@@ -471,10 +471,7 @@ internal class Solver
         // Try to see if there are pairs of values that can be exchanged arbitrarily
         // This happens when board has more than one valid solution
 
-        Queue<int> candidateIndex1 = new Queue<int>();
-        Queue<int> candidateIndex2 = new Queue<int>();
-        Queue<int> candidateDigit1 = new Queue<int>();
-        Queue<int> candidateDigit2 = new Queue<int>();
+        Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
 
         for (int i = 0; i < candidateMasks.Length - 1; i++)
         {
@@ -508,10 +505,7 @@ internal class Solver
 
                         if (row == row1 || col == col1 || blockIndex == blockIndex1)
                         {
-                            candidateIndex1.Enqueue(i);
-                            candidateIndex2.Enqueue(j);
-                            candidateDigit1.Enqueue(lower);
-                            candidateDigit2.Enqueue(upper);
+                            candidates.Enqueue((i, j, lower, upper));
                         }
                     }
                 }
@@ -526,12 +520,9 @@ internal class Solver
         List<int> value1 = new List<int>();
         List<int> value2 = new List<int>();
 
-        while (candidateIndex1.Any())
+        while (candidates.Any())
         {
-            int index1 = candidateIndex1.Dequeue();
-            int index2 = candidateIndex2.Dequeue();
-            int digit1 = candidateDigit1.Dequeue();
-            int digit2 = candidateDigit2.Dequeue();
+            (int index1, int index2, int digit1, int digit2) = candidates.Dequeue();
 
             int[] alternateState = state.ShallowCopy();
 
