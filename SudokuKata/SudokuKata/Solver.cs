@@ -508,10 +508,7 @@ internal class Solver
         // At this point we have the lists with pairs of cells that might pick one of two digits each
         // Now we have to check whether that is really true - does the board have two solutions?
 
-        List<int> stateIndex1 = new List<int>();
-        List<int> stateIndex2 = new List<int>();
-        List<int> value1 = new List<int>();
-        List<int> value2 = new List<int>();
+        List<(int stateIndex1, int stateIndex2, int value1, int value2)> solutions = new();
 
         while (candidates.Any())
         {
@@ -679,20 +676,14 @@ internal class Solver
             if (command == "complete")
             {
                 // Board was solved successfully even with two digits swapped
-                stateIndex1.Add(index1);
-                stateIndex2.Add(index2);
-                value1.Add(digit1);
-                value2.Add(digit2);
+                solutions.Add((index1, index2, digit1, digit2));
             }
         } // while (candidateIndex1.Any())
 
-        if (stateIndex1.Any())
+        if (solutions.Any())
         {
-            int pos = rng.Next(stateIndex1.Count());
-            int index1 = stateIndex1.ElementAt(pos);
-            int index2 = stateIndex2.ElementAt(pos);
-            int digit1 = value1.ElementAt(pos);
-            int digit2 = value2.ElementAt(pos);
+            int pos = rng.Next(solutions.Count());
+            (int index1, int index2, int digit1, int digit2) = solutions.ElementAt(pos);
             int row1 = index1 / 9;
             int col1 = index1 % 9;
             int row2 = index2 / 9;
