@@ -64,7 +64,7 @@ internal class Solver
 
                 changeMade = PickCellsWithOnlyOneCandidateLeft(changeMade);
 
-                changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(rng, changeMade, candidateMasks, state, board);
+                changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(changeMade);
 
                 stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(maskToOnesCount, changeMade, candidateMasks, cellGroups, stepChangeMade);
 
@@ -167,8 +167,7 @@ internal class Solver
         return changeMade;
     }
 
-    private static bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(Random rng, bool changeMade,
-        int[] candidateMasks, int[] state, CharArrayBoard board)
+    private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(bool changeMade)
     {
         if (!changeMade)
         {
