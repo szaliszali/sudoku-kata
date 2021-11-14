@@ -14,13 +14,13 @@ public class Program
 
     public static void Play(Random rng)
     {
-        (CharArrayBoard board, int[] state) = ConstructFullyPopulatedBoard(rng);
+        CharArrayBoard board = ConstructFullyPopulatedBoard(rng);
 
-        var finalState = state.ShallowCopy();
+        var finalState = board.State.ShallowCopy();
 
-        state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, state, board);
+        GenerateInitalBoardFromTheCompletelySolvedOne(rng, board.State, board);
 
-        SolveBoard(rng, board, state, finalState);
+        SolveBoard(rng, board, board.State, finalState);
     }
 
     private static void SolveBoard(Random rng, CharArrayBoard board, int[] state, int[] finalState)
@@ -75,7 +75,7 @@ public class Program
         }
     }
 
-    private static (CharArrayBoard board, int[] state) ConstructFullyPopulatedBoard(Random rng)
+    private static CharArrayBoard ConstructFullyPopulatedBoard(Random rng)
     {
         var board = new RandomBoard(rng);
 
@@ -83,10 +83,10 @@ public class Program
         Console.WriteLine("Final look of the solved board:");
         Console.WriteLine(board);
 
-        return (board, board.State);
+        return board;
     }
 
-    private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board)
+    private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board)
     {
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
@@ -127,8 +127,6 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Starting look of the board to solve:");
         Console.WriteLine(string.Join("\n", board.Select(s => new string(s)).ToArray()));
-
-        return state;
     }
 
     private static int[] CalculateCandidatesForCurrentStateOfTheBoard(int[] state, int allOnes)

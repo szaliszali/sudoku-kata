@@ -5,7 +5,7 @@ public class RandomBoard : CharArrayBoard
     // Top element is current state of the board
     Stack<int[]> stateStack = new Stack<int[]>();
 
-    public int[] State => stateStack.Peek();
+    public override int[] State => stateStack.Peek();
 
     public RandomBoard(Random rng)
     {
