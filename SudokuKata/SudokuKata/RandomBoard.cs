@@ -123,9 +123,6 @@ public class RandomBoard : CharArrayBoard
                 int colToMove = colIndexStack.Peek();
                 int digitToMove = lastDigitStack.Pop();
 
-                int rowToWrite = rowToMove + rowToMove / 3 + 1;
-                int colToWrite = colToMove + colToMove / 3 + 1;
-
                 bool[] usedDigits = usedDigitsStack.Peek();
                 int[] currentState = stateStack.Peek();
                 int currentStateIndex = 9 * rowToMove + colToMove;
@@ -138,7 +135,7 @@ public class RandomBoard : CharArrayBoard
                 {
                     usedDigits[digitToMove - 1] = false;
                     currentState[currentStateIndex] = 0;
-                    this[rowToWrite][colToWrite] = '.';
+                    Set(rowToMove, colToMove, 0);
                 }
 
                 if (movedToDigit <= 9)
@@ -146,7 +143,7 @@ public class RandomBoard : CharArrayBoard
                     lastDigitStack.Push(movedToDigit);
                     usedDigits[movedToDigit - 1] = true;
                     currentState[currentStateIndex] = movedToDigit;
-                    this[rowToWrite][colToWrite] = (char)('0' + movedToDigit);
+                    Set(rowToMove, colToMove, movedToDigit);
 
                     // Next possible digit was found at current position
                     // Next step will be to expand the state

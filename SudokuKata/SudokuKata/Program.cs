@@ -117,10 +117,7 @@ public class Program
             positions[removedPos] = positions[indexToPick];
             positions[indexToPick] = temp;
 
-            int rowToWrite = row + row / 3 + 1;
-            int colToWrite = col + col / 3 + 1;
-
-            board[rowToWrite][colToWrite] = '.';
+            board.Set(row, col, 0);
 
             int stateIndex = 9 * row + col;
             state[stateIndex] = 0;
@@ -216,11 +213,8 @@ public class Program
             int row = singleCandidateIndex / 9;
             int col = singleCandidateIndex % 9;
 
-            int rowToWrite = row + row / 3 + 1;
-            int colToWrite = col + col / 3 + 1;
-
             state[singleCandidateIndex] = candidate + 1;
-            board[rowToWrite][colToWrite] = (char)('1' + candidate);
+            board.Set(row, col, 1 + candidate);
             candidateMasks[singleCandidateIndex] = 0;
             changeMade = true;
 
@@ -317,15 +311,13 @@ public class Program
                 int row = candidateRowIndices.ElementAt(index);
                 int col = candidateColIndices.ElementAt(index);
                 int digit = candidates.ElementAt(index);
-                int rowToWrite = row + row / 3 + 1;
-                int colToWrite = col + col / 3 + 1;
 
                 string message = $"{description} can contain {digit} only at ({row + 1}, {col + 1}).";
 
                 int stateIndex = 9 * row + col;
                 state[stateIndex] = digit;
                 candidateMasks[stateIndex] = 0;
-                board[rowToWrite][colToWrite] = (char)('0' + digit);
+                board.Set(row, col, digit);
 
                 changeMade = true;
 
@@ -734,9 +726,6 @@ public class Program
                         int colToMove = colIndexStack.Peek();
                         int digitToMove = lastDigitStack.Pop();
 
-                        int rowToWrite = rowToMove + rowToMove / 3 + 1;
-                        int colToWrite = colToMove + colToMove / 3 + 1;
-
                         bool[] usedDigits = usedDigitsStack.Peek();
                         int[] currentState = stateStack.Peek();
                         int currentStateIndex = 9 * rowToMove + colToMove;
@@ -749,7 +738,7 @@ public class Program
                         {
                             usedDigits[digitToMove - 1] = false;
                             currentState[currentStateIndex] = 0;
-                            board[rowToWrite][colToWrite] = '.';
+                            board.Set(rowToMove, colToMove, 0);
                         }
 
                         if (movedToDigit <= 9)
@@ -757,7 +746,7 @@ public class Program
                             lastDigitStack.Push(movedToDigit);
                             usedDigits[movedToDigit - 1] = true;
                             currentState[currentStateIndex] = movedToDigit;
-                            board[rowToWrite][colToWrite] = (char)('0' + movedToDigit);
+                            board.Set(rowToMove, colToMove, movedToDigit);
 
                             if (currentState.Any(digit => digit == 0))
                                 command = "expand";
@@ -820,12 +809,8 @@ public class Program
                 {
                     int tempRow = i / 9;
                     int tempCol = i % 9;
-                    int rowToWrite = tempRow + tempRow / 3 + 1;
-                    int colToWrite = tempCol + tempCol / 3 + 1;
 
-                    board[rowToWrite][colToWrite] = '.';
-                    if (state[i] > 0)
-                        board[rowToWrite][colToWrite] = (char)('0' + state[i]);
+                    board.Set(tempRow, tempCol, state[i]);
                 }
 
                 Console.WriteLine(
