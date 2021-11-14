@@ -14,12 +14,9 @@ public class Program
 
     public static void Play(Random rng)
     {
-        // Top element is current state of the board
-        Stack<int[]> stateStack = new Stack<int[]>();
+        (CharArrayBoard board, int[] state) = ConstructFullyPopulatedBoard(rng);
 
-        CharArrayBoard board = ConstructFullyPopulatedBoard(rng, stateStack);
-
-        var state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, stateStack.Peek(), board, out var finalState);
+        state = GenerateInitalBoardFromTheCompletelySolvedOne(rng, state, board, out var finalState);
 
         SolveBoard(rng, board, state, finalState);
     }
@@ -76,15 +73,18 @@ public class Program
         }
     }
 
-    private static CharArrayBoard ConstructFullyPopulatedBoard(Random rng, Stack<int[]> stateStack)
+    private static (CharArrayBoard board, int[] state) ConstructFullyPopulatedBoard(Random rng)
     {
+        // Top element is current state of the board
+        Stack<int[]> stateStack = new Stack<int[]>();
+
         var board = new RandomBoard(rng, stateStack);
 
         Console.WriteLine();
         Console.WriteLine("Final look of the solved board:");
         Console.WriteLine(board);
 
-        return board;
+        return (board, stateStack.Peek());
     }
 
     private static int[] GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, int[] state, CharArrayBoard board,
