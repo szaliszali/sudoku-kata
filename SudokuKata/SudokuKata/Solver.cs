@@ -61,7 +61,7 @@ internal class Solver
 
                 if (!changeMade) changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
 
-                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade, false);
+                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade);
 
                 stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade);
             }
@@ -267,8 +267,9 @@ internal class Solver
         return changeMade;
     }
 
-    private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(bool changeMade, bool stepChangeMade)
+    private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(bool changeMade)
     {
+        bool stepChangeMade = false;
         if (changeMade)
         {
             return stepChangeMade;
