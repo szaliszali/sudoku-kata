@@ -458,13 +458,6 @@ internal class Solver
     {
         bool changeMade = false;
 
-        Stack<int[]> stateStack;
-        Stack<int> rowIndexStack;
-        Stack<int> colIndexStack;
-        Stack<bool[]> usedDigitsStack;
-        Stack<int> lastDigitStack;
-        string command;
-
         // This is the last chance to do something in this iteration:
         // If this attempt fails, board will not be entirely solved.
 
@@ -540,13 +533,13 @@ internal class Solver
             // What follows below is a complete copy-paste of the solver which appears at the beginning of this method
             // However, the algorithm couldn't be applied directly and it had to be modified.
             // Implementation below assumes that the board might not have a solution.
-            stateStack = new Stack<int[]>();
-            rowIndexStack = new Stack<int>();
-            colIndexStack = new Stack<int>();
-            usedDigitsStack = new Stack<bool[]>();
-            lastDigitStack = new Stack<int>();
+            Stack<int[]> stateStack = new();
+            Stack<int> rowIndexStack = new();
+            Stack<int> colIndexStack = new();
+            Stack<bool[]> usedDigitsStack = new();
+            Stack<int> lastDigitStack = new();
 
-            command = "expand";
+            string command = "expand";
             while (command != "complete" && command != "fail")
             {
                 if (command == "expand")
