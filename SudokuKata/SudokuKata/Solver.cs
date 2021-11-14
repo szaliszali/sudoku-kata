@@ -70,7 +70,7 @@ internal class Solver
 
             changeMade = LookIfTheBoardHasMultipleSolutions(changeMade);
 
-            PrintBoardIfChanged(changeMade, board);
+            PrintBoardIfChanged(changeMade);
         }
     }
     private int[] CalculateCandidatesForCurrentStateOfTheBoard()
@@ -757,15 +757,15 @@ internal class Solver
         return changeMade;
     }
 
-    private static void PrintBoardIfChanged(bool changeMade, CharArrayBoard board)
+    private void PrintBoardIfChanged(bool changeMade)
     {
         if (changeMade)
         {
-            PrintBoard(board);
+            PrintBoard();
         }
     }
 
-    private static void PrintBoard(CharArrayBoard board)
+    private void PrintBoard()
     {
         Console.WriteLine(board);
         Console.WriteLine("Code: {0}", board.Code);
