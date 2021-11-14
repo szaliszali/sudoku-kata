@@ -67,7 +67,7 @@ internal class Solver
 
                 changeMade = TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(changeMade);
 
-                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(maskToOnesCount, changeMade, candidateMasks, cellGroups, stepChangeMade);
+                stepChangeMade = TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(changeMade, stepChangeMade);
 
                 stepChangeMade = TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(changeMade, stepChangeMade, maskToOnesCount, cellGroups, state, candidateMasks);
             }
@@ -271,7 +271,7 @@ internal class Solver
         return changeMade;
     }
 
-    private static bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(Dictionary<int, int> maskToOnesCount, bool changeMade, int[] candidateMasks, List<IGrouping<int, Lol1>> cellGroups, bool stepChangeMade)
+    private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(bool changeMade, bool stepChangeMade)
     {
         if (!changeMade)
         {
