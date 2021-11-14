@@ -15,6 +15,8 @@ internal class Solver
     static readonly int allOnes = (1 << 9) - 1; // bit mask with all bits set
     #endregion
 
+    private int[] candidateMasks;
+
     static Solver()
     {
         maskToOnesCount = new Dictionary<int, int>();
@@ -51,7 +53,7 @@ internal class Solver
         {
             changeMade = false;
 
-            var candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
+            candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
 
             var cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
 
