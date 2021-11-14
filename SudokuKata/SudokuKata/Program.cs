@@ -24,7 +24,7 @@ public class Program
         SolveBoard(rng, board, state, finalState);
     }
 
-    private static void SolveBoard(Random rng, CharArrayBoard board, int[] state, int[]? finalState)
+    private static void SolveBoard(Random rng, CharArrayBoard board, int[] state, int[] finalState)
     {
         #region Prepare lookup structures that will be used in further execution
         Console.WriteLine();
