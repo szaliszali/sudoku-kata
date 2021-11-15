@@ -3,20 +3,13 @@
 public class RandomBoard : CharArrayBoard
 {
     // Top element is current state of the board
-    Stack<int[]> stateStack = new Stack<int[]>();
+    Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack = new();
 
-    public override int[] State => stateStack.Peek();
+    public override int[] State => combinedStack.Peek().state;
 
     public RandomBoard(Random rng)
     {
         // Construct board to be solved
-
-        // Top elements are (row, col) of cell which has been modified compared to previous state
-        Stack<int> rowIndexStack = new Stack<int>();
-        Stack<int> colIndexStack = new Stack<int>();
-
-        // Top element indicates candidate digits (those with False) for (row, col)
-        Stack<bool[]> usedDigitsStack = new Stack<bool[]>();
 
         // Top element is the value that was set on (row, col)
         Stack<int> lastDigitStack = new Stack<int>();
@@ -26,15 +19,15 @@ public class RandomBoard : CharArrayBoard
         // - move - finds next candidate number at current pos and applies it to current state
         // - collapse - pops current state from stack as it did not yield a solution
         string command = "expand";
-        while (stateStack.Count <= 9 * 9)
+        while (combinedStack.Count <= 9 * 9)
         {
             if (command == "expand")
             {
                 int[] currentState = new int[9 * 9];
 
-                if (stateStack.Count > 0)
+                if (combinedStack.Count > 0)
                 {
-                    currentState = stateStack.Peek().ShallowCopy();
+                    currentState = combinedStack.Peek().state.ShallowCopy();
                 }
 
                 int bestRow = -1;
@@ -95,10 +88,7 @@ public class RandomBoard : CharArrayBoard
 
                 if (!containsUnsolvableCells)
                 {
-                    stateStack.Push(currentState);
-                    rowIndexStack.Push(bestRow);
-                    colIndexStack.Push(bestCol);
-                    usedDigitsStack.Push(bestUsedDigits);
+                    combinedStack.Push((currentState, bestRow, bestCol, bestUsedDigits));
                     lastDigitStack.Push(0); // No digit was tried at this position
                 }
 
@@ -108,10 +98,7 @@ public class RandomBoard : CharArrayBoard
             } // if (command == "expand")
             else if (command == "collapse")
             {
-                stateStack.Pop();
-                rowIndexStack.Pop();
-                colIndexStack.Pop();
-                usedDigitsStack.Pop();
+                combinedStack.Pop();
                 lastDigitStack.Pop();
 
                 command = "move";   // Always try to move after collapse
@@ -119,12 +106,9 @@ public class RandomBoard : CharArrayBoard
             else if (command == "move")
             {
 
-                int rowToMove = rowIndexStack.Peek();
-                int colToMove = colIndexStack.Peek();
+                (int[] currentState, int rowToMove, int colToMove, bool[] usedDigits) = combinedStack.Peek();
                 int digitToMove = lastDigitStack.Pop();
 
-                bool[] usedDigits = usedDigitsStack.Peek();
-                int[] currentState = stateStack.Peek();
                 int currentStateIndex = 9 * rowToMove + colToMove;
 
                 int movedToDigit = digitToMove + 1;
