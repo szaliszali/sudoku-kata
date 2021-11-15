@@ -594,7 +594,7 @@ internal class Solver
         {
             if (command == "expand")
             {
-                int[] currentState;
+                int[] currentState = new int[9 * 9];
 
                 if (combinedStack.Any())
                 {

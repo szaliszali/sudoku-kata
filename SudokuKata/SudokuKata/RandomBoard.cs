@@ -30,7 +30,7 @@ public class RandomBoard : CharArrayBoard
             {
                 int[] currentState = new int[9 * 9];
 
-                if (combinedStack.Count > 0)
+                if (combinedStack.Any())
                 {
                     currentState = combinedStack.Peek().state.ShallowCopy();
                 }
@@ -106,7 +106,7 @@ public class RandomBoard : CharArrayBoard
                 combinedStack.Pop();
                 lastDigitStack.Pop();
 
-                command = "move";   // Always try to move after collapse
+                command = "move"; // Always try to move after collapse
             }
             else if (command == "move")
             {
