@@ -11,14 +11,14 @@ public class RandomBoard : CharArrayBoard
     {
         // Construct board to be solved
 
+        SolverMainLoop(rng);
+    }
+
+    private void SolverMainLoop(Random rng)
+    {
         // Top element is the value that was set on (row, col)
         Stack<int> lastDigitStack = new Stack<int>();
 
-        SolverMainLoop(rng, lastDigitStack);
-    }
-
-    private void SolverMainLoop(Random rng, Stack<int> lastDigitStack)
-    {
         // Indicates operation to perform next
         // - expand - finds next empty cell and puts new state on stacks
         // - move - finds next candidate number at current pos and applies it to current state

@@ -10,13 +10,13 @@ internal class SolverMainLoop
 
     private string command;
 
-    public SolverMainLoop(Random rng, CharArrayBoard board, int[] alternateState, Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack, Stack<int> lastDigitStack)
+    public SolverMainLoop(Random rng, CharArrayBoard board, int[] alternateState, Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack)
     {
         this.rng = rng;
         this.board = board;
         this.alternateState = alternateState;
         this.combinedStack = combinedStack;
-        this.lastDigitStack = lastDigitStack;
+        this.lastDigitStack = new();
 
         DoSolverMainLoop();
     }

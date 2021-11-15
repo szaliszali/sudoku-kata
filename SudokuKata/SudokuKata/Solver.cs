@@ -531,9 +531,8 @@ internal class Solver
             // However, the algorithm couldn't be applied directly and it had to be modified.
             // Implementation below assumes that the board might not have a solution.
             Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack = new();
-            Stack<int> lastDigitStack = new();
 
-            string command = new SolverMainLoop(rng, board, alternateState, combinedStack, lastDigitStack).FinalState;
+            string command = new SolverMainLoop(rng, board, alternateState, combinedStack).FinalState;
 
             if (command == "complete")
             {
