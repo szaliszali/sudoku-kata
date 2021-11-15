@@ -667,7 +667,7 @@ internal class Solver
 
                 // Always try to move after expand
                 command = "move";
-            } // if (command == "expand")
+            }
             else if (command == "collapse")
             {
                 combinedStack.Pop();
@@ -713,8 +713,8 @@ internal class Solver
                     lastDigitStack.Push(0);
                     command = "collapse";
                 }
-            } // if (command == "move")
-        } // while (command != "complete" && command != "fail")
+            }
+        }
 
         return command;
     }
