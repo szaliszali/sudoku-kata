@@ -678,13 +678,13 @@ internal class Solver
 
             string description = string.Empty;
 
-            if (index1 / 9 == index2 / 9)
+            if (row1 == row2)
             {
-                description = $"row #{index1 / 9 + 1}";
+                description = $"row #{row1 + 1}";
             }
-            else if (index1 % 9 == index2 % 9)
+            else if (col1 == col2)
             {
-                description = $"column #{index1 % 9 + 1}";
+                description = $"column #{col1 + 1}";
             }
             else
             {
