@@ -1,10 +1,10 @@
 ﻿namespace SudokuKata;
 
-public class RandomBoard : CharArrayBoard
+public class RandomBoard
 {
     private int[] state;
 
-    public override int[] State => state;
+    public int[] State => state;
 
     public RandomBoard(Random rng)
     {
@@ -126,7 +126,6 @@ public class RandomBoard : CharArrayBoard
                 {
                     usedDigits[digitToMove - 1] = false;
                     currentState[currentStateIndex] = 0;
-                    Set(rowToMove, colToMove, 0);
                 }
 
                 if (movedToDigit <= 9)
@@ -134,7 +133,6 @@ public class RandomBoard : CharArrayBoard
                     lastDigitStack.Push(movedToDigit);
                     usedDigits[movedToDigit - 1] = true;
                     currentState[currentStateIndex] = movedToDigit;
-                    Set(rowToMove, colToMove, movedToDigit);
 
                     // Next possible digit was found at current position
                     // Next step will be to expand the state

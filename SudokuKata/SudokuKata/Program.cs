@@ -24,7 +24,7 @@ public class Program
 
     private static CharArrayBoard ConstructFullyPopulatedBoard(Random rng)
     {
-        var board = new RandomBoard(rng);
+        var board = new CharArrayBoard(new RandomBoard(rng).State);
 
         Console.WriteLine();
         Console.WriteLine("Final look of the solved board:");
