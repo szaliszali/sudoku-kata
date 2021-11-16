@@ -2,10 +2,9 @@
 
 public class RandomBoard : CharArrayBoard
 {
-    // Top element is current state of the board
-    Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack = new();
+    private int[] state;
 
-    public override int[] State => combinedStack.Peek().state;
+    public override int[] State => state;
 
     public RandomBoard(Random rng)
     {
@@ -16,6 +15,9 @@ public class RandomBoard : CharArrayBoard
 
     private void SolverMainLoop(Random rng)
     {
+        // Top element is current state of the board
+        Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack = new();
+
         // Top element is the value that was set on (row, col)
         Stack<int> lastDigitStack = new Stack<int>();
 
@@ -146,5 +148,7 @@ public class RandomBoard : CharArrayBoard
                 }
             }
         }
+
+        state = combinedStack.Peek().state;
     }
 }
