@@ -25,6 +25,15 @@ public class CharArrayBoard : List<char[]>
         });
     }
 
+    public CharArrayBoard(int[] state) : this()
+    {
+        this.state = state;
+
+        for (var row = 0; row < 9; ++row)
+            for (var column = 0; column < 9; ++column)
+                Set(row, column, state[row * 9 + column]);
+    }
+
     private int[] state = new int[9 * 9]; // TODO hardcoded
     public virtual int[] State => state.ShallowCopy(); // TODO not used, only the override in RandomBoard
 
