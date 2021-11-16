@@ -33,7 +33,7 @@ public class CharArrayBoard : List<char[]>
     }
 
     private int[] state = new int[9 * 9]; // TODO hardcoded
-    public virtual int[] State => state.ShallowCopy(); // TODO not used, only the override in RandomBoard
+    public virtual int[] State => state.ShallowCopy();
 
     public void Set(int row, int col, int value)
     {
