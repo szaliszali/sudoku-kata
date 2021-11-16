@@ -3,30 +3,29 @@
 internal class RandomizerMainLoop
 {
     private readonly Random rng;
+    private readonly Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack;
+    private readonly Stack<int> lastDigitStack;
 
+    private string command;
     private int[] solvedBoardState;
     public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
 
     public RandomizerMainLoop(Random rng)
     {
         this.rng = rng;
+        this.combinedStack = new();
+        this.lastDigitStack = new();
 
-        DoRandomizerMainLoop();
+        DoMainLoop();
     }
 
-    private void DoRandomizerMainLoop()
+    private string DoMainLoop()
     {
-        // Top element is current state of the board
-        Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack = new();
-
-        // Top element is the value that was set on (row, col)
-        Stack<int> lastDigitStack = new Stack<int>();
-
         // Indicates operation to perform next
         // - expand - finds next empty cell and puts new state on stacks
         // - move - finds next candidate number at current pos and applies it to current state
         // - collapse - pops current state from stack as it did not yield a solution
-        string command = "expand";
+        command = "expand";
         while (combinedStack.Count <= 9 * 9)
         {
             if (command == "expand")
@@ -48,7 +47,6 @@ internal class RandomizerMainLoop
                 for (int index = 0; index < currentState.Length; index++)
                     if (currentState[index] == 0)
                     {
-
                         int row = index / 9;
                         int col = index % 9;
                         int blockRow = row / 3;
@@ -91,7 +89,6 @@ internal class RandomizerMainLoop
                             bestCandidatesCount = candidatesCount;
                             bestRandomValue = randomValue;
                         }
-
                     } // for (index = 0..81)
 
                 if (!containsUnsolvableCells)
@@ -102,7 +99,6 @@ internal class RandomizerMainLoop
 
                 // Always try to move after expand
                 command = "move";
-
             }
             else if (command == "collapse")
             {
@@ -113,10 +109,8 @@ internal class RandomizerMainLoop
             }
             else if (command == "move")
             {
-
                 (int[] currentState, int rowToMove, int colToMove, bool[] usedDigits) = combinedStack.Peek();
                 int digitToMove = lastDigitStack.Pop();
-
                 int currentStateIndex = 9 * rowToMove + colToMove;
 
                 int movedToDigit = digitToMove + 1;
@@ -149,5 +143,6 @@ internal class RandomizerMainLoop
         }
 
         solvedBoardState = combinedStack.Peek().state;
+		return command;
     }
 }

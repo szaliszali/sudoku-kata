@@ -18,12 +18,12 @@ internal class SolverMainLoop
         this.combinedStack = new();
         this.lastDigitStack = new();
 
-        DoSolverMainLoop();
+        DoMainLoop();
     }
 
     public string FinalState => command;
 
-    private string DoSolverMainLoop()
+    private string DoMainLoop()
     {
         command = "expand";
         while (command != "complete" && command != "fail")
