@@ -53,4 +53,18 @@ internal class BoardTests
         var sut = new CharArrayBoard(state);
         Assert.That(sut.State, Is.EqualTo(state));
     }
+
+    [Test]
+    public void InitialSateIsAllEmpty() {
+        var sut = new CharArrayBoard();
+        Assert.That(sut.State, Is.EqualTo(new int[9 * 9]));
+    }
+
+    [Test]
+    public void SetSetsTheSate() {
+        var sut = new CharArrayBoard();
+        sut.Set(1, 2, 3);
+        Assert.That(sut.State, Is.Not.EqualTo(new int[9 * 9]));
+        Assert.That(sut.State[1 * 9 + 2], Is.EqualTo(3));
+    }
 }

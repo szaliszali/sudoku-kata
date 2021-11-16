@@ -43,6 +43,7 @@ public class CharArrayBoard : List<char[]>
         int colToWrite = col + col / 3 + 1;
 
         this[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
+        state[row * 9 + col] = value;
     }
 
     public string Code =>
