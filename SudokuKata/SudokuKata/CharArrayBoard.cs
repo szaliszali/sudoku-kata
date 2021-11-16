@@ -1,13 +1,14 @@
 ﻿namespace SudokuKata;
 
-public class CharArrayBoard : List<char[]>
+public class CharArrayBoard
 {
+    private List<char[]> fancyBoard = new();
     public CharArrayBoard()
     {
         // Prepare empty board
         string line = "+---+---+---+";
         string middle = "|...|...|...|";
-        AddRange(new[]
+        fancyBoard.AddRange(new[]
         {
             line.ToCharArray(),
             middle.ToCharArray(),
@@ -40,12 +41,12 @@ public class CharArrayBoard : List<char[]>
         int rowToWrite = row + row / 3 + 1;
         int colToWrite = col + col / 3 + 1;
 
-        this[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
+        fancyBoard[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
         state[row * 9 + col] = value;
     }
 
     public string Code =>
-        string.Join(string.Empty, this.Select(s => new string(s)).ToArray())
+        string.Join(string.Empty, fancyBoard.Select(s => new string(s)).ToArray())
             .Replace("-", string.Empty)
             .Replace("+", string.Empty)
             .Replace("|", string.Empty)
@@ -53,6 +54,6 @@ public class CharArrayBoard : List<char[]>
 
     public override string ToString()
     {
-        return string.Join(Environment.NewLine, this.Select(s => new string(s)).ToArray());
+        return string.Join(Environment.NewLine, fancyBoard.Select(s => new string(s)).ToArray());
     }
 }
