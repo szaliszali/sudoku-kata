@@ -27,8 +27,6 @@ public class CharArrayBoard : List<char[]>
 
     public CharArrayBoard(int[] state) : this()
     {
-        this.state = state;
-
         for (var row = 0; row < 9; ++row)
             for (var column = 0; column < 9; ++column)
                 Set(row, column, state[row * 9 + column]);
