@@ -75,7 +75,7 @@ public class Program
 
         Console.WriteLine();
         Console.WriteLine("Starting look of the board to solve:");
-        Console.WriteLine(string.Join("\n", board.Select(s => new string(s)).ToArray()));
+        Console.WriteLine(board);
     }
 
     static void Main(string[] args)
