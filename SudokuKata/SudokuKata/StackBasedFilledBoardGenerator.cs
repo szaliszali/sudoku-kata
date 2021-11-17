@@ -130,7 +130,6 @@ internal class StackBasedFilledBoardGenerator
     {
         (int[] currentState, int rowToMove, int colToMove, bool[] usedDigits) = combinedStack.Peek();
         int digitToMove = lastDigitStack.Pop();
-        int currentStateIndex = 9 * rowToMove + colToMove;
 
         int movedToDigit = digitToMove + 1;
         while (movedToDigit <= 9 && usedDigits[movedToDigit - 1])
@@ -139,14 +138,14 @@ internal class StackBasedFilledBoardGenerator
         if (digitToMove > 0)
         {
             usedDigits[digitToMove - 1] = false;
-            currentState[currentStateIndex] = 0;
+            currentState.Set(rowToMove, colToMove, 0);
         }
 
         if (movedToDigit <= 9)
         {
             lastDigitStack.Push(movedToDigit);
             usedDigits[movedToDigit - 1] = true;
-            currentState[currentStateIndex] = movedToDigit;
+            currentState.Set(rowToMove, colToMove, movedToDigit);
 
             if (currentState.Any(digit => digit == 0))
                 command = "expand";
