@@ -488,16 +488,12 @@ internal class Solver
                 alternateState[index2] = digit2;
             }
 
-            // What follows below is a complete copy-paste of the solver which appears at the beginning of this method
-            // However, the algorithm couldn't be applied directly and it had to be modified.
-            // Implementation below assumes that the board might not have a solution.
-
             if (new StackBasedFilledBoardGenerator(rng, alternateState).HasSolution)
             {
                 // Board was solved successfully even with two digits swapped
                 solutions.Add((index1, index2, digit1, digit2));
             }
-        } // while (candidateIndex1.Any())
+        }
 
         if (solutions.Any())
         {
