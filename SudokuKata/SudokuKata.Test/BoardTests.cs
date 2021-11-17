@@ -55,16 +55,26 @@ internal class BoardTests
     }
 
     [Test]
-    public void InitialSateIsAllEmpty() {
+    public void InitialSateIsAllEmpty()
+    {
         var sut = new CharArrayBoard();
         Assert.That(sut.State, Is.EqualTo(new int[9 * 9]));
     }
 
     [Test]
-    public void SetSetsTheSate() {
+    public void SetSetsTheSate()
+    {
         var sut = new CharArrayBoard();
         sut.Set(1, 2, 3);
         Assert.That(sut.State, Is.Not.EqualTo(new int[9 * 9]));
         Assert.That(sut.State[1 * 9 + 2], Is.EqualTo(3));
+    }
+
+    [Test]
+    public void StateSetExtensionMethod()
+    {
+        int[] sut = new int[9 * 9];
+        sut.Set(1, 2, 3);
+        Assert.That(sut[11], Is.EqualTo(3));
     }
 }
