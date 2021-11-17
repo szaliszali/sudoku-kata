@@ -137,7 +137,10 @@ internal class RandomizerMainLoop
                     if (currentState.Any(digit => digit == 0))
                         command = "expand";
                     else
+                    {
                         command = "complete";
+                        solvedBoardState = currentState.ShallowCopy();
+                    }
                 }
                 else
                 {
@@ -148,7 +151,6 @@ internal class RandomizerMainLoop
             }
         }
 
-        solvedBoardState = combinedStack.Peek().state;
         return command;
     }
 }
