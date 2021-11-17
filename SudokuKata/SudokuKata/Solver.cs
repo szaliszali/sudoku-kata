@@ -9,9 +9,6 @@ internal class Solver
     private int[] finalState;
     private int[] state;
 
-    #region Lookup structures that will be used in further execution
-    #endregion
-
     private int[] candidateMasks;
     private List<IGrouping<int, Lol1>> cellGroups;
 
