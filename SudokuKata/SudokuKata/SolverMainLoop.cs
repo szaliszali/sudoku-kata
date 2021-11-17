@@ -135,7 +135,10 @@ internal class SolverMainLoop
                     if (currentState.Any(digit => digit == 0))
                         command = "expand";
                     else
+                    {
                         command = "complete";
+                        solvedBoardState = currentState.ShallowCopy();
+                    }
                 }
                 else
                 {
