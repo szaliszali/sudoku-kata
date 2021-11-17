@@ -23,7 +23,6 @@ internal class SolverMainLoop
         DoMainLoop();
     }
 
-
     private string DoMainLoop()
     {
         // Indicates operation to perform next
