@@ -142,10 +142,7 @@ internal class Solver
     {
         bool changeMade = false;
 
-        List<string> groupDescriptions = new List<string>();
-        List<int> candidateRowIndices = new List<int>();
-        List<int> candidateColIndices = new List<int>();
-        List<int> candidates = new List<int>();
+        List<(string groupDescription, int candidateRow, int candidateCol, int candidate)> candidates = new();
 
         for (int digit = 1; digit <= 9; digit++)
         {
@@ -190,18 +187,12 @@ internal class Solver
 
                 if (rowNumberCount == 1)
                 {
-                    groupDescriptions.Add($"Row #{cellGroup + 1}");
-                    candidateRowIndices.Add(cellGroup);
-                    candidateColIndices.Add(indexInRow);
-                    candidates.Add(digit);
+                    candidates.Add(($"Row #{cellGroup + 1}", cellGroup, indexInRow, digit));
                 }
 
                 if (colNumberCount == 1)
                 {
-                    groupDescriptions.Add($"Column #{cellGroup + 1}");
-                    candidateRowIndices.Add(indexInCol);
-                    candidateColIndices.Add(cellGroup);
-                    candidates.Add(digit);
+                    candidates.Add((($"Column #{cellGroup + 1}"), indexInCol, cellGroup, digit));
                 }
 
                 if (blockNumberCount == 1)
@@ -209,10 +200,7 @@ internal class Solver
                     int blockRow = cellGroup / 3;
                     int blockCol = cellGroup % 3;
 
-                    groupDescriptions.Add($"Block ({blockRow + 1}, {blockCol + 1})");
-                    candidateRowIndices.Add(blockRow * 3 + indexInBlock / 3);
-                    candidateColIndices.Add(blockCol * 3 + indexInBlock % 3);
-                    candidates.Add(digit);
+                    candidates.Add(($"Block ({blockRow + 1}, {blockCol + 1})", blockRow * 3 + indexInBlock / 3, blockCol * 3 + indexInBlock % 3, digit));
                 }
             } // for (cellGroup = 0..8)
         } // for (digit = 1..9)
@@ -220,10 +208,7 @@ internal class Solver
         if (candidates.Count > 0)
         {
             int index = rng.Next(candidates.Count);
-            string description = groupDescriptions.ElementAt(index);
-            int row = candidateRowIndices.ElementAt(index);
-            int col = candidateColIndices.ElementAt(index);
-            int digit = candidates.ElementAt(index);
+            (string description, int row, int col, int digit) = candidates.ElementAt(index);
 
             string message = $"{description} can contain {digit} only at ({row + 1}, {col + 1}).";
 
