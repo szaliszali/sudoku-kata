@@ -25,6 +25,10 @@ internal class SolverMainLoop
 
     private string DoMainLoop()
     {
+        // Indicates operation to perform next
+        // - expand - finds next empty cell and puts new state on stacks
+        // - move - finds next candidate number at current pos and applies it to current state
+        // - collapse - pops current state from stack as it did not yield a solution
         command = "expand";
         while (command != "complete" && command != "fail")
         {
