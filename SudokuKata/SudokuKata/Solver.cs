@@ -82,15 +82,15 @@ internal class Solver
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
     {
         var rowsIndices = state
-            .Select((value, index) => new Lol1(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
+            .Select((_, index) => new Lol1(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
         var columnIndices = state
-            .Select((value, index) => new Lol1(9 + index % 9, $"column #{index % 9 + 1}", index, index / 9, index % 9))
+            .Select((_, index) => new Lol1(9 + index % 9, $"column #{index % 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
         var blockIndices = state
-            .Select((value, index) => new
+            .Select((_, index) => new
             {
                 Row = index / 9,
                 Column = index % 9,
