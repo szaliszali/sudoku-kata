@@ -11,7 +11,6 @@ internal class Solver
 
     #region Lookup structures that will be used in further execution
     static readonly Dictionary<int, int> maskToOnesCount;
-    static readonly Dictionary<int, int> singleBitToIndex;
     #endregion
 
     private int[] candidateMasks;
@@ -27,10 +26,6 @@ internal class Solver
             int increment = i & 1;
             maskToOnesCount[i] = maskToOnesCount[smaller] + increment;
         }
-
-        singleBitToIndex = new Dictionary<int, int>();
-        for (int i = 0; i < 9; i++)
-            singleBitToIndex[1 << i] = i;
     }
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
@@ -145,7 +140,7 @@ internal class Solver
             int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
             int singleCandidateIndex = singleCandidateIndices[pickSingleCandidateIndex];
             int candidateMask = candidateMasks[singleCandidateIndex];
-            int candidate = singleBitToIndex[candidateMask];
+            int candidate = BitMasks.singleBitToIndex[candidateMask];
 
             int row = singleCandidateIndex / 9;
             int col = singleCandidateIndex % 9;
