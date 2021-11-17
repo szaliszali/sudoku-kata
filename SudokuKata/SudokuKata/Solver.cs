@@ -492,7 +492,7 @@ internal class Solver
             // However, the algorithm couldn't be applied directly and it had to be modified.
             // Implementation below assumes that the board might not have a solution.
 
-            string command = new SolverMainLoop(rng, alternateState).FinalState;
+            string command = new StackBasedFilledBoardGenerator(rng, alternateState).FinalState;
 
             if (command == "complete")
             {

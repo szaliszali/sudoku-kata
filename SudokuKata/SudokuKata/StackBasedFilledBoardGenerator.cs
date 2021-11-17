@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata;
 
-internal class SolverMainLoop
+internal class StackBasedFilledBoardGenerator
 {
     private readonly Random rng;
     private readonly int[] initialState;
@@ -13,7 +13,7 @@ internal class SolverMainLoop
     private int[] solvedBoardState;
     public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
 
-    public SolverMainLoop(Random rng, int[] initialState)
+    public StackBasedFilledBoardGenerator(Random rng, int[] initialState)
     {
         this.rng = rng;
         this.initialState = initialState;
