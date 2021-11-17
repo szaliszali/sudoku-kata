@@ -12,7 +12,6 @@ internal class Solver
     #region Lookup structures that will be used in further execution
     static readonly Dictionary<int, int> maskToOnesCount;
     static readonly Dictionary<int, int> singleBitToIndex;
-    static readonly int allOnes = (1 << 9) - 1; // bit mask with all bits set
     #endregion
 
     private int[] candidateMasks;
@@ -95,7 +94,7 @@ internal class Solver
                     colidingNumbers = colidingNumbers | rowSiblingMask | colSiblingMask | blockSiblingMask;
                 }
 
-                candidateMasks[i] = allOnes & ~colidingNumbers;
+                candidateMasks[i] = BitMasks.allOnes & ~colidingNumbers;
             }
 
         return candidateMasks;
