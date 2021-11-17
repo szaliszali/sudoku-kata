@@ -99,9 +99,7 @@ internal class Solver
             .Select(tuple => new Lol1(18 + 3 * (tuple.Row / 3) + tuple.Column / 3, $"block ({tuple.Row / 3 + 1}, {tuple.Column / 3 + 1})", tuple.Index, tuple.Row, tuple.Column))
             .GroupBy(tuple => tuple.Discriminator);
 
-        var cellGroups = rowsIndices.Concat(columnIndices).Concat(blockIndices).ToList();
-
-        return cellGroups;
+        return rowsIndices.Concat(columnIndices).Concat(blockIndices).ToList();
     }
 
     private bool PickCellsWithOnlyOneCandidateLeft()
