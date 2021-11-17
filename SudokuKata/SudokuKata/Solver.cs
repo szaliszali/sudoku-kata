@@ -10,23 +10,10 @@ internal class Solver
     private int[] state;
 
     #region Lookup structures that will be used in further execution
-    static readonly Dictionary<int, int> maskToOnesCount;
     #endregion
 
     private int[] candidateMasks;
     private List<IGrouping<int, Lol1>> cellGroups;
-
-    static Solver()
-    {
-        maskToOnesCount = new Dictionary<int, int>();
-        maskToOnesCount[0] = 0;
-        for (int i = 1; i < (1 << 9); i++)
-        {
-            int smaller = i >> 1;
-            int increment = i & 1;
-            maskToOnesCount[i] = maskToOnesCount[smaller] + increment;
-        }
-    }
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
     {
@@ -128,7 +115,7 @@ internal class Solver
             candidateMasks
                 .Select((mask, index) => new
                 {
-                    CandidatesCount = maskToOnesCount[mask],
+                    CandidatesCount = BitMasks.maskToOnesCount[mask],
                     Index = index
                 })
                 .Where(tuple => tuple.CandidatesCount == 1)
@@ -263,7 +250,7 @@ internal class Solver
         bool stepChangeMade = false;
 
         IEnumerable<int> twoDigitMasks =
-            candidateMasks.Where(mask => maskToOnesCount[mask] == 2).Distinct().ToList();
+            candidateMasks.Where(mask => BitMasks.maskToOnesCount[mask] == 2).Distinct().ToList();
 
         var groups =
             twoDigitMasks
@@ -349,7 +336,7 @@ internal class Solver
         // All other candidates can then be removed from those cells
 
         IEnumerable<int> masks =
-            maskToOnesCount
+            BitMasks.maskToOnesCount
                 .Where(tuple => tuple.Value > 1)
                 .Select(tuple => tuple.Key).ToList();
 
@@ -373,7 +360,7 @@ internal class Solver
                                             (candidateMasks[cell.Index] & mask) != 0 &&
                                             (candidateMasks[cell.Index] & ~mask) != 0)
                         }))
-                .Where(group => @group.CellsWithMask.Count() == maskToOnesCount[@group.Mask])
+                .Where(group => @group.CellsWithMask.Count() == BitMasks.maskToOnesCount[@group.Mask])
                 .ToList();
 
         foreach (var groupWithNMasks in groupsWithNMasks)
@@ -462,7 +449,7 @@ internal class Solver
 
         for (int i = 0; i < candidateMasks.Length - 1; i++)
         {
-            if (maskToOnesCount[candidateMasks[i]] == 2)
+            if (BitMasks.maskToOnesCount[candidateMasks[i]] == 2)
             {
                 int row = i / 9;
                 int col = i % 9;
