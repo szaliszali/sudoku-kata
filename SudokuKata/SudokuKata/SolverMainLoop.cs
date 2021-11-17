@@ -3,7 +3,7 @@
 internal class SolverMainLoop
 {
     private readonly Random rng;
-    private readonly CharArrayBoard board;
+    private readonly int[] initialState;
     private readonly int[] alternateState;
     private readonly Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
@@ -13,7 +13,7 @@ internal class SolverMainLoop
     public SolverMainLoop(Random rng, CharArrayBoard board, int[] alternateState)
     {
         this.rng = rng;
-        this.board = board;
+        initialState = board.State;
         this.alternateState = alternateState;
         this.combinedStack = new();
         this.lastDigitStack = new();
@@ -128,7 +128,6 @@ internal class SolverMainLoop
                 {
                     usedDigits[digitToMove - 1] = false;
                     currentState[currentStateIndex] = 0;
-                    board.Set(rowToMove, colToMove, 0);
                 }
 
                 if (movedToDigit <= 9)
@@ -136,7 +135,6 @@ internal class SolverMainLoop
                     lastDigitStack.Push(movedToDigit);
                     usedDigits[movedToDigit - 1] = true;
                     currentState[currentStateIndex] = movedToDigit;
-                    board.Set(rowToMove, colToMove, movedToDigit);
 
                     if (currentState.Any(digit => digit == 0))
                         command = "expand";
