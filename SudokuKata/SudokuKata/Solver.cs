@@ -492,9 +492,7 @@ internal class Solver
             // However, the algorithm couldn't be applied directly and it had to be modified.
             // Implementation below assumes that the board might not have a solution.
 
-            string command = new StackBasedFilledBoardGenerator(rng, alternateState).FinalState;
-
-            if (command == "complete")
+            if (new StackBasedFilledBoardGenerator(rng, alternateState).HasSolution)
             {
                 // Board was solved successfully even with two digits swapped
                 solutions.Add((index1, index2, digit1, digit2));

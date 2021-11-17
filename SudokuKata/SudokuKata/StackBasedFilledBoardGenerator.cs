@@ -8,7 +8,7 @@ internal class StackBasedFilledBoardGenerator
     private readonly Stack<int> lastDigitStack;
 
     private string command;
-    public string FinalState => command;
+    public bool HasSolution => command == "complete";
 
     private int[] solvedBoardState;
     public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
