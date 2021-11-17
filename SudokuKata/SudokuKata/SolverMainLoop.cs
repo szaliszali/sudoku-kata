@@ -8,20 +8,21 @@ internal class SolverMainLoop
     private readonly Stack<int> lastDigitStack;
 
     private string command;
+    public string FinalState => command;
+
     private int[] solvedBoardState;
     public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
 
-    public SolverMainLoop(Random rng, int[] alternateState)
+    public SolverMainLoop(Random rng, int[] initialState)
     {
         this.rng = rng;
-        this.initialState = alternateState;
+        this.initialState = initialState;
         this.combinedStack = new();
         this.lastDigitStack = new();
 
         DoMainLoop();
     }
 
-    public string FinalState => command;
 
     private string DoMainLoop()
     {
