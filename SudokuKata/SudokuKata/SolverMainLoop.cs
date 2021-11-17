@@ -3,16 +3,18 @@
 internal class SolverMainLoop
 {
     private readonly Random rng;
-    private readonly int[] alternateState;
+    private readonly int[] initialState;
     private readonly Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
 
     private string command;
+    private int[] solvedBoardState;
+    public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
 
     public SolverMainLoop(Random rng, int[] alternateState)
     {
         this.rng = rng;
-        this.alternateState = alternateState;
+        this.initialState = alternateState;
         this.combinedStack = new();
         this.lastDigitStack = new();
 
@@ -28,15 +30,11 @@ internal class SolverMainLoop
         {
             if (command == "expand")
             {
-                int[] currentState = new int[9 * 9];
+                int[] currentState = initialState.ShallowCopy();
 
                 if (combinedStack.Any())
                 {
                     currentState = combinedStack.Peek().state.ShallowCopy();
-                }
-                else
-                {
-                    currentState = alternateState.ShallowCopy();
                 }
 
                 int bestRow = -1;

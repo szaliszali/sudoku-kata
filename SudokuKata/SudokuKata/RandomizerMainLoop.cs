@@ -3,6 +3,7 @@
 internal class RandomizerMainLoop
 {
     private readonly Random rng;
+    private readonly int[] initialState;
     private readonly Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
 
@@ -13,6 +14,7 @@ internal class RandomizerMainLoop
     public RandomizerMainLoop(Random rng)
     {
         this.rng = rng;
+        this.initialState = new int[9 * 9];
         this.combinedStack = new();
         this.lastDigitStack = new();
 
@@ -30,7 +32,7 @@ internal class RandomizerMainLoop
         {
             if (command == "expand")
             {
-                int[] currentState = new int[9 * 9];
+                int[] currentState = initialState.ShallowCopy();
 
                 if (combinedStack.Any())
                 {
@@ -105,7 +107,10 @@ internal class RandomizerMainLoop
                 combinedStack.Pop();
                 lastDigitStack.Pop();
 
-                command = "move"; // Always try to move after collapse
+                if (combinedStack.Any())
+                    command = "move"; // Always try to move after collapse
+                else
+                    command = "fail";
             }
             else if (command == "move")
             {
@@ -143,6 +148,6 @@ internal class RandomizerMainLoop
         }
 
         solvedBoardState = combinedStack.Peek().state;
-		return command;
+        return command;
     }
 }
