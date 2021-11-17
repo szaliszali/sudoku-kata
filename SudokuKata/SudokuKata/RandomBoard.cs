@@ -8,6 +8,6 @@ public class RandomBoard
 
     public RandomBoard(Random rng)
     {
-        state = new RandomizerMainLoop(rng).SolvedBoardState;
+        state = new SolverMainLoop(rng, new int[9 * 9]).SolvedBoardState;
     }
 }
