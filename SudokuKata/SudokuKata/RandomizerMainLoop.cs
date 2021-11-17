@@ -28,7 +28,7 @@ internal class RandomizerMainLoop
         // - move - finds next candidate number at current pos and applies it to current state
         // - collapse - pops current state from stack as it did not yield a solution
         command = "expand";
-        while (combinedStack.Count <= 9 * 9)
+        while (command != "complete" && command != "fail")
         {
             if (command == "expand")
             {
@@ -134,9 +134,10 @@ internal class RandomizerMainLoop
                     usedDigits[movedToDigit - 1] = true;
                     currentState[currentStateIndex] = movedToDigit;
 
-                    // Next possible digit was found at current position
-                    // Next step will be to expand the state
-                    command = "expand";
+                    if (currentState.Any(digit => digit == 0))
+                        command = "expand";
+                    else
+                        command = "complete";
                 }
                 else
                 {
