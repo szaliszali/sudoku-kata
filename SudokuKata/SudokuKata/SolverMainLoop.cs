@@ -3,17 +3,15 @@
 internal class SolverMainLoop
 {
     private readonly Random rng;
-    private readonly int[] initialState;
     private readonly int[] alternateState;
     private readonly Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
 
     private string command;
 
-    public SolverMainLoop(Random rng, CharArrayBoard board, int[] alternateState)
+    public SolverMainLoop(Random rng, int[] alternateState)
     {
         this.rng = rng;
-        initialState = board.State;
         this.alternateState = alternateState;
         this.combinedStack = new();
         this.lastDigitStack = new();
