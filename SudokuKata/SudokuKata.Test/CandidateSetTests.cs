@@ -41,6 +41,16 @@ internal class CandidateSetTests
     }
 
     [Test]
+    public void Clear()
+    {
+        var sut = new CandidateSet();
+        sut.Include(2);
+        sut.Include(5);
+        sut.Clear();
+        Assert.That(sut.NumCandidates, Is.Zero);
+    }
+
+    [Test]
     public void Exclude()
     {
         var sut = new CandidateSet();
