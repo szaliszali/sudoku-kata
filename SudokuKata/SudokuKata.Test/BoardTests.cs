@@ -3,7 +3,6 @@ using ApprovalTests;
 using NUnit.Framework;
 
 namespace SudokuKata.Test;
-
 [TestFixture]
 internal class BoardTests
 {
