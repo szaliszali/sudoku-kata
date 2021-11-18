@@ -14,4 +14,27 @@ public class CandidateSet
     public void IncludeAll() => candidateMask = BitMasks.allOnes;
 
     public int SingleCandidate => BitMasks.singleBitToIndex[candidateMask] + 1;
+
+    public (int lower, int upper) CandidatePair
+    {
+        get
+        {
+            if (NumCandidates != 2) throw new InvalidOperationException();
+
+            int temp = candidateMask;
+            int lower = 0;
+            int upper = 0;
+            for (int digit = 1; temp > 0; digit++)
+            {
+                if ((temp & 1) != 0)
+                {
+                    lower = upper;
+                    upper = digit;
+                }
+
+                temp = temp >> 1;
+            }
+            return (lower, upper);
+        }
+    }
 }
