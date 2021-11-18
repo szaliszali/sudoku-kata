@@ -54,4 +54,28 @@ internal class CandidateSetTests
             Assert.That(sut.Contains(7), Is.True);
         });
     }
+
+    [Test]
+    public void SingleCandidate()
+    {
+        var sut = new CandidateSet();
+        sut.Include(3);
+        Assert.That(sut.SingleCandidate, Is.EqualTo(3));
+    }
+
+    [Test]
+    public void SingleCandidateThrowsIfNoCandidates()
+    {
+        var sut = new CandidateSet();
+        Assert.That(() => sut.SingleCandidate, Throws.Exception);
+    }
+
+    [Test]
+    public void SingleCandidateThrowsIfMultipleCandidates()
+    {
+        var sut = new CandidateSet();
+        sut.Include(2);
+        sut.Include(3);
+        Assert.That(() => sut.SingleCandidate, Throws.Exception);
+    }
 }

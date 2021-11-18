@@ -12,4 +12,6 @@ public class CandidateSet
     public void Exclude(int value) => candidateMask &= ~(1 << value - 1);
 
     public void IncludeAll() => candidateMask = BitMasks.allOnes;
+
+    public int SingleCandidate => BitMasks.singleBitToIndex[candidateMask] + 1;
 }
