@@ -2,7 +2,11 @@
 
 public class CandidateSet
 {
-    public int NumCandidates => 0;
+    private int candidateMask;
 
-    public int[] Candidates => new int[0];
+    public int NumCandidates => BitMasks.maskToOnesCount[candidateMask];
+
+    public bool Contains(int digit) => (candidateMask & (1 << digit - 1)) != 0;
+
+    public void Include(int value) => candidateMask |= 1 << value - 1;
 }
