@@ -41,4 +41,15 @@ public class CandidateSet
 
     public bool HasAtLeastOneCommon(CandidateSet other) => (candidateMask & other.candidateMask) != 0;
     public bool HasAtLeastOneDifferent(CandidateSet other) => (~candidateMask & other.candidateMask) != 0;
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return candidateMask.Equals(((CandidateSet)obj).candidateMask);
+    }
+
+    public static bool operator ==(CandidateSet lhs, CandidateSet rhs) => lhs.Equals(rhs);
+    public static bool operator !=(CandidateSet lhs, CandidateSet rhs) => !lhs.Equals(rhs);
 }

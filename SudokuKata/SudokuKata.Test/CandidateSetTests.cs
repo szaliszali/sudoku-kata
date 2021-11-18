@@ -163,4 +163,32 @@ internal class CandidateSetTests
             Assert.That(sut.HasAtLeastOneDifferent(otherSubset), Is.False);
         });
     }
+
+    [Test]
+    public void CandidateSetEquals()
+    {
+        CandidateSet sut = new CandidateSet();
+        sut.Include(3);
+
+        CandidateSet otherSame = new CandidateSet();
+        otherSame.Include(3);
+
+        CandidateSet otherDifferent = new CandidateSet();
+        otherDifferent.Include(1);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.Equals(sut), Is.True, "Equals() itself");
+            Assert.That(sut.Equals(otherSame), Is.True, "Equals() different object with same value");
+            Assert.That(sut.Equals(otherDifferent), Is.False, "does not Equals() different object with different value");
+
+            Assert.That(sut == sut, Is.True, "== itself");
+            Assert.That(sut == otherSame, Is.True, "== different object with same value");
+            Assert.That(sut == otherDifferent, Is.False, "does not == different object with different value");
+
+            Assert.That(sut != sut, Is.False, "not == itself");
+            Assert.That(sut != otherSame, Is.False, "not != different object with same value");
+            Assert.That(sut != otherDifferent, Is.True, "!= different object with different value");
+        });
+    }
 }
