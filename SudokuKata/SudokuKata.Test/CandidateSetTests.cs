@@ -137,4 +137,30 @@ internal class CandidateSetTests
             Assert.That(sut.HasAtLeastOneCommon(otherDistinct), Is.False);
         });
     }
+
+    [Test]
+    public void HasAtLeastOneDifferent()
+    {
+        var sut = new CandidateSet();
+        sut.Include(2);
+        sut.Include(3);
+
+        var other = new CandidateSet();
+        other.Include(1);
+        other.Include(3);
+
+        var otherSame = new CandidateSet();
+        otherSame.Include(2);
+        otherSame.Include(3);
+
+        var otherSubset = new CandidateSet();
+        otherSubset.Include(3);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.HasAtLeastOneDifferent(other), Is.True);
+            Assert.That(sut.HasAtLeastOneDifferent(otherSame), Is.False);
+            Assert.That(sut.HasAtLeastOneDifferent(otherSubset), Is.False);
+        });
+    }
 }

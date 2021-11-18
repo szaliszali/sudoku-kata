@@ -40,4 +40,5 @@ public class CandidateSet
     }
 
     public bool HasAtLeastOneCommon(CandidateSet other) => (candidateMask & other.candidateMask) != 0;
+    public bool HasAtLeastOneDifferent(CandidateSet other) => (~candidateMask & other.candidateMask) != 0;
 }
