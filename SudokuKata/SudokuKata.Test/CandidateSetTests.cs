@@ -116,4 +116,25 @@ internal class CandidateSetTests
         Assert.That(() => sut.CandidatePair, Throws.Exception);
     }
 
+    [Test]
+    public void HasAtLeastOneCommon()
+    {
+        var sut = new CandidateSet();
+        sut.Include(2);
+        sut.Include(3);
+
+        var other = new CandidateSet();
+        other.Include(1);
+        other.Include(3);
+
+        var otherDistinct = new CandidateSet();
+        otherDistinct.Include(1);
+        otherDistinct.Include(7);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.HasAtLeastOneCommon(other), Is.True);
+            Assert.That(sut.HasAtLeastOneCommon(otherDistinct), Is.False);
+        });
+    }
 }

@@ -38,4 +38,6 @@ public class CandidateSet
             return (lower, upper);
         }
     }
+
+    public bool HasAtLeastOneCommon(CandidateSet other) => (candidateMask & other.candidateMask) != 0;
 }
