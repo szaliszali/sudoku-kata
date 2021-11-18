@@ -27,4 +27,16 @@ internal class CandidateSetTests
             Assert.That(sut.Contains(3), Is.True);
         });
     }
+
+    [Test]
+    public void IncludeAll()
+    {
+        var sut = new CandidateSet();
+        sut.IncludeAll();
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.NumCandidates, Is.EqualTo(9));
+            for (int digit = 1; digit <= 9; ++digit) Assert.That(sut.Contains(digit), Is.True, "contains " + digit);
+        });
+    }
 }
