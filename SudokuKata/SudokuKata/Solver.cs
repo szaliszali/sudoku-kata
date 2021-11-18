@@ -127,7 +127,7 @@ internal class Solver
             int row = singleCandidateIndex / 9;
             int col = singleCandidateIndex % 9;
 
-            state[singleCandidateIndex] = candidate + 1;
+            state.Set(row, col, 1 + candidate);
             board.Set(row, col, 1 + candidate);
             candidateMasks[singleCandidateIndex] = 0;
             changeMade = true;
@@ -213,7 +213,7 @@ internal class Solver
             string message = $"{description} can contain {digit} only at ({row + 1}, {col + 1}).";
 
             int stateIndex = 9 * row + col;
-            state[stateIndex] = digit;
+            state.Set(row, col, digit);
             candidateMasks[stateIndex] = 0;
             board.Set(row, col, digit);
 
@@ -519,8 +519,8 @@ internal class Solver
                 description = $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
             }
 
-            state[index1] = finalState[index1];
-            state[index2] = finalState[index2];
+            state.Set(row1, col1, finalState[index1]);
+            state.Set(row2, col2, finalState[index2]);
             candidateMasks[index1] = 0;
             candidateMasks[index2] = 0;
             changeMade = true;
