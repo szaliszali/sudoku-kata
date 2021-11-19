@@ -49,34 +49,8 @@ internal class Solver
 
     private int[] CalculateCandidatesForCurrentStateOfTheBoard()
     {
-        int[] candidateMasks = new int[state.Length];
-
-        for (int i = 0; i < state.Length; i++)
-            if (state[i] == 0)
-            {
-                int row = i / 9;
-                int col = i % 9;
-                int blockRow = row / 3;
-                int blockCol = col / 3;
-
-                int colidingNumbers = 0;
-                for (int j = 0; j < 9; j++)
-                {
-                    int rowSiblingIndex = 9 * row + j;
-                    int colSiblingIndex = 9 * j + col;
-                    int blockSiblingIndex = 9 * (blockRow * 3 + j / 3) + blockCol * 3 + j % 3;
-
-                    int rowSiblingMask = 1 << (state[rowSiblingIndex] - 1);
-                    int colSiblingMask = 1 << (state[colSiblingIndex] - 1);
-                    int blockSiblingMask = 1 << (state[blockSiblingIndex] - 1);
-
-                    colidingNumbers = colidingNumbers | rowSiblingMask | colSiblingMask | blockSiblingMask;
-                }
-
-                candidateMasks[i] = BitMasks.allOnes & ~colidingNumbers;
-            }
-
-        return candidateMasks;
+        CalculateCandidates candidates = new CalculateCandidates(state);
+        return Enumerable.Range(0, state.Length).Select(i => candidates.Get(i / 9, i % 9).RawValue).ToArray();
     }
 
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
