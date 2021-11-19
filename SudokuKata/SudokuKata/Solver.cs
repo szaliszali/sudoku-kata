@@ -19,6 +19,8 @@ internal class Solver
         this.finalState = finalState;
 
         state = board.State;
+
+        cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
     }
 
     public void SolveBoard()
@@ -27,8 +29,6 @@ internal class Solver
         do
         {
             candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
-
-            cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
 
             bool stepChangeMade;
             do
