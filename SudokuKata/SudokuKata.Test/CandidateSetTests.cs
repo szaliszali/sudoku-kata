@@ -204,4 +204,15 @@ internal class CandidateSetTests
             Assert.That(sut[256], Is.EqualTo(only9));
         });
     }
+
+    [Test]
+    public void AllCandidates()
+    {
+        var sut = new CandidateSet();
+        sut.Include(2);
+        sut.Include(4);
+        sut.Include(9);
+
+        Assert.That(sut.AllCandidates, Is.EqualTo(new[] { 2, 4, 9 }));
+    }
 }

@@ -39,6 +39,27 @@ public class CandidateSet
         }
     }
 
+    public IReadOnlyList<int> AllCandidates
+    {
+        get
+        {
+            var ret = new List<int>(NumCandidates);
+            int temp = candidateMask;
+            int curValue = 1;
+            while (temp > 0)
+            {
+                if ((temp & 1) > 0)
+                {
+                    ret.Add(curValue);
+                }
+
+                temp = temp >> 1;
+                curValue += 1;
+            }
+            return ret.AsReadOnly();
+        }
+    }
+
     public bool HasAtLeastOneCommon(CandidateSet other) => (candidateMask & other.candidateMask) != 0;
     public bool HasAtLeastOneDifferent(CandidateSet other) => (~candidateMask & other.candidateMask) != 0;
 
