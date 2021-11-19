@@ -52,4 +52,13 @@ public class CandidateSet
 
     public static bool operator ==(CandidateSet lhs, CandidateSet rhs) => lhs.Equals(rhs);
     public static bool operator !=(CandidateSet lhs, CandidateSet rhs) => !lhs.Equals(rhs);
+
+    public static readonly IReadOnlyList<CandidateSet> AllPossibleCandidateSets;
+
+    private CandidateSet(int mask) => candidateMask = mask;
+    public CandidateSet() : this(0) { }
+    static CandidateSet()
+    {
+        AllPossibleCandidateSets = BitMasks.maskToOnesCount.Keys.OrderBy(m => m).Select(m => new CandidateSet(m)).ToList();
+    }
 }

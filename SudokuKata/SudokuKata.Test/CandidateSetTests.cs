@@ -191,4 +191,17 @@ internal class CandidateSetTests
             Assert.That(sut != otherDifferent, Is.True, "!= different object with different value");
         });
     }
+
+    [Test]
+    public void AllPossibleCandidateSets()
+    {
+        var sut = CandidateSet.AllPossibleCandidateSets;
+        var only9 = new CandidateSet();
+        only9.Include(9);
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.Count, Is.EqualTo(1 << 9));
+            Assert.That(sut[256], Is.EqualTo(only9));
+        });
+    }
 }
