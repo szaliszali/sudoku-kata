@@ -76,4 +76,16 @@ internal class BoardTests
         sut.Set(1, 2, 3);
         Assert.That(sut[11], Is.EqualTo(3));
     }
+
+    [Test]
+    public void StateGetExtensionMethod()
+    {
+        int[] sut = new int[9 * 9];
+        sut.Set(1, 2, 3);
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.Get(1, 1), Is.EqualTo(0));
+            Assert.That(sut.Get(1, 2), Is.EqualTo(3));
+        });
+    }
 }
