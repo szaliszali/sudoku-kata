@@ -407,10 +407,11 @@ internal class Solver
 
                 for (int j = i + 1; j < candidateMasks.Length; j++)
                 {
-                    if (candidateMasks[j] == candidateMasks[i])
+                    int row1 = j / 9;
+                    int col1 = j % 9;
+
+                    if (candidateSet == candidateMasksNew.Get(row1, col1))
                     {
-                        int row1 = j / 9;
-                        int col1 = j % 9;
                         int blockIndex1 = 3 * (row1 / 3) + col1 / 3;
 
                         if (row == row1 || col == col1 || blockIndex == blockIndex1)
