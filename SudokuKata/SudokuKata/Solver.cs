@@ -28,7 +28,7 @@ internal class Solver
         bool changeMade;
         do
         {
-            CalculateCandidatesForCurrentStateOfTheBoard();
+            cellCandidates = new CandidatesForEachCell(state);
 
             bool stepChangeMade;
             do
@@ -45,11 +45,6 @@ internal class Solver
             PrintBoardIfChanged(changeMade);
         }
         while (changeMade);
-    }
-
-    private void CalculateCandidatesForCurrentStateOfTheBoard()
-    {
-        cellCandidates = new CandidatesForEachCell(state);
     }
 
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
