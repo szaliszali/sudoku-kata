@@ -291,29 +291,22 @@ internal class Solver
 
         foreach (var groupWithNMasks in groupsWithNMasks)
         {
-            int mask = groupWithNMasks.Mask.RawValue;
+            CandidateSet mask = groupWithNMasks.Mask;
 
             if (groupWithNMasks.Cells
                 .Any(cell =>
-                    (candidateMasks[cell.Index] & mask) != 0 &&
-                    (candidateMasks[cell.Index] & ~mask) != 0))
+                    (candidateMasks[cell.Index] & mask.RawValue) != 0 &&
+                    (candidateMasks[cell.Index] & ~mask.RawValue) != 0))
             {
                 StringBuilder message = new StringBuilder();
                 message.Append($"In {groupWithNMasks.Description} values ");
 
                 string separator = string.Empty;
-                int temp = mask;
-                int curValue = 1;
-                while (temp > 0)
+                foreach(int curValue in mask.AllCandidates)
                 {
-                    if ((temp & 1) > 0)
-                    {
-                        message.Append($"{separator}{curValue}");
-                        separator = ", ";
-                    }
+                    message.Append($"{separator}{curValue}");
+                    separator = ", ";
 
-                    temp = temp >> 1;
-                    curValue += 1;
                 }
 
                 message.Append(" appear only in cells");
