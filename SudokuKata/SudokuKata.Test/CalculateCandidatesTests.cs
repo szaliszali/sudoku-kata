@@ -57,4 +57,15 @@ internal class CalculateCandidatesTests
 
         Assert.That(sut.Get(4, 4), Is.EqualTo(expected));
     }
+
+    [Test]
+    public void PreserveState()
+    {
+        var board = new int[9 * 9];
+        var sut = new CandidatesForEachCell(board);
+
+        sut.Get(0, 0).Exclude(1);
+
+        Assert.That(sut.Get(0, 0).NumCandidates, Is.EqualTo(8));
+    }
 }

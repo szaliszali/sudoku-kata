@@ -2,14 +2,16 @@
 
 public class CandidatesForEachCell
 {
-    private int[] board;
+    private CandidateSet[] candidates;
 
     public CandidatesForEachCell(int[] board)
     {
-        this.board = board;
+        candidates = board.Select((_, index) => Calculate(index / 9, index % 9, board)).ToArray();
     }
 
-    public CandidateSet Get(int row, int column)
+    public CandidateSet Get(int row, int column) => candidates[row * 9 + column];
+
+    private static CandidateSet Calculate(int row, int column, int[] board)
     {
         var candidates = new CandidateSet();
         if (board.Get(row, column) == 0)
