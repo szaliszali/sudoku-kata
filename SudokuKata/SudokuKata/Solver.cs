@@ -394,7 +394,7 @@ internal class Solver
 
         Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
 
-        for (int i = 0; i < candidateMasks.Length - 1; i++)
+        for (int i = 0; i < state.Length - 1; i++)
         {
             int row = i / 9;
             int col = i % 9;
@@ -405,7 +405,7 @@ internal class Solver
                 int blockIndex = 3 * (row / 3) + col / 3;
                 (int lower, int upper) = candidateSet.CandidatePair;
 
-                for (int j = i + 1; j < candidateMasks.Length; j++)
+                for (int j = i + 1; j < state.Length; j++)
                 {
                     int row1 = j / 9;
                     int col1 = j % 9;
