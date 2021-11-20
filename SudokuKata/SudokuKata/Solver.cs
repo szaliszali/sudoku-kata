@@ -82,10 +82,10 @@ internal class Solver
         bool changeMade = false;
 
         int[] singleCandidateIndices =
-            candidateMasks
+            candidateMasksNew
                 .Select((mask, index) => new
                 {
-                    CandidatesCount = BitMasks.maskToOnesCount[mask],
+                    CandidatesCount = mask.NumCandidates,
                     Index = index
                 })
                 .Where(tuple => tuple.CandidatesCount == 1)
