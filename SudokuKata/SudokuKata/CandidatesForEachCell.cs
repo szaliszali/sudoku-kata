@@ -1,6 +1,8 @@
-﻿namespace SudokuKata;
+﻿using System.Collections;
 
-public class CandidatesForEachCell
+namespace SudokuKata;
+
+public class CandidatesForEachCell : IEnumerable<CandidateSet>
 {
     private CandidateSet[] candidates;
 
@@ -28,5 +30,15 @@ public class CandidatesForEachCell
             }
         }
         return candidates;
+    }
+
+    IEnumerator<CandidateSet> IEnumerable<CandidateSet>.GetEnumerator()
+    {
+        return ((IEnumerable<CandidateSet>)candidates).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return candidates.GetEnumerator();
     }
 }
