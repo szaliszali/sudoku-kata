@@ -283,8 +283,8 @@ internal class Solver
                             CleanableCellsCount =
                                 @group.Count(
                                     cell => state[cell.Index] == 0 &&
-                                            (candidateMasks[cell.Index] & mask.RawValue) != 0 &&
-                                            (candidateMasks[cell.Index] & ~mask.RawValue) != 0)
+                                            candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
+                                            candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask))
                         }))
                 .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
                 .ToList();
