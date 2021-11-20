@@ -9,7 +9,7 @@ internal class Solver
     private int[] finalState;
     private int[] state;
 
-    private CandidatesForEachCell candidateMasksNew;
+    private CandidatesForEachCell cellCandidates;
     private readonly List<IGrouping<int, Lol1>> cellGroups;
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
@@ -49,7 +49,7 @@ internal class Solver
 
     private void CalculateCandidatesForCurrentStateOfTheBoard()
     {
-        candidateMasksNew = new CandidatesForEachCell(state);
+        cellCandidates = new CandidatesForEachCell(state);
     }
 
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
@@ -80,7 +80,7 @@ internal class Solver
         bool changeMade = false;
 
         int[] singleCandidateIndices =
-            candidateMasksNew
+            cellCandidates
                 .Select((mask, index) => new
                 {
                     CandidatesCount = mask.NumCandidates,
@@ -98,7 +98,7 @@ internal class Solver
             int row = singleCandidateIndex / 9;
             int col = singleCandidateIndex % 9;
 
-            int candidate = candidateMasksNew.Get(row, col).SingleCandidate;
+            int candidate = cellCandidates.Get(row, col).SingleCandidate;
 
             SetCell(row, col, candidate);
             changeMade = true;
@@ -134,19 +134,19 @@ internal class Solver
                     int blockRowIndex = (cellGroup / 3) * 3 + indexInGroup / 3;
                     int blockColIndex = (cellGroup % 3) * 3 + indexInGroup % 3;
 
-                    if (candidateMasksNew.Get(cellGroup, indexInGroup).Contains(digit))
+                    if (cellCandidates.Get(cellGroup, indexInGroup).Contains(digit))
                     {
                         rowNumberCount += 1;
                         indexInRow = indexInGroup;
                     }
 
-                    if (candidateMasksNew.Get(indexInGroup, cellGroup).Contains(digit))
+                    if (cellCandidates.Get(indexInGroup, cellGroup).Contains(digit))
                     {
                         colNumberCount += 1;
                         indexInCol = indexInGroup;
                     }
 
-                    if (candidateMasksNew.Get(blockRowIndex, blockColIndex).Contains(digit))
+                    if (cellCandidates.Get(blockRowIndex, blockColIndex).Contains(digit))
                     {
                         blockNumberCount += 1;
                         indexInBlock = indexInGroup;
@@ -195,14 +195,14 @@ internal class Solver
         bool stepChangeMade = false;
 
         IEnumerable<CandidateSet> twoDigitMasks =
-            candidateMasksNew.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
+            cellCandidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
 
         var groups =
             twoDigitMasks
                 .SelectMany(mask =>
                     cellGroups
-                        .Where(group => group.Count(tuple => candidateMasksNew.Get(tuple.Index / 9, tuple.Index % 9) == mask) == 2)
-                        .Where(group => group.Any(tuple => candidateMasksNew.Get(tuple.Index / 9, tuple.Index % 9) != mask && candidateMasksNew.Get(tuple.Index / 9, tuple.Index % 9).HasAtLeastOneCommon(mask)))
+                        .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Index / 9, tuple.Index % 9) == mask) == 2)
+                        .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Index / 9, tuple.Index % 9) != mask && cellCandidates.Get(tuple.Index / 9, tuple.Index % 9).HasAtLeastOneCommon(mask)))
                         .Select(group => new Lol2(mask, @group.Key, @group.First().Description, @group)))
                 .ToList();
 
@@ -214,13 +214,13 @@ internal class Solver
                     group.Cells
                         .Where(
                             cell =>
-                                candidateMasksNew.Get(cell.Row, cell.Column) != group.Mask &&
-                                candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(group.Mask))
+                                cellCandidates.Get(cell.Row, cell.Column) != group.Mask &&
+                                cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(group.Mask))
                         .ToList();
 
                 var maskCells =
                     group.Cells
-                        .Where(cell => candidateMasksNew.Get(cell.Row, cell.Column) == group.Mask)
+                        .Where(cell => cellCandidates.Get(cell.Row, cell.Column) == group.Mask)
                         .ToArray();
 
 
@@ -234,7 +234,7 @@ internal class Solver
 
                     foreach (var cell in cells)
                     {
-                        List<int> valuesToRemove = candidateMasksNew.Get(cell.Row, cell.Column).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
+                        List<int> valuesToRemove = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
                         foreach (int curValue in valuesToRemove)
                         {
                             ExcludeCandidate(cell.Row, cell.Column, curValue);
@@ -276,13 +276,13 @@ internal class Solver
                             Description = @group.First().Description,
                             Cells = @group,
                             CellsWithMask =
-                                @group.Where(cell => state[cell.Index] == 0 && candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask))
+                                @group.Where(cell => state[cell.Index] == 0 && cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask))
                                     .ToList(),
                             CleanableCellsCount =
                                 @group.Count(
                                     cell => state[cell.Index] == 0 &&
-                                            candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
-                                            candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask))
+                                            cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
+                                            cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask))
                         }))
                 .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
                 .ToList();
@@ -293,8 +293,8 @@ internal class Solver
 
             if (groupWithNMasks.Cells
                 .Any(cell =>
-                    candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
-                    candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask)))
+                    cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
+                    cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask)))
             {
                 StringBuilder message = new StringBuilder();
                 message.Append($"In {groupWithNMasks.Description} values ");
@@ -312,12 +312,12 @@ internal class Solver
 
             foreach (var cell in groupWithNMasks.CellsWithMask)
             {
-                if (!candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(groupWithNMasks.Mask))
+                if (!cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(groupWithNMasks.Mask))
                     continue;
 
                 stepChangeMade = true;
 
-                var valuesToClear = candidateMasksNew.Get(cell.Row, cell.Column).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+                var valuesToClear = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
                 foreach(int valueToClear in valuesToClear)
                 {
                     ExcludeCandidate(cell.Row, cell.Column, valueToClear);
@@ -351,7 +351,7 @@ internal class Solver
             int row = i / 9;
             int col = i % 9;
 
-            CandidateSet candidateSet = candidateMasksNew.Get(row, col);
+            CandidateSet candidateSet = cellCandidates.Get(row, col);
             if (candidateSet.NumCandidates == 2)
             {
                 int blockIndex = 3 * (row / 3) + col / 3;
@@ -362,7 +362,7 @@ internal class Solver
                     int row1 = j / 9;
                     int col1 = j % 9;
 
-                    if (candidateSet == candidateMasksNew.Get(row1, col1))
+                    if (candidateSet == cellCandidates.Get(row1, col1))
                     {
                         int blockIndex1 = 3 * (row1 / 3) + col1 / 3;
 
@@ -451,12 +451,12 @@ internal class Solver
     {
         state.Set(row, column, digit);
         board.Set(row, column, digit);
-        candidateMasksNew.Get(row, column).Clear();
+        cellCandidates.Get(row, column).Clear();
     }
 
     private void ExcludeCandidate(int row, int column, int digit)
     {
-        candidateMasksNew.Get(row, column).Exclude(digit);
+        cellCandidates.Get(row, column).Exclude(digit);
     }
 
     private void PrintBoardIfChanged(bool changeMade)
