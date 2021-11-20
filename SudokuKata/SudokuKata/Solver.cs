@@ -300,15 +300,7 @@ internal class Solver
             {
                 StringBuilder message = new StringBuilder();
                 message.Append($"In {groupWithNMasks.Description} values ");
-
-                string separator = string.Empty;
-                foreach(int curValue in mask.AllCandidates)
-                {
-                    message.Append($"{separator}{curValue}");
-                    separator = ", ";
-
-                }
-
+                message.AppendJoin($", ", mask.AllCandidates);
                 message.Append(" appear only in cells");
                 foreach (var cell in groupWithNMasks.CellsWithMask)
                 {
