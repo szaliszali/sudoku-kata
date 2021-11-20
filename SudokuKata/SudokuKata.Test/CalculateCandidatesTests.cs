@@ -7,7 +7,7 @@ internal class CalculateCandidatesTests
     [Test]
     public void CalculateCandidatesEmptyBoard()
     {
-        var emptyBoard = new int[9 * 9];
+        var emptyBoard = new CharArrayBoard();
         var sut = new CandidatesForEachCell(emptyBoard);
 
         CandidateSet expected = new CandidateSet();
@@ -19,7 +19,7 @@ internal class CalculateCandidatesTests
     [Test]
     public void CalculateCandidatesForFilledCellAreEmpty()
     {
-        var board = new int[9 * 9];
+        var board = new CharArrayBoard();
         board.Set(3, 3, 3);
         var sut = new CandidatesForEachCell(board);
 
@@ -41,7 +41,7 @@ internal class CalculateCandidatesTests
             ...|...|...
             ...|...|...
             ...|...|...");
-        var sut = new CandidatesForEachCell(board.State);
+        var sut = new CandidatesForEachCell(board);
 
         var expected = new CandidateSet();
         expected.IncludeAll();
@@ -55,7 +55,7 @@ internal class CalculateCandidatesTests
     [Test]
     public void PreserveState()
     {
-        var board = new int[9 * 9];
+        var board = new CharArrayBoard();
         var sut = new CandidatesForEachCell(board);
 
         sut.Get(0, 0).Exclude(1);

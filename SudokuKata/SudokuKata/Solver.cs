@@ -28,7 +28,7 @@ internal class Solver
         bool changeMade;
         do
         {
-            cellCandidates = new CandidatesForEachCell(state);
+            cellCandidates = new CandidatesForEachCell(board);
 
             bool stepChangeMade;
             do

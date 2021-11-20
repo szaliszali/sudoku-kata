@@ -6,9 +6,9 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
 {
     private CandidateSet[] candidates;
 
-    public CandidatesForEachCell(int[] board)
+    public CandidatesForEachCell(CharArrayBoard board)
     {
-        candidates = board.Select((_, index) => Calculate(index / 9, index % 9, board)).ToArray();
+        candidates = board.State.Select((_, index) => Calculate(index / 9, index % 9, board.State)).ToArray();
     }
 
     public CandidateSet Get(int row, int column) => candidates[row * 9 + column];
