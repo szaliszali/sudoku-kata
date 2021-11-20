@@ -196,15 +196,15 @@ internal class Solver
     {
         bool stepChangeMade = false;
 
-        IEnumerable<int> twoDigitMasks =
-            candidateMasks.Where(mask => BitMasks.maskToOnesCount[mask] == 2).Distinct().ToList();
+        IEnumerable<CandidateSet> twoDigitMasks =
+            candidateMasksNew.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
 
         var groups =
             twoDigitMasks
                 .SelectMany(mask =>
                     cellGroups
-                        .Where(group => group.Count(tuple => candidateMasks[tuple.Index] == mask) == 2)
-                        .Where(group => group.Any(tuple => candidateMasks[tuple.Index] != mask && (candidateMasks[tuple.Index] & mask) > 0))
+                        .Where(group => group.Count(tuple => candidateMasksNew.Get(tuple.Index / 9, tuple.Index % 9) == mask) == 2)
+                        .Where(group => group.Any(tuple => candidateMasksNew.Get(tuple.Index / 9, tuple.Index % 9) != mask && candidateMasksNew.Get(tuple.Index / 9, tuple.Index % 9).HasAtLeastOneCommon(mask)))
                         .Select(group => new Lol2(mask, @group.Key, @group.First().Description, @group)))
                 .ToList();
 
@@ -216,51 +216,30 @@ internal class Solver
                     group.Cells
                         .Where(
                             cell =>
-                                candidateMasks[cell.Index] != group.Mask &&
-                                (candidateMasks[cell.Index] & group.Mask) > 0)
+                                candidateMasksNew.Get(cell.Row, cell.Column) != group.Mask &&
+                                candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(group.Mask))
                         .ToList();
 
                 var maskCells =
                     group.Cells
-                        .Where(cell => candidateMasks[cell.Index] == group.Mask)
+                        .Where(cell => candidateMasksNew.Get(cell.Row, cell.Column) == group.Mask)
                         .ToArray();
 
 
                 if (cells.Any())
                 {
-                    int upper = 0;
-                    int lower = 0;
-                    int temp = group.Mask;
-
-                    int value = 1;
-                    while (temp > 0)
-                    {
-                        if ((temp & 1) > 0)
-                        {
-                            lower = upper;
-                            upper = value;
-                        }
-                        temp = temp >> 1;
-                        value += 1;
-                    }
+                    CandidateSet temp = group.Mask;
+                    (int lower, int upper) = temp.CandidatePair;
 
                     Console.WriteLine(
                         $"Values {lower} and {upper} in {group.Description} are in cells ({maskCells[0].Row + 1}, {maskCells[0].Column + 1}) and ({maskCells[1].Row + 1}, {maskCells[1].Column + 1}).");
 
                     foreach (var cell in cells)
                     {
-                        int maskToRemove = candidateMasks[cell.Index] & group.Mask;
-                        List<int> valuesToRemove = new List<int>();
-                        int curValue = 1;
-                        while (maskToRemove > 0)
+                        List<int> valuesToRemove = candidateMasksNew.Get(cell.Row, cell.Column).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
+                        foreach (int curValue in valuesToRemove)
                         {
-                            if ((maskToRemove & 1) > 0)
-                            {
-                                valuesToRemove.Add(curValue);
-                                ExcludeCandidate(cell.Row, cell.Column, curValue);
-                            }
-                            maskToRemove = maskToRemove >> 1;
-                            curValue += 1;
+                            ExcludeCandidate(cell.Row, cell.Column, curValue);
                         }
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
