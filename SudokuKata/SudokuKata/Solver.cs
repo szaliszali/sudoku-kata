@@ -102,9 +102,7 @@ internal class Solver
             int row = singleCandidateIndex / 9;
             int col = singleCandidateIndex % 9;
 
-            state.Set(row, col, 1 + candidate);
-            board.Set(row, col, 1 + candidate);
-            candidateMasks[singleCandidateIndex] = 0;
+            SetCell(row, col, 1 + candidate);
             changeMade = true;
 
             Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate + 1);
@@ -187,10 +185,7 @@ internal class Solver
 
             string message = $"{description} can contain {digit} only at ({row + 1}, {col + 1}).";
 
-            int stateIndex = 9 * row + col;
-            state.Set(row, col, digit);
-            candidateMasks[stateIndex] = 0;
-            board.Set(row, col, digit);
+            SetCell(row, col, digit);
 
             changeMade = true;
 
@@ -494,10 +489,8 @@ internal class Solver
                 description = $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
             }
 
-            state.Set(row1, col1, finalState[index1]);
-            state.Set(row2, col2, finalState[index2]);
-            candidateMasks[index1] = 0;
-            candidateMasks[index2] = 0;
+            SetCell(row1, col1, finalState[index1]);
+            SetCell(row2, col2, finalState[index2]);
             changeMade = true;
 
             for (int i = 0; i < state.Length; i++)
@@ -513,6 +506,14 @@ internal class Solver
         }
 
         return changeMade;
+    }
+
+    private void SetCell(int row, int column, int digit)
+    {
+        state.Set(row, column, digit);
+        board.Set(row, column, digit);
+        candidateMasks[9 * row + column] = 0;
+        candidateMasksNew.Get(row, column).Clear();
     }
 
     private void PrintBoardIfChanged(bool changeMade)
