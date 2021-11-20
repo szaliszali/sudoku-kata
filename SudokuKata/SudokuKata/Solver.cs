@@ -263,7 +263,7 @@ internal class Solver
 
         IEnumerable<CandidateSet> masks =
             CandidateSet.AllPossibleCandidateSets
-                .Where(cs => cs.NumCandidates >1)
+                .Where(cs => cs.NumCandidates > 1)
                 .ToList();
 
         var groupsWithNMasks =
@@ -295,8 +295,8 @@ internal class Solver
 
             if (groupWithNMasks.Cells
                 .Any(cell =>
-                    (candidateMasks[cell.Index] & mask.RawValue) != 0 &&
-                    (candidateMasks[cell.Index] & ~mask.RawValue) != 0))
+                    candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
+                    candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask)))
             {
                 StringBuilder message = new StringBuilder();
                 message.Append($"In {groupWithNMasks.Description} values ");
@@ -314,30 +314,20 @@ internal class Solver
 
             foreach (var cell in groupWithNMasks.CellsWithMask)
             {
-                int maskToClear = candidateMasks[cell.Index] & ~groupWithNMasks.Mask.RawValue;
-                if (maskToClear == 0)
+                if (!candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(groupWithNMasks.Mask))
                     continue;
 
                 stepChangeMade = true;
 
-                int valueToClear = 1;
+                var valuesToClear = candidateMasksNew.Get(cell.Row, cell.Column).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+                foreach(int valueToClear in valuesToClear)
+                {
+                    ExcludeCandidate(cell.Row, cell.Column, valueToClear);
+                }
 
                 string separator = string.Empty;
                 StringBuilder message = new StringBuilder();
-
-                while (maskToClear > 0)
-                {
-                    if ((maskToClear & 1) > 0)
-                    {
-                        ExcludeCandidate(cell.Row, cell.Column, valueToClear);
-                        message.Append($"{separator}{valueToClear}");
-                        separator = ", ";
-                    }
-
-                    maskToClear = maskToClear >> 1;
-                    valueToClear += 1;
-                }
-
+                message.AppendJoin(", ", valuesToClear);
                 message.Append($" cannot appear in cell ({cell.Row + 1}, {cell.Column + 1}).");
                 Console.WriteLine(message.ToString());
             }
