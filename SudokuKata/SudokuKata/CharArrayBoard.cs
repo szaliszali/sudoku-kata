@@ -28,7 +28,8 @@ public class CharArrayBoard
 
     public CharArrayBoard(string board) : this(board
         .Where(c => c == '.' || char.IsDigit(c))
-        .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray()) { }
+        .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
+    { }
 
     public CharArrayBoard(int[] state) : this()
     {
