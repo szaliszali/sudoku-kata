@@ -9,7 +9,6 @@ internal class Solver
     private int[] finalState;
     private int[] state;
 
-    private int[] candidateMasks;
     private CandidatesForEachCell candidateMasksNew;
     private readonly List<IGrouping<int, Lol1>> cellGroups;
 
@@ -51,7 +50,6 @@ internal class Solver
     private void CalculateCandidatesForCurrentStateOfTheBoard()
     {
         candidateMasksNew = new CandidatesForEachCell(state);
-        candidateMasks = Enumerable.Range(0, state.Length).Select(i => new CandidatesForEachCell(state).Get(i / 9, i % 9).RawValue).ToArray();
     }
 
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
@@ -453,13 +451,11 @@ internal class Solver
     {
         state.Set(row, column, digit);
         board.Set(row, column, digit);
-        candidateMasks[9 * row + column] = 0;
         candidateMasksNew.Get(row, column).Clear();
     }
 
     private void ExcludeCandidate(int row, int column, int digit)
     {
-        candidateMasks[9 * row + column] &= ~(1 << (digit - 1));
         candidateMasksNew.Get(row, column).Exclude(digit);
     }
 
