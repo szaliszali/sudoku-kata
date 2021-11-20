@@ -396,25 +396,14 @@ internal class Solver
 
         for (int i = 0; i < candidateMasks.Length - 1; i++)
         {
-            if (BitMasks.maskToOnesCount[candidateMasks[i]] == 2)
+            int row = i / 9;
+            int col = i % 9;
+
+            CandidateSet candidateSet = candidateMasksNew.Get(row, col);
+            if (candidateSet.NumCandidates == 2)
             {
-                int row = i / 9;
-                int col = i % 9;
                 int blockIndex = 3 * (row / 3) + col / 3;
-
-                int temp = candidateMasks[i];
-                int lower = 0;
-                int upper = 0;
-                for (int digit = 1; temp > 0; digit++)
-                {
-                    if ((temp & 1) != 0)
-                    {
-                        lower = upper;
-                        upper = digit;
-                    }
-
-                    temp = temp >> 1;
-                }
+                (int lower, int upper) = candidateSet.CandidatePair;
 
                 for (int j = i + 1; j < candidateMasks.Length; j++)
                 {
