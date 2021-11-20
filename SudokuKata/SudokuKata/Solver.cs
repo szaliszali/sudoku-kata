@@ -10,6 +10,7 @@ internal class Solver
     private int[] state;
 
     private int[] candidateMasks;
+    private CandidatesForEachCell candidateMasksNew;
     private List<IGrouping<int, Lol1>> cellGroups;
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
@@ -49,8 +50,8 @@ internal class Solver
 
     private void CalculateCandidatesForCurrentStateOfTheBoard()
     {
-        CandidatesForEachCell candidates = new CandidatesForEachCell(state);
-        candidateMasks = Enumerable.Range(0, state.Length).Select(i => candidates.Get(i / 9, i % 9).RawValue).ToArray();
+        candidateMasksNew = new CandidatesForEachCell(state);
+        candidateMasks = Enumerable.Range(0, state.Length).Select(i => new CandidatesForEachCell(state).Get(i / 9, i % 9).RawValue).ToArray();
     }
 
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
