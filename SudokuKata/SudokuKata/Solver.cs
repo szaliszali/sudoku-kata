@@ -260,6 +260,7 @@ internal class Solver
                             if ((maskToRemove & 1) > 0)
                             {
                                 valuesToRemove.Add(curValue);
+                                ExcludeCandidate(cell.Row, cell.Column, curValue);
                             }
                             maskToRemove = maskToRemove >> 1;
                             curValue += 1;
@@ -268,7 +269,6 @@ internal class Solver
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
                         Console.WriteLine($"{valuesReport} cannot appear in ({cell.Row + 1}, {cell.Column + 1}).");
 
-                        candidateMasks[cell.Index] &= ~group.Mask;
                         stepChangeMade = true;
                     }
                 }
@@ -357,7 +357,6 @@ internal class Solver
                 if (maskToClear == 0)
                     continue;
 
-                candidateMasks[cell.Index] &= groupWithNMasks.Mask;
                 stepChangeMade = true;
 
                 int valueToClear = 1;
@@ -369,6 +368,7 @@ internal class Solver
                 {
                     if ((maskToClear & 1) > 0)
                     {
+                        ExcludeCandidate(cell.Row, cell.Column, valueToClear);
                         message.Append($"{separator}{valueToClear}");
                         separator = ", ";
                     }
@@ -514,6 +514,12 @@ internal class Solver
         board.Set(row, column, digit);
         candidateMasks[9 * row + column] = 0;
         candidateMasksNew.Get(row, column).Clear();
+    }
+
+    private void ExcludeCandidate(int row, int column, int digit)
+    {
+        candidateMasks[9 * row + column] &= ~(1 << (digit - 1));
+        candidateMasksNew.Get(row, column).Exclude(digit);
     }
 
     private void PrintBoardIfChanged(bool changeMade)
