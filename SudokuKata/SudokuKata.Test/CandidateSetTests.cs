@@ -156,11 +156,17 @@ internal class CandidateSetTests
         var otherSubset = new CandidateSet();
         otherSubset.Include(3);
 
+        var otherSuperset = new CandidateSet();
+        otherSuperset.Include(2);
+        otherSuperset.Include(3);
+        otherSuperset.Include(9);
+
         Assert.Multiple(() =>
         {
             Assert.That(sut.HasAtLeastOneDifferent(other), Is.True);
-            Assert.That(sut.HasAtLeastOneDifferent(otherSame), Is.False);
-            Assert.That(sut.HasAtLeastOneDifferent(otherSubset), Is.False);
+            Assert.That(sut.HasAtLeastOneDifferent(otherSame), Is.False, "same");
+            Assert.That(sut.HasAtLeastOneDifferent(otherSubset), Is.True, "subset");
+            Assert.That(sut.HasAtLeastOneDifferent(otherSuperset), Is.False, "superset");
         });
     }
 
