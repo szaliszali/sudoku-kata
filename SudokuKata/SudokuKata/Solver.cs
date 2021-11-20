@@ -278,7 +278,7 @@ internal class Solver
                             Description = @group.First().Description,
                             Cells = @group,
                             CellsWithMask =
-                                @group.Where(cell => state[cell.Index] == 0 && (candidateMasks[cell.Index] & mask.RawValue) != 0)
+                                @group.Where(cell => state[cell.Index] == 0 && candidateMasksNew.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask))
                                     .ToList(),
                             CleanableCellsCount =
                                 @group.Count(
