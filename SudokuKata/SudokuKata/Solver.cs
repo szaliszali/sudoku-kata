@@ -261,10 +261,9 @@ internal class Solver
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
 
-        IEnumerable<int> masks =
+        IEnumerable<CandidateSet> masks =
             CandidateSet.AllPossibleCandidateSets
                 .Where(cs => cs.NumCandidates >1)
-                .Select(cs=>cs.RawValue)
                 .ToList();
 
         var groupsWithNMasks =
@@ -272,27 +271,27 @@ internal class Solver
                 .SelectMany(mask =>
                     cellGroups
                         .Where(group => @group.All(cell =>
-                            state[cell.Index] == 0 || (mask & (1 << (state[cell.Index] - 1))) == 0))
+                            state[cell.Index] == 0 || (mask.RawValue & (1 << (state[cell.Index] - 1))) == 0))
                         .Select(group => new
                         {
                             Mask = mask,
                             Description = @group.First().Description,
                             Cells = @group,
                             CellsWithMask =
-                                @group.Where(cell => state[cell.Index] == 0 && (candidateMasks[cell.Index] & mask) != 0)
+                                @group.Where(cell => state[cell.Index] == 0 && (candidateMasks[cell.Index] & mask.RawValue) != 0)
                                     .ToList(),
                             CleanableCellsCount =
                                 @group.Count(
                                     cell => state[cell.Index] == 0 &&
-                                            (candidateMasks[cell.Index] & mask) != 0 &&
-                                            (candidateMasks[cell.Index] & ~mask) != 0)
+                                            (candidateMasks[cell.Index] & mask.RawValue) != 0 &&
+                                            (candidateMasks[cell.Index] & ~mask.RawValue) != 0)
                         }))
-                .Where(group => @group.CellsWithMask.Count() == BitMasks.maskToOnesCount[@group.Mask])
+                .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
                 .ToList();
 
         foreach (var groupWithNMasks in groupsWithNMasks)
         {
-            int mask = groupWithNMasks.Mask;
+            int mask = groupWithNMasks.Mask.RawValue;
 
             if (groupWithNMasks.Cells
                 .Any(cell =>
@@ -330,7 +329,7 @@ internal class Solver
 
             foreach (var cell in groupWithNMasks.CellsWithMask)
             {
-                int maskToClear = candidateMasks[cell.Index] & ~groupWithNMasks.Mask;
+                int maskToClear = candidateMasks[cell.Index] & ~groupWithNMasks.Mask.RawValue;
                 if (maskToClear == 0)
                     continue;
 
