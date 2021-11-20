@@ -96,16 +96,16 @@ internal class Solver
         {
             int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
             int singleCandidateIndex = singleCandidateIndices[pickSingleCandidateIndex];
-            int candidateMask = candidateMasks[singleCandidateIndex];
-            int candidate = BitMasks.singleBitToIndex[candidateMask];
 
             int row = singleCandidateIndex / 9;
             int col = singleCandidateIndex % 9;
 
-            SetCell(row, col, 1 + candidate);
+            int candidate = candidateMasksNew.Get(row, col).SingleCandidate;
+
+            SetCell(row, col, candidate);
             changeMade = true;
 
-            Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate + 1);
+            Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate);
         }
 
         return changeMade;
