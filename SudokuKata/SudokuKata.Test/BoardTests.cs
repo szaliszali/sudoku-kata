@@ -29,6 +29,18 @@ internal class BoardTests
     }
 
     [Test]
+    public void GetCell()
+    {
+        var sut = new CharArrayBoard();
+        sut.Set(1, 2, 3);
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.Get(0, 0), Is.Zero, "empty cell");
+            Assert.That(sut.Get(1, 2), Is.EqualTo(3), "digit");
+        });
+    }
+
+    [Test]
     public void ClearCell()
     {
         var sut = new CharArrayBoard();

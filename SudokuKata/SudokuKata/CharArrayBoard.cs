@@ -49,6 +49,8 @@ public class CharArrayBoard
         state[row * 9 + col] = value;
     }
 
+    public int Get(int row, int column) => state[row * 9 + column];
+
     public string Code =>
         string.Join(string.Empty, fancyBoard.Select(s => new string(s)).ToArray())
             .Replace("-", string.Empty)
