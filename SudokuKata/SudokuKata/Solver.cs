@@ -133,25 +133,22 @@ internal class Solver
 
                 for (int indexInGroup = 0; indexInGroup < 9; indexInGroup++)
                 {
-                    int rowStateIndex = 9 * cellGroup + indexInGroup;
-                    int colStateIndex = 9 * indexInGroup + cellGroup;
                     int blockRowIndex = (cellGroup / 3) * 3 + indexInGroup / 3;
                     int blockColIndex = (cellGroup % 3) * 3 + indexInGroup % 3;
-                    int blockStateIndex = blockRowIndex * 9 + blockColIndex;
 
-                    if ((candidateMasks[rowStateIndex] & mask) != 0)
+                    if (candidateMasksNew.Get(cellGroup, indexInGroup).Contains(digit))
                     {
                         rowNumberCount += 1;
                         indexInRow = indexInGroup;
                     }
 
-                    if ((candidateMasks[colStateIndex] & mask) != 0)
+                    if (candidateMasksNew.Get(indexInGroup, cellGroup).Contains(digit))
                     {
                         colNumberCount += 1;
                         indexInCol = indexInGroup;
                     }
 
-                    if ((candidateMasks[blockStateIndex] & mask) != 0)
+                    if (candidateMasksNew.Get(blockRowIndex, blockColIndex).Contains(digit))
                     {
                         blockNumberCount += 1;
                         indexInBlock = indexInGroup;
