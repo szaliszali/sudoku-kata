@@ -271,7 +271,7 @@ internal class Solver
                 .SelectMany(mask =>
                     cellGroups
                         .Where(group => @group.All(cell =>
-                            state[cell.Index] == 0 || (mask.RawValue & (1 << (state[cell.Index] - 1))) == 0))
+                            state[cell.Index] == 0 || (!mask.Contains(state[cell.Index]))))
                         .Select(group => new
                         {
                             Mask = mask,
