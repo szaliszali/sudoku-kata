@@ -11,7 +11,7 @@ internal class Solver
 
     private int[] candidateMasks;
     private CandidatesForEachCell candidateMasksNew;
-    private List<IGrouping<int, Lol1>> cellGroups;
+    private readonly List<IGrouping<int, Lol1>> cellGroups;
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
     {
