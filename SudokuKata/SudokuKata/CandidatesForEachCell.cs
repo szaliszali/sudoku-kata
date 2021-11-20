@@ -4,7 +4,7 @@ namespace SudokuKata;
 
 public class CandidatesForEachCell : IEnumerable<CandidateSet>
 {
-    private CandidateSet[] candidates;
+    private readonly CandidateSet[] candidates;
 
     public CandidatesForEachCell(CharArrayBoard board)
     {
