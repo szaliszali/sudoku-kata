@@ -82,6 +82,4 @@ public class CandidateSet
     {
         AllPossibleCandidateSets = BitMasks.maskToOnesCount.Keys.OrderBy(m => m).Select(m => new CandidateSet(m)).ToList();
     }
-
-    public int RawValue => candidateMask; // TODO should be deleted when all agorithms use CandidateSet instead of raw int
 }
