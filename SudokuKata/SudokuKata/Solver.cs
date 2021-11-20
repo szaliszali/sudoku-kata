@@ -28,7 +28,7 @@ internal class Solver
         bool changeMade;
         do
         {
-            candidateMasks = CalculateCandidatesForCurrentStateOfTheBoard();
+            CalculateCandidatesForCurrentStateOfTheBoard();
 
             bool stepChangeMade;
             do
@@ -47,10 +47,10 @@ internal class Solver
         while (changeMade);
     }
 
-    private int[] CalculateCandidatesForCurrentStateOfTheBoard()
+    private void CalculateCandidatesForCurrentStateOfTheBoard()
     {
         CandidatesForEachCell candidates = new CandidatesForEachCell(state);
-        return Enumerable.Range(0, state.Length).Select(i => candidates.Get(i / 9, i % 9).RawValue).ToArray();
+        candidateMasks = Enumerable.Range(0, state.Length).Select(i => candidates.Get(i / 9, i % 9).RawValue).ToArray();
     }
 
     private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
