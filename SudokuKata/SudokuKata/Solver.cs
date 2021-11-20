@@ -427,14 +427,6 @@ internal class Solver
             SetCell(row2, col2, finalState[index2]);
             changeMade = true;
 
-            for (int i = 0; i < state.Length; i++)
-            {
-                int tempRow = i / 9;
-                int tempCol = i % 9;
-
-                board.Set(tempRow, tempCol, state[i]);
-            }
-
             Console.WriteLine(
                 $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState[index1]}->({row1 + 1}, {col1 + 1}), {finalState[index2]}->({row2 + 1}, {col2 + 1}).");
         }
