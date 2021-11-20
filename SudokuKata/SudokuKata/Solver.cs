@@ -10,7 +10,7 @@ internal class Solver
     private int[] state;
 
     private CandidatesForEachCell cellCandidates;
-    private readonly List<IGrouping<int, Lol1>> cellGroups;
+    private readonly List<IGrouping<int, NamedCellGroup>> cellGroups;
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
     {
@@ -47,14 +47,14 @@ internal class Solver
         while (changeMade);
     }
 
-    private List<IGrouping<int, Lol1>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
+    private List<IGrouping<int, NamedCellGroup>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
     {
         var rowsIndices = state
-            .Select((_, index) => new Lol1(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
+            .Select((_, index) => new NamedCellGroup(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
         var columnIndices = state
-            .Select((_, index) => new Lol1(9 + index % 9, $"column #{index % 9 + 1}", index, index / 9, index % 9))
+            .Select((_, index) => new NamedCellGroup(9 + index % 9, $"column #{index % 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
         var blockIndices = state
@@ -64,7 +64,7 @@ internal class Solver
                 Column = index % 9,
                 Index = index
             })
-            .Select(tuple => new Lol1(18 + 3 * (tuple.Row / 3) + tuple.Column / 3, $"block ({tuple.Row / 3 + 1}, {tuple.Column / 3 + 1})", tuple.Index, tuple.Row, tuple.Column))
+            .Select(tuple => new NamedCellGroup(18 + 3 * (tuple.Row / 3) + tuple.Column / 3, $"block ({tuple.Row / 3 + 1}, {tuple.Column / 3 + 1})", tuple.Index, tuple.Row, tuple.Column))
             .GroupBy(tuple => tuple.Discriminator);
 
         return rowsIndices.Concat(columnIndices).Concat(blockIndices).ToList();
