@@ -262,9 +262,10 @@ internal class Solver
         // All other candidates can then be removed from those cells
 
         IEnumerable<int> masks =
-            BitMasks.maskToOnesCount
-                .Where(tuple => tuple.Value > 1)
-                .Select(tuple => tuple.Key).ToList();
+            CandidateSet.AllPossibleCandidateSets
+                .Where(cs => cs.NumCandidates >1)
+                .Select(cs=>cs.RawValue)
+                .ToList();
 
         var groupsWithNMasks =
             masks
