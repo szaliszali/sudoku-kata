@@ -7,18 +7,17 @@ internal class Solver
     private Random rng;
     private CharArrayBoard board;
     private int[] finalState;
-    private int[] state;
 
     private CandidatesForEachCell cellCandidates;
     private readonly List<IGrouping<int, NamedCellGroup>> cellGroups;
+
+    private int TotalCellCount => 9 * 9;
 
     public Solver(Random rng, CharArrayBoard board, int[] finalState)
     {
         this.rng = rng;
         this.board = board;
         this.finalState = finalState;
-
-        state = board.State;
 
         cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
     }
@@ -49,16 +48,16 @@ internal class Solver
 
     private List<IGrouping<int, NamedCellGroup>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
     {
-        var rowsIndices = state
-            .Select((_, index) => new NamedCellGroup(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
+        var rowsIndices = Enumerable.Range(0,TotalCellCount)
+            .Select(index => new NamedCellGroup(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
-        var columnIndices = state
-            .Select((_, index) => new NamedCellGroup(9 + index % 9, $"column #{index % 9 + 1}", index, index / 9, index % 9))
+        var columnIndices = Enumerable.Range(0, TotalCellCount)
+            .Select(index => new NamedCellGroup(9 + index % 9, $"column #{index % 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
-        var blockIndices = state
-            .Select((_, index) => new
+        var blockIndices = Enumerable.Range(0, TotalCellCount)
+            .Select(index => new
             {
                 Row = index / 9,
                 Column = index % 9,
@@ -264,18 +263,18 @@ internal class Solver
                 .SelectMany(mask =>
                     cellGroups
                         .Where(group => @group.All(cell =>
-                            state[cell.Index] == 0 || (!mask.Contains(state[cell.Index]))))
+                            board.Get(cell.Row, cell.Column) == 0 || (!mask.Contains(board.Get(cell.Row, cell.Column)))))
                         .Select(group => new
                         {
                             Mask = mask,
                             Description = @group.First().Description,
                             Cells = @group,
                             CellsWithMask =
-                                @group.Where(cell => state[cell.Index] == 0 && cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask))
+                                @group.Where(cell => board.Get(cell.Row, cell.Column) == 0 && cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask))
                                     .ToList(),
                             CleanableCellsCount =
                                 @group.Count(
-                                    cell => state[cell.Index] == 0 &&
+                                    cell => board.Get(cell.Row, cell.Column) == 0 &&
                                             cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
                                             cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask))
                         }))
@@ -341,7 +340,7 @@ internal class Solver
 
         Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
 
-        for (int i = 0; i < state.Length - 1; i++)
+        for (int i = 0; i < TotalCellCount - 1; i++)
         {
             int row = i / 9;
             int col = i % 9;
@@ -352,7 +351,7 @@ internal class Solver
                 int blockIndex = 3 * (row / 3) + col / 3;
                 (int lower, int upper) = candidateSet.CandidatePair;
 
-                for (int j = i + 1; j < state.Length; j++)
+                for (int j = i + 1; j < TotalCellCount; j++)
                 {
                     int row1 = j / 9;
                     int col1 = j % 9;
@@ -379,7 +378,7 @@ internal class Solver
         {
             (int index1, int index2, int digit1, int digit2) = candidates.Dequeue();
 
-            int[] alternateState = state.ShallowCopy();
+            int[] alternateState = board.State.ShallowCopy();
 
             if (finalState[index1] == digit1)
             {
@@ -436,7 +435,6 @@ internal class Solver
 
     private void SetCell(int row, int column, int digit)
     {
-        state.Set(row, column, digit);
         board.Set(row, column, digit);
         cellCandidates.Get(row, column).Clear();
     }
