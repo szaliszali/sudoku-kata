@@ -49,7 +49,7 @@ internal class Solver
 
     private int[] CalculateCandidatesForCurrentStateOfTheBoard()
     {
-        CalculateCandidates candidates = new CalculateCandidates(state);
+        CandidatesForEachCell candidates = new CandidatesForEachCell(state);
         return Enumerable.Range(0, state.Length).Select(i => candidates.Get(i / 9, i % 9).RawValue).ToArray();
     }
 

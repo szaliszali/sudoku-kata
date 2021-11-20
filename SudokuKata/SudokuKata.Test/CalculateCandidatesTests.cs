@@ -8,7 +8,7 @@ internal class CalculateCandidatesTests
     public void CalculateCandidatesEmptyBoard()
     {
         var emptyBoard = new int[9 * 9];
-        var sut = new CalculateCandidates(emptyBoard);
+        var sut = new CandidatesForEachCell(emptyBoard);
 
         CandidateSet expected = new CandidateSet();
         expected.IncludeAll();
@@ -21,7 +21,7 @@ internal class CalculateCandidatesTests
     {
         var board = new int[9 * 9];
         board.Set(3, 3, 3);
-        var sut = new CalculateCandidates(board);
+        var sut = new CandidatesForEachCell(board);
 
         Assert.That(sut.Get(3, 3).NumCandidates, Is.Zero);
     }
@@ -47,7 +47,7 @@ internal class CalculateCandidatesTests
         board.Set(1, 4, 3);
         board.Set(4, 8, 4);
         board.Set(5, 5, 6);
-        var sut = new CalculateCandidates(board);
+        var sut = new CandidatesForEachCell(board);
 
         var expected = new CandidateSet();
         expected.IncludeAll();

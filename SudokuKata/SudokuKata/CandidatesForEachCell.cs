@@ -1,10 +1,10 @@
 ﻿namespace SudokuKata;
 
-public class CalculateCandidates
+public class CandidatesForEachCell
 {
     private int[] board;
 
-    public CalculateCandidates(int[] board)
+    public CandidatesForEachCell(int[] board)
     {
         this.board = board;
     }
