@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata;
 
-internal class SolverState
+public class SolverState
 {
     public Board Board { get; }
     public Random Rng { get; }
@@ -30,7 +30,7 @@ internal class SolverState
         }
     }
 
-    internal void RefreshCandidates()
+    public void RefreshCandidates()
     {
         Candidates = new CandidatesForEachCell(Board);
         ChangeMade = false;

@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata;
 
-internal record SetCellCommand(CellLocation Location, int Digit) : ISolverCommand
+public record SetCellCommand(CellLocation Location, int Digit) : ISolverCommand
 {
     void ISolverCommand.Execute(SolverState state)
     {

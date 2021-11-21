@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata;
 
-internal interface ISolverCommand
+public interface ISolverCommand
 {
     void Execute(SolverState state);
 }
