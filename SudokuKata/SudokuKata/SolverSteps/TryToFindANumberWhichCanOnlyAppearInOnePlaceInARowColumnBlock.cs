@@ -19,11 +19,9 @@ internal class TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock
             int index = solverState.Rng.Next(candidates.Count);
             (string description, CellLocation location, int digit) = candidates.ElementAt(index);
 
-            string message = $"{description} can contain {digit} only at {location.ShortString()}.";
-
             yield return new SetCellCommand(location, digit);
 
-            yield return new PrintMessageCommand(message);
+            yield return new PrintMessageCommand($"{description} can contain {digit} only at {location.ShortString()}.");
         }
     }
 }
