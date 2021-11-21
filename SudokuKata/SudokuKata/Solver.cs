@@ -209,7 +209,7 @@ internal class Solver
                     foreach (var cell in cells)
                     {
                         List<int> valuesToRemove = cellCandidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
-                        ExcludeCandidates(cell.Location.Row, cell.Location.Column, valuesToRemove);
+                        ExcludeCandidates(cell.Location, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
                         Console.WriteLine($"{valuesReport} cannot appear in ({cell.Location.Row + 1}, {cell.Location.Column + 1}).");
@@ -289,7 +289,7 @@ internal class Solver
                 stepChangeMade = true;
 
                 var valuesToClear = cellCandidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
-                ExcludeCandidates(cell.Location.Row, cell.Location.Column, valuesToClear);
+                ExcludeCandidates(cell.Location, valuesToClear);
 
                 StringBuilder message = new StringBuilder();
                 message.AppendJoin(", ", valuesToClear);
@@ -402,12 +402,11 @@ internal class Solver
         cellCandidates.Get(row, column).Clear();
     }
 
-    private void ExcludeCandidates(int row, int column, IEnumerable<int> digits)
+    private void ExcludeCandidates(CellLocation location, IEnumerable<int> digits)
     {
         foreach (int digit in digits)
         {
-            cellCandidates.Get(row, column).Exclude(digit);
-
+            cellCandidates.Get(location).Exclude(digit);
         }
     }
 
