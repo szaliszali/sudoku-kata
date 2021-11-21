@@ -7,7 +7,7 @@ public class NamedCellGroup
     public int Row { get; }
     public int Column { get; }
 
-    public NamedCellGroup(int discriminator, string description, int index, int row, int column)
+    public NamedCellGroup(int discriminator, string description, int row, int column)
     {
         Discriminator = discriminator;
         Description = description;
