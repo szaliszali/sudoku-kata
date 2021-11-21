@@ -40,7 +40,7 @@ internal class Solver
             }
             while (stepChangeMade);
 
-            if (!changeMade) changeMade = LookIfTheBoardHasMultipleSolutions();
+            if (!changeMade) changeMade = Apply(LookIfTheBoardHasMultipleSolutions());
 
             PrintBoardIfChanged(changeMade);
         }
@@ -251,10 +251,8 @@ internal class Solver
         return stepChangeMade;
     }
 
-    private bool LookIfTheBoardHasMultipleSolutions()
+    private IEnumerable<SetCellCommand> LookIfTheBoardHasMultipleSolutions()
     {
-        bool changeMade = false;
-
         // This is the last chance to do something in this iteration:
         // If this attempt fails, board will not be entirely solved.
 
@@ -335,15 +333,12 @@ internal class Solver
                 : col1 == col2 ? $"column #{col1 + 1}"
                 : $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
 
-            SetCell(new CellLocation(row1, col1), finalState[index1]);
-            SetCell(new CellLocation(row2, col2), finalState[index2]);
-            changeMade = true;
+            yield return new SetCellCommand(new CellLocation(row1, col1), finalState[index1]);
+            yield return new SetCellCommand(new CellLocation(row2, col2), finalState[index2]);
 
             Console.WriteLine(
                 $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState[index1]}->({row1 + 1}, {col1 + 1}), {finalState[index2]}->({row2 + 1}, {col2 + 1}).");
         }
-
-        return changeMade;
     }
 
     private void SetCell(CellLocation location, int digit)
