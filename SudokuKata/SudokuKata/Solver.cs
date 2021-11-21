@@ -35,7 +35,7 @@ internal class Solver
             {
                 changeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock());
                 stepChangeMade = !changeMade && (
-                    TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
+                    Apply(TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells())
                     || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock());
             }
             while (stepChangeMade);
@@ -72,6 +72,17 @@ internal class Solver
             board.Set(location, digit);
             cellCandidates.Get(location).Clear();
         }
+    }
+
+    private bool Apply(IEnumerable<EliminateCandidatesCommand> commands)
+    {
+        var ret = false;
+        foreach (var command in commands)
+        {
+            ExcludeCandidates(command.Location, command.Digits);
+            ret = true;
+        }
+        return ret;
     }
 
     private IEnumerable<SetCellCommand> PickCellsWithOnlyOneCandidateLeft()
@@ -120,10 +131,8 @@ internal class Solver
         }
     }
 
-    private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
+    private IEnumerable<EliminateCandidatesCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
     {
-        bool stepChangeMade = false;
-
         IEnumerable<CandidateSet> twoDigitMasks =
             cellCandidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
 
@@ -165,18 +174,14 @@ internal class Solver
                     foreach (var cell in cells)
                     {
                         List<int> valuesToRemove = cellCandidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
-                        ExcludeCandidates(cell.Location, valuesToRemove);
+                        yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
                         Console.WriteLine($"{valuesReport} cannot appear in {cell.Location.ShortString()}.");
-
-                        stepChangeMade = true;
                     }
                 }
             }
         }
-
-        return stepChangeMade;
     }
 
     private bool TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock()
