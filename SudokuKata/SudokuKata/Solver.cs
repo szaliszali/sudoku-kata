@@ -36,7 +36,7 @@ internal class Solver
             {
                 solverState.StartInnerLoop();
 
-                Func<IEnumerable<ISolverCommand>>[] steps = new[] {
+                Func<SolverState, IEnumerable<ISolverCommand>>[] steps = new[] {
                     PickCellsWithOnlyOneCandidateLeft,
                     TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock,
                     TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells,
@@ -46,12 +46,12 @@ internal class Solver
                 foreach (var step in steps)
                 {
                     if (solverState.ChangeMade || solverState.StepChangeMade) break;
-                    Apply(step(), solverState);
+                    Apply(step(solverState), solverState);
                 }
             }
             while (solverState.StepChangeMade);
 
-            if (!solverState.ChangeMade) Apply(LookIfTheBoardHasMultipleSolutions(), solverState);
+            if (!solverState.ChangeMade) Apply(LookIfTheBoardHasMultipleSolutions(solverState), solverState);
 
             PrintBoardIfChanged(solverState.ChangeMade);
         }
@@ -76,7 +76,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> PickCellsWithOnlyOneCandidateLeft()
+    private IEnumerable<ISolverCommand> PickCellsWithOnlyOneCandidateLeft(SolverState solverState)
     {
         CellLocation[] singleCandidateIndices =
             cellCandidates.Zip(board.AllLocations(), (c, l) => (Location: l, CandidatesCount: c.NumCandidates))
@@ -97,7 +97,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
+    private IEnumerable<ISolverCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(SolverState solverState)
     {
         List<(string groupDescription, CellLocation location, int candidate)> candidates =
             Enumerable.Range(1, board.Size)
@@ -122,7 +122,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
+    private IEnumerable<ISolverCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(SolverState solverState)
     {
         IEnumerable<CandidateSet> twoDigitMasks =
             cellCandidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
@@ -175,7 +175,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock()
+    private IEnumerable<ISolverCommand> TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(SolverState solverState)
     {
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
@@ -247,7 +247,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> LookIfTheBoardHasMultipleSolutions()
+    private IEnumerable<ISolverCommand> LookIfTheBoardHasMultipleSolutions(SolverState solverState)
     {
         // This is the last chance to do something in this iteration:
         // If this attempt fails, board will not be entirely solved.
