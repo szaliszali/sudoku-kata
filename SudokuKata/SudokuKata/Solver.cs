@@ -36,7 +36,7 @@ internal class Solver
                 changeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock());
                 stepChangeMade = !changeMade && (
                     Apply(TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells())
-                    || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock());
+                    || Apply(TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock()));
             }
             while (stepChangeMade);
 
@@ -184,10 +184,8 @@ internal class Solver
         }
     }
 
-    private bool TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock()
+    private IEnumerable<EliminateCandidatesCommand> TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock()
     {
-        bool stepChangeMade = false;
-
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
 
@@ -247,10 +245,8 @@ internal class Solver
                 if (!cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
                     continue;
 
-                stepChangeMade = true;
-
                 var valuesToClear = cellCandidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
-                ExcludeCandidates(cell.Location, valuesToClear);
+                yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
 
                 StringBuilder message = new StringBuilder();
                 message.AppendJoin(", ", valuesToClear);
@@ -258,8 +254,6 @@ internal class Solver
                 Console.WriteLine(message.ToString());
             }
         }
-
-        return stepChangeMade;
     }
 
     private IEnumerable<SetCellCommand> LookIfTheBoardHasMultipleSolutions()
