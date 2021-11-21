@@ -6,6 +6,18 @@ namespace SudokuKata.Test.SolverSteps;
 internal class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
 {
     [Test]
+    public void OnAnEmptyBoard_NoStepsArePossible()
+    {
+        var board = new Board();
+        var solverState = new SolverState(board, new Random());
+        solverState.RefreshCandidates();
+
+        var result = SudokuKata.SolverSteps.TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock.Solve(solverState);
+
+        Assert.That(result, Is.Empty);
+    }
+
+    [Test]
     public void ATest()
     {
         var board = new Board(@"
