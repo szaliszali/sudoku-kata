@@ -76,20 +76,20 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> PickCellsWithOnlyOneCandidateLeft(SolverState solverState)
+    private static IEnumerable<ISolverCommand> PickCellsWithOnlyOneCandidateLeft(SolverState solverState)
     {
         CellLocation[] singleCandidateIndices =
-            cellCandidates.Zip(board.AllLocations(), (c, l) => (Location: l, CandidatesCount: c.NumCandidates))
+            solverState.Candidates.Zip(solverState.Board.AllLocations(), (c, l) => (Location: l, CandidatesCount: c.NumCandidates))
                 .Where(tuple => tuple.CandidatesCount == 1)
                 .Select(tuple => tuple.Location)
                 .ToArray();
 
         if (singleCandidateIndices.Length > 0)
         {
-            int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
+            int pickSingleCandidateIndex = solverState.Rng.Next(singleCandidateIndices.Length);
             CellLocation location = singleCandidateIndices[pickSingleCandidateIndex];
 
-            int candidate = cellCandidates.Get(location).SingleCandidate;
+            int candidate = solverState.Candidates.Get(location).SingleCandidate;
 
             yield return new SetCellCommand(location, candidate);
 
@@ -100,18 +100,18 @@ internal class Solver
     private IEnumerable<ISolverCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(SolverState solverState)
     {
         List<(string groupDescription, CellLocation location, int candidate)> candidates =
-            Enumerable.Range(1, board.Size)
+            Enumerable.Range(1, solverState.Board.Size)
                 .SelectMany(digit => cellGroups
-                    .Select(g => (g, count: g.Count(c => cellCandidates.Get(c.Location).Contains(digit)), digit))
+                    .Select(g => (g, count: g.Count(c => solverState.Candidates.Get(c.Location).Contains(digit)), digit))
                     .Where(g => g.count == 1))
                 .OrderBy(g => g.digit)
-                .ThenBy(g => g.g.First().Discriminator % board.Size) // HACK: original code enumerated cell groups in different order
-                .Select(g => (description: g.g.First().Description.Capitalize(), location: g.g.Single(c => cellCandidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
+                .ThenBy(g => g.g.First().Discriminator % solverState.Board.Size) // HACK: original code enumerated cell groups in different order
+                .Select(g => (description: g.g.First().Description.Capitalize(), location: g.g.Single(c => solverState.Candidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
                 .ToList();
 
         if (candidates.Count > 0)
         {
-            int index = rng.Next(candidates.Count);
+            int index = solverState.Rng.Next(candidates.Count);
             (string description, CellLocation location, int digit) = candidates.ElementAt(index);
 
             string message = $"{description} can contain {digit} only at {location.ShortString()}.";
@@ -125,14 +125,14 @@ internal class Solver
     private IEnumerable<ISolverCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(SolverState solverState)
     {
         IEnumerable<CandidateSet> twoDigitMasks =
-            cellCandidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
+            solverState.Candidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
 
         var groups =
             twoDigitMasks
                 .SelectMany(mask =>
                     cellGroups
-                        .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Location) == mask) == 2)
-                        .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Location) != mask && cellCandidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
+                        .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
+                        .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
                         .Select(group => new Lol2(mask, @group.First().Description, @group)))
                 .ToList();
 
@@ -144,13 +144,13 @@ internal class Solver
                     group.Cells
                         .Where(
                             cell =>
-                                cellCandidates.Get(cell.Location) != group.Mask &&
-                                cellCandidates.Get(cell.Location).HasAtLeastOneCommon(group.Mask))
+                                solverState.Candidates.Get(cell.Location) != group.Mask &&
+                                solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(group.Mask))
                         .ToList();
 
                 var maskCells =
                     group.Cells
-                        .Where(cell => cellCandidates.Get(cell.Location) == group.Mask)
+                        .Where(cell => solverState.Candidates.Get(cell.Location) == group.Mask)
                         .ToArray();
 
 
@@ -164,7 +164,7 @@ internal class Solver
 
                     foreach (var cell in cells)
                     {
-                        List<int> valuesToRemove = cellCandidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
+                        List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
                         yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
@@ -190,20 +190,20 @@ internal class Solver
                 .SelectMany(mask =>
                     cellGroups
                         .Where(group => @group.All(cell =>
-                            board.Get(cell.Location) == 0 || (!mask.Contains(board.Get(cell.Location)))))
+                            solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
                         .Select(group => new
                         {
                             Mask = mask,
                             Description = @group.First().Description,
                             Cells = @group,
                             CellsWithMask =
-                                @group.Where(cell => board.Get(cell.Location) == 0 && cellCandidates.Get(cell.Location).HasAtLeastOneCommon(mask))
+                                @group.Where(cell => solverState.Board.Get(cell.Location) == 0 && solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask))
                                     .ToList(),
                             CleanableCellsCount =
                                 @group.Count(
-                                    cell => board.Get(cell.Location) == 0 &&
-                                            cellCandidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                                            cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
+                                    cell => solverState.Board.Get(cell.Location) == 0 &&
+                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
                         }))
                 .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
                 .ToList();
@@ -214,8 +214,8 @@ internal class Solver
 
             if (groupWithNMasks.Cells
                 .Any(cell =>
-                    cellCandidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                    cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
+                    solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                    solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
             {
                 StringBuilder message = new StringBuilder();
                 message.Append($"In {groupWithNMasks.Description} values ");
@@ -233,10 +233,10 @@ internal class Solver
 
             foreach (var cell in groupWithNMasks.CellsWithMask)
             {
-                if (!cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
+                if (!solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
                     continue;
 
-                var valuesToClear = cellCandidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+                var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
                 yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
 
                 StringBuilder message = new StringBuilder();
@@ -259,10 +259,10 @@ internal class Solver
 
         for (int i = 0; i < TotalCellCount - 1; i++)
         {
-            int row = i / board.Size;
-            int col = i % board.Size;
+            int row = i / solverState.Board.Size;
+            int col = i % solverState.Board.Size;
 
-            CandidateSet candidateSet = cellCandidates.Get(row, col);
+            CandidateSet candidateSet = solverState.Candidates.Get(row, col);
             if (candidateSet.NumCandidates == 2)
             {
                 int blockIndex = 3 * (row / 3) + col / 3;
@@ -270,10 +270,10 @@ internal class Solver
 
                 for (int j = i + 1; j < TotalCellCount; j++)
                 {
-                    int row1 = j / board.Size;
-                    int col1 = j % board.Size;
+                    int row1 = j / solverState.Board.Size;
+                    int col1 = j % solverState.Board.Size;
 
-                    if (candidateSet == cellCandidates.Get(row1, col1))
+                    if (candidateSet == solverState.Candidates.Get(row1, col1))
                     {
                         int blockIndex1 = 3 * (row1 / 3) + col1 / 3;
 
@@ -295,7 +295,7 @@ internal class Solver
         {
             (int index1, int index2, int digit1, int digit2) = candidates.Dequeue();
 
-            int[] alternateState = board.State.ShallowCopy();
+            int[] alternateState = solverState.Board.State.ShallowCopy();
 
             if (finalState[index1] == digit1)
             {
@@ -308,7 +308,7 @@ internal class Solver
                 alternateState[index2] = digit2;
             }
 
-            if (new StackBasedFilledBoardGenerator(rng, alternateState).HasSolution)
+            if (new StackBasedFilledBoardGenerator(solverState.Rng, alternateState).HasSolution)
             {
                 // Board was solved successfully even with two digits swapped
                 solutions.Add((index1, index2, digit1, digit2));
@@ -317,12 +317,12 @@ internal class Solver
 
         if (solutions.Any())
         {
-            int pos = rng.Next(solutions.Count());
+            int pos = solverState.Rng.Next(solutions.Count());
             (int index1, int index2, int digit1, int digit2) = solutions.ElementAt(pos);
-            int row1 = index1 / board.Size;
-            int col1 = index1 % board.Size;
-            int row2 = index2 / board.Size;
-            int col2 = index2 % board.Size;
+            int row1 = index1 / solverState.Board.Size;
+            int col1 = index1 % solverState.Board.Size;
+            int row2 = index2 / solverState.Board.Size;
+            int col2 = index2 % solverState.Board.Size;
 
             string description =
                 row1 == row2 ? $"row #{row1 + 1}"
