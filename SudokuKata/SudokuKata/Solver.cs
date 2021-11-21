@@ -83,68 +83,21 @@ internal class Solver
         return changeMade;
     }
 
+    private string Capitalize(string input) => char.ToUpper(input[0]) + input.Substring(1);
+
     private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
     {
         bool changeMade = false;
 
-        List<(string groupDescription, CellLocation location, int candidate)> candidates = new();
-
-        for (int digit = 1; digit <= board.Size; digit++)
-        {
-            for (int cellGroup = 0; cellGroup < board.Size; cellGroup++)
-            {
-                int rowNumberCount = 0;
-                int indexInRow = 0;
-
-                int colNumberCount = 0;
-                int indexInCol = 0;
-
-                int blockNumberCount = 0;
-                int indexInBlock = 0;
-
-                for (int indexInGroup = 0; indexInGroup < board.Size; indexInGroup++)
-                {
-                    int blockRowIndex = (cellGroup / 3) * 3 + indexInGroup / 3;
-                    int blockColIndex = (cellGroup % 3) * 3 + indexInGroup % 3;
-
-                    if (cellCandidates.Get(cellGroup, indexInGroup).Contains(digit))
-                    {
-                        rowNumberCount += 1;
-                        indexInRow = indexInGroup;
-                    }
-
-                    if (cellCandidates.Get(indexInGroup, cellGroup).Contains(digit))
-                    {
-                        colNumberCount += 1;
-                        indexInCol = indexInGroup;
-                    }
-
-                    if (cellCandidates.Get(blockRowIndex, blockColIndex).Contains(digit))
-                    {
-                        blockNumberCount += 1;
-                        indexInBlock = indexInGroup;
-                    }
-                }
-
-                if (rowNumberCount == 1)
-                {
-                    candidates.Add(($"Row #{cellGroup + 1}", new CellLocation(cellGroup, indexInRow), digit));
-                }
-
-                if (colNumberCount == 1)
-                {
-                    candidates.Add((($"Column #{cellGroup + 1}"), new CellLocation(indexInCol, cellGroup), digit));
-                }
-
-                if (blockNumberCount == 1)
-                {
-                    int blockRow = cellGroup / 3;
-                    int blockCol = cellGroup % 3;
-
-                    candidates.Add(($"Block ({blockRow + 1}, {blockCol + 1})", new CellLocation(blockRow * 3 + indexInBlock / 3, blockCol * 3 + indexInBlock % 3), digit));
-                }
-            }
-        }
+        List<(string groupDescription, CellLocation location, int candidate)> candidates =
+            Enumerable.Range(1, board.Size)
+                .SelectMany(digit => cellGroups
+                    .Select(g => (g, count: g.Count(c => cellCandidates.Get(c.Location).Contains(digit)), digit))
+                    .Where(g => g.count == 1))
+                .OrderBy(g => g.digit)
+                .ThenBy(g => g.g.First().Discriminator % board.Size) // HACK: original code enumerated cell groups in different order
+                .Select(g => (description: Capitalize(g.g.First().Description), location: g.g.Single(c => cellCandidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
+                .ToList();
 
         if (candidates.Count > 0)
         {
