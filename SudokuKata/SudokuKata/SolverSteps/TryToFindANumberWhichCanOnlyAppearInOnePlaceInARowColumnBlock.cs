@@ -16,8 +16,7 @@ internal class TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock
 
         if (candidates.Count > 0)
         {
-            int index = solverState.Rng.Next(candidates.Count);
-            (string description, CellLocation location, int digit) = candidates.ElementAt(index);
+            (string description, CellLocation location, int digit) = candidates.PickOneRandomly(solverState.Rng);
 
             yield return new SetCellCommand(location, digit);
 

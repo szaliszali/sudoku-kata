@@ -12,8 +12,7 @@ public class PickCellsWithOnlyOneCandidateLeft
 
         if (singleCandidateIndices.Length > 0)
         {
-            int pickSingleCandidateIndex = solverState.Rng.Next(singleCandidateIndices.Length);
-            CellLocation location = singleCandidateIndices[pickSingleCandidateIndex];
+            CellLocation location = singleCandidateIndices.PickOneRandomly(solverState.Rng);
 
             int candidate = solverState.Candidates.Get(location).SingleCandidate;
 

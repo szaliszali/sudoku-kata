@@ -13,4 +13,6 @@ public static class Extensions
     public static void Set(this int[] state, int row, int column, int value) => state[row * 9 + column] = value;
 
     public static string Capitalize(this string input) => char.ToUpper(input[0]) + input.Substring(1);
+
+    public static T PickOneRandomly<T>(this IReadOnlyList<T> list, Random rng) => list[rng.Next(list.Count)];
 }

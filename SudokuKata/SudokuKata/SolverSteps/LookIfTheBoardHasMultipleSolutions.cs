@@ -72,8 +72,7 @@ internal class LookIfTheBoardHasMultipleSolutions
 
         if (solutions.Any())
         {
-            int pos = solverState.Rng.Next(solutions.Count());
-            (int index1, int index2, int digit1, int digit2) = solutions.ElementAt(pos);
+            (int index1, int index2, int digit1, int digit2) = solutions.PickOneRandomly(solverState.Rng);
             int row1 = index1 / solverState.Board.Size;
             int col1 = index1 % solverState.Board.Size;
             int row2 = index2 / solverState.Board.Size;
