@@ -46,22 +46,15 @@ internal class Solver
         while (changeMade);
     }
 
-    private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
-    {
-        var rowsIndices = board.AllLocations()
+    private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks() =>
+        board.AllLocations()
             .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location.Row, location.Column))
-            .GroupBy(tuple => tuple.Discriminator);
-
-        var columnIndices = board.AllLocations()
-            .Select(location => new NamedCell(9 + location.Column, $"column #{location.Column + 1}", location.Row, location.Column))
-            .GroupBy(tuple => tuple.Discriminator);
-
-        var blockIndices = board.AllLocations()
-            .Select(location => new NamedCell(18 + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location.Row, location.Column))
-            .GroupBy(tuple => tuple.Discriminator);
-
-        return rowsIndices.Concat(columnIndices).Concat(blockIndices).ToList();
-    }
+            .Concat(board.AllLocations()
+                .Select(location => new NamedCell(9 + location.Column, $"column #{location.Column + 1}", location.Row, location.Column)))
+            .Concat(board.AllLocations()
+                .Select(location => new NamedCell(18 + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location.Row, location.Column)))
+            .GroupBy(tuple => tuple.Discriminator)
+            .ToList();
 
     private bool PickCellsWithOnlyOneCandidateLeft()
     {
