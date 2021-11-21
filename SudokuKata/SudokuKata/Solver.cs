@@ -25,26 +25,26 @@ internal class Solver
 
     public void SolveBoard()
     {
-        bool changeMade;
+        SolverState solverState = new();
+
         do
         {
             cellCandidates = new CandidatesForEachCell(board);
 
-            bool stepChangeMade;
             do
             {
-                changeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock());
-                stepChangeMade = !changeMade && (
+                solverState.ChangeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock());
+                solverState.StepChangeMade = !solverState.ChangeMade && (
                     Apply(TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells())
                     || Apply(TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock()));
             }
-            while (stepChangeMade);
+            while (solverState.StepChangeMade);
 
-            if (!changeMade) changeMade = Apply(LookIfTheBoardHasMultipleSolutions());
+            if (!solverState.ChangeMade) solverState.ChangeMade = Apply(LookIfTheBoardHasMultipleSolutions());
 
-            PrintBoardIfChanged(changeMade);
+            PrintBoardIfChanged(solverState.ChangeMade);
         }
-        while (changeMade);
+        while (solverState.ChangeMade);
     }
 
     private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks() =>
