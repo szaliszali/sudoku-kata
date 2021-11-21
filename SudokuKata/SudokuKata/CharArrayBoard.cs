@@ -2,7 +2,8 @@
 
 public class CharArrayBoard
 {
-    private List<char[]> fancyBoard = new();
+    private readonly List<char[]> fancyBoard = new();
+
     public CharArrayBoard()
     {
         // Prepare empty board
