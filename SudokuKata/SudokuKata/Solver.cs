@@ -9,7 +9,6 @@ internal class Solver
     private int[] finalState;
 
     private CandidatesForEachCell cellCandidates;
-    private readonly List<IGrouping<int, NamedCell>> cellGroups;
 
     private int TotalCellCount { get; }
 
@@ -19,8 +18,6 @@ internal class Solver
         this.board = board;
         TotalCellCount = board.AllLocations().Count();
         this.finalState = finalState;
-
-        cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
     }
 
     public void SolveBoard()
@@ -58,16 +55,6 @@ internal class Solver
         while (solverState.ChangeMade);
     }
 
-    private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks() =>
-        board.AllLocations()
-            .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location))
-            .Concat(board.AllLocations()
-                .Select(location => new NamedCell(board.Size + location.Column, $"column #{location.Column + 1}", location)))
-            .Concat(board.AllLocations()
-                .Select(location => new NamedCell(2 * board.Size + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location)))
-            .GroupBy(tuple => tuple.Discriminator)
-            .ToList();
-
     private void Apply(IEnumerable<ISolverCommand> commands, SolverState solverState)
     {
         foreach (var command in commands)
@@ -97,11 +84,11 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(SolverState solverState)
+    private static IEnumerable<ISolverCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(SolverState solverState)
     {
         List<(string groupDescription, CellLocation location, int candidate)> candidates =
             Enumerable.Range(1, solverState.Board.Size)
-                .SelectMany(digit => cellGroups
+                .SelectMany(digit => solverState.CellGroups
                     .Select(g => (g, count: g.Count(c => solverState.Candidates.Get(c.Location).Contains(digit)), digit))
                     .Where(g => g.count == 1))
                 .OrderBy(g => g.digit)
@@ -122,7 +109,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(SolverState solverState)
+    private static IEnumerable<ISolverCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(SolverState solverState)
     {
         IEnumerable<CandidateSet> twoDigitMasks =
             solverState.Candidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
@@ -130,7 +117,7 @@ internal class Solver
         var groups =
             twoDigitMasks
                 .SelectMany(mask =>
-                    cellGroups
+                    solverState.CellGroups
                         .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
                         .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
                         .Select(group => new Lol2(mask, @group.First().Description, @group)))
@@ -175,7 +162,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(SolverState solverState)
+    private static IEnumerable<ISolverCommand> TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(SolverState solverState)
     {
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
@@ -188,7 +175,7 @@ internal class Solver
         var groupsWithNMasks =
             masks
                 .SelectMany(mask =>
-                    cellGroups
+                    solverState.CellGroups
                         .Where(group => @group.All(cell =>
                             solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
                         .Select(group => new

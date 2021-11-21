@@ -4,12 +4,14 @@ internal class SolverState
 {
     public Board Board { get; }
     public Random Rng { get; }
+    public List<IGrouping<int, NamedCell>> CellGroups { get; }
     public CandidatesForEachCell Candidates { get; private set; }
 
     public SolverState(Board board, Random rng)
     {
         Board = board;
         Rng = rng;
+        CellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
     }
 
     public void SetCell(CellLocation location, int digit)
@@ -41,4 +43,15 @@ internal class SolverState
     {
         StepChangeMade = false;
     }
+
+    private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks() =>
+        Board.AllLocations()
+            .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location))
+            .Concat(Board.AllLocations()
+                .Select(location => new NamedCell(Board.Size + location.Column, $"column #{location.Column + 1}", location)))
+            .Concat(Board.AllLocations()
+                .Select(location => new NamedCell(2 * Board.Size + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location)))
+            .GroupBy(tuple => tuple.Discriminator)
+            .ToList();
+
 }
