@@ -48,7 +48,7 @@ internal class Solver
 
     private List<IGrouping<int, NamedCellGroup>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
     {
-        var rowsIndices = Enumerable.Range(0,TotalCellCount)
+        var rowsIndices = Enumerable.Range(0, TotalCellCount)
             .Select(index => new NamedCellGroup(index / 9, $"row #{index / 9 + 1}", index, index / 9, index % 9))
             .GroupBy(tuple => tuple.Discriminator);
 
@@ -229,10 +229,7 @@ internal class Solver
                     foreach (var cell in cells)
                     {
                         List<int> valuesToRemove = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
-                        foreach (int curValue in valuesToRemove)
-                        {
-                            ExcludeCandidate(cell.Row, cell.Column, curValue);
-                        }
+                        ExcludeCandidates(cell.Row, cell.Column, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
                         Console.WriteLine($"{valuesReport} cannot appear in ({cell.Row + 1}, {cell.Column + 1}).");
@@ -312,10 +309,7 @@ internal class Solver
                 stepChangeMade = true;
 
                 var valuesToClear = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
-                foreach(int valueToClear in valuesToClear)
-                {
-                    ExcludeCandidate(cell.Row, cell.Column, valueToClear);
-                }
+                ExcludeCandidates(cell.Row, cell.Column, valuesToClear);
 
                 string separator = string.Empty;
                 StringBuilder message = new StringBuilder();
@@ -439,9 +433,13 @@ internal class Solver
         cellCandidates.Get(row, column).Clear();
     }
 
-    private void ExcludeCandidate(int row, int column, int digit)
+    private void ExcludeCandidates(int row, int column, IEnumerable<int> digits)
     {
-        cellCandidates.Get(row, column).Exclude(digit);
+        foreach (int digit in digits)
+        {
+            cellCandidates.Get(row, column).Exclude(digit);
+
+        }
     }
 
     private void PrintBoardIfChanged(bool changeMade)
