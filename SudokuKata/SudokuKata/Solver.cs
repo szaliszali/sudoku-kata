@@ -87,7 +87,7 @@ internal class Solver
     {
         bool changeMade = false;
 
-        List<(string groupDescription, int candidateRow, int candidateCol, int candidate)> candidates = new();
+        List<(string groupDescription, CellLocation location, int candidate)> candidates = new();
 
         for (int digit = 1; digit <= board.Size; digit++)
         {
@@ -129,12 +129,12 @@ internal class Solver
 
                 if (rowNumberCount == 1)
                 {
-                    candidates.Add(($"Row #{cellGroup + 1}", cellGroup, indexInRow, digit));
+                    candidates.Add(($"Row #{cellGroup + 1}", new CellLocation(cellGroup, indexInRow), digit));
                 }
 
                 if (colNumberCount == 1)
                 {
-                    candidates.Add((($"Column #{cellGroup + 1}"), indexInCol, cellGroup, digit));
+                    candidates.Add((($"Column #{cellGroup + 1}"), new CellLocation(indexInCol, cellGroup), digit));
                 }
 
                 if (blockNumberCount == 1)
@@ -142,7 +142,7 @@ internal class Solver
                     int blockRow = cellGroup / 3;
                     int blockCol = cellGroup % 3;
 
-                    candidates.Add(($"Block ({blockRow + 1}, {blockCol + 1})", blockRow * 3 + indexInBlock / 3, blockCol * 3 + indexInBlock % 3, digit));
+                    candidates.Add(($"Block ({blockRow + 1}, {blockCol + 1})", new CellLocation(blockRow * 3 + indexInBlock / 3, blockCol * 3 + indexInBlock % 3), digit));
                 }
             }
         }
@@ -150,11 +150,11 @@ internal class Solver
         if (candidates.Count > 0)
         {
             int index = rng.Next(candidates.Count);
-            (string description, int row, int col, int digit) = candidates.ElementAt(index);
+            (string description, CellLocation location, int digit) = candidates.ElementAt(index);
 
-            string message = $"{description} can contain {digit} only at ({row + 1}, {col + 1}).";
+            string message = $"{description} can contain {digit} only at ({location.Row + 1}, {location.Column + 1}).";
 
-            SetCell(new CellLocation(row, col), digit);
+            SetCell(location, digit);
 
             changeMade = true;
 
