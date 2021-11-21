@@ -49,11 +49,11 @@ internal class Solver
 
     private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks() =>
         board.AllLocations()
-            .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location.Row, location.Column))
+            .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location))
             .Concat(board.AllLocations()
-                .Select(location => new NamedCell(board.Size + location.Column, $"column #{location.Column + 1}", location.Row, location.Column)))
+                .Select(location => new NamedCell(board.Size + location.Column, $"column #{location.Column + 1}", location)))
             .Concat(board.AllLocations()
-                .Select(location => new NamedCell(2 * board.Size + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location.Row, location.Column)))
+                .Select(location => new NamedCell(2 * board.Size + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location)))
             .GroupBy(tuple => tuple.Discriminator)
             .ToList();
 
@@ -175,8 +175,8 @@ internal class Solver
             twoDigitMasks
                 .SelectMany(mask =>
                     cellGroups
-                        .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Row, tuple.Column) == mask) == 2)
-                        .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Row, tuple.Column) != mask && cellCandidates.Get(tuple.Row, tuple.Column).HasAtLeastOneCommon(mask)))
+                        .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Location) == mask) == 2)
+                        .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Location) != mask && cellCandidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
                         .Select(group => new Lol2(mask, @group.First().Description, @group)))
                 .ToList();
 
@@ -188,13 +188,13 @@ internal class Solver
                     group.Cells
                         .Where(
                             cell =>
-                                cellCandidates.Get(cell.Row, cell.Column) != group.Mask &&
-                                cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(group.Mask))
+                                cellCandidates.Get(cell.Location) != group.Mask &&
+                                cellCandidates.Get(cell.Location).HasAtLeastOneCommon(group.Mask))
                         .ToList();
 
                 var maskCells =
                     group.Cells
-                        .Where(cell => cellCandidates.Get(cell.Row, cell.Column) == group.Mask)
+                        .Where(cell => cellCandidates.Get(cell.Location) == group.Mask)
                         .ToArray();
 
 
@@ -204,15 +204,15 @@ internal class Solver
                     (int lower, int upper) = temp.CandidatePair;
 
                     Console.WriteLine(
-                        $"Values {lower} and {upper} in {group.Description} are in cells ({maskCells[0].Row + 1}, {maskCells[0].Column + 1}) and ({maskCells[1].Row + 1}, {maskCells[1].Column + 1}).");
+                        $"Values {lower} and {upper} in {group.Description} are in cells ({maskCells[0].Location.Row + 1}, {maskCells[0].Location.Column + 1}) and ({maskCells[1].Location.Row + 1}, {maskCells[1].Location.Column + 1}).");
 
                     foreach (var cell in cells)
                     {
-                        List<int> valuesToRemove = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
-                        ExcludeCandidates(cell.Row, cell.Column, valuesToRemove);
+                        List<int> valuesToRemove = cellCandidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
+                        ExcludeCandidates(cell.Location.Row, cell.Location.Column, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
-                        Console.WriteLine($"{valuesReport} cannot appear in ({cell.Row + 1}, {cell.Column + 1}).");
+                        Console.WriteLine($"{valuesReport} cannot appear in ({cell.Location.Row + 1}, {cell.Location.Column + 1}).");
 
                         stepChangeMade = true;
                     }
@@ -240,20 +240,20 @@ internal class Solver
                 .SelectMany(mask =>
                     cellGroups
                         .Where(group => @group.All(cell =>
-                            board.Get(cell.Row, cell.Column) == 0 || (!mask.Contains(board.Get(cell.Row, cell.Column)))))
+                            board.Get(cell.Location) == 0 || (!mask.Contains(board.Get(cell.Location)))))
                         .Select(group => new
                         {
                             Mask = mask,
                             Description = @group.First().Description,
                             Cells = @group,
                             CellsWithMask =
-                                @group.Where(cell => board.Get(cell.Row, cell.Column) == 0 && cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask))
+                                @group.Where(cell => board.Get(cell.Location) == 0 && cellCandidates.Get(cell.Location).HasAtLeastOneCommon(mask))
                                     .ToList(),
                             CleanableCellsCount =
                                 @group.Count(
-                                    cell => board.Get(cell.Row, cell.Column) == 0 &&
-                                            cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
-                                            cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask))
+                                    cell => board.Get(cell.Location) == 0 &&
+                                            cellCandidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                                            cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
                         }))
                 .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
                 .ToList();
@@ -264,8 +264,8 @@ internal class Solver
 
             if (groupWithNMasks.Cells
                 .Any(cell =>
-                    cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneCommon(mask) &&
-                    cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(mask)))
+                    cellCandidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                    cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
             {
                 StringBuilder message = new StringBuilder();
                 message.Append($"In {groupWithNMasks.Description} values ");
@@ -273,7 +273,7 @@ internal class Solver
                 message.Append(" appear only in cells");
                 foreach (var cell in groupWithNMasks.CellsWithMask)
                 {
-                    message.Append($" ({cell.Row + 1}, {cell.Column + 1})");
+                    message.Append($" ({cell.Location.Row + 1}, {cell.Location.Column + 1})");
                 }
 
                 message.Append(" and other values cannot appear in those cells.");
@@ -283,17 +283,17 @@ internal class Solver
 
             foreach (var cell in groupWithNMasks.CellsWithMask)
             {
-                if (!cellCandidates.Get(cell.Row, cell.Column).HasAtLeastOneDifferent(groupWithNMasks.Mask))
+                if (!cellCandidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
                     continue;
 
                 stepChangeMade = true;
 
-                var valuesToClear = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
-                ExcludeCandidates(cell.Row, cell.Column, valuesToClear);
+                var valuesToClear = cellCandidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+                ExcludeCandidates(cell.Location.Row, cell.Location.Column, valuesToClear);
 
                 StringBuilder message = new StringBuilder();
                 message.AppendJoin(", ", valuesToClear);
-                message.Append($" cannot appear in cell ({cell.Row + 1}, {cell.Column + 1}).");
+                message.Append($" cannot appear in cell ({cell.Location.Row + 1}, {cell.Location.Column + 1}).");
                 Console.WriteLine(message.ToString());
             }
         }

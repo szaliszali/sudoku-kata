@@ -53,6 +53,7 @@ public class Board
         state[row * Size + col] = value;
     }
 
+    public int Get(CellLocation location) => Get(location.Row, location.Column);
     public int Get(int row, int column) => state[row * Size + column];
 
     public string Code =>

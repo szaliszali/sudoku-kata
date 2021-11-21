@@ -4,14 +4,12 @@ public class NamedCell
 {
     public int Discriminator { get; }
     public string Description { get; }
-    public int Row { get; }
-    public int Column { get; }
+    public CellLocation Location { get; }
 
-    public NamedCell(int discriminator, string description, int row, int column)
+    public NamedCell(int discriminator, string description, CellLocation location)
     {
         Discriminator = discriminator;
         Description = description;
-        Row = row;
-        Column = column;
+        Location = location;
     }
 }

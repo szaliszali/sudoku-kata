@@ -11,6 +11,7 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
         candidates = board.State.Select((_, index) => Calculate(index / 9, index % 9, board.State)).ToArray();
     }
 
+    public CandidateSet Get(CellLocation location) => Get(location.Row, location.Column);
     public CandidateSet Get(int row, int column) => candidates[row * 9 + column];
 
     private static CandidateSet Calculate(int row, int column, int[] board)
