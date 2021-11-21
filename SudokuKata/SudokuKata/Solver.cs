@@ -152,8 +152,8 @@ internal class Solver
 
                     candidates.Add(($"Block ({blockRow + 1}, {blockCol + 1})", blockRow * 3 + indexInBlock / 3, blockCol * 3 + indexInBlock % 3, digit));
                 }
-            } // for (cellGroup = 0..8)
-        } // for (digit = 1..9)
+            }
+        }
 
         if (candidates.Count > 0)
         {
