@@ -11,12 +11,13 @@ internal class Solver
     private CandidatesForEachCell cellCandidates;
     private readonly List<IGrouping<int, NamedCell>> cellGroups;
 
-    private int TotalCellCount => 9 * 9;
+    private int TotalCellCount { get; }
 
     public Solver(Random rng, Board board, int[] finalState)
     {
         this.rng = rng;
         this.board = board;
+        TotalCellCount = board.AllLocations().Count();
         this.finalState = finalState;
 
         cellGroups = BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks();
