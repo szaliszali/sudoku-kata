@@ -83,8 +83,6 @@ internal class Solver
         return changeMade;
     }
 
-    private string Capitalize(string input) => char.ToUpper(input[0]) + input.Substring(1);
-
     private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
     {
         bool changeMade = false;
@@ -96,7 +94,7 @@ internal class Solver
                     .Where(g => g.count == 1))
                 .OrderBy(g => g.digit)
                 .ThenBy(g => g.g.First().Discriminator % board.Size) // HACK: original code enumerated cell groups in different order
-                .Select(g => (description: Capitalize(g.g.First().Description), location: g.g.Single(c => cellCandidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
+                .Select(g => (description: g.g.First().Description.Capitalize(), location: g.g.Single(c => cellCandidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
                 .ToList();
 
         if (candidates.Count > 0)
