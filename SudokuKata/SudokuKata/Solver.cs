@@ -36,9 +36,9 @@ internal class Solver
             {
                 solverState.StartInnerLoop();
 
-                Apply(PickCellsWithOnlyOneCandidateLeft(), solverState);
-                if (!solverState.ChangeMade) Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(), solverState);
-                if (!solverState.ChangeMade) Apply(TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(), solverState);
+                if (!solverState.ChangeMade && !solverState.StepChangeMade) Apply(PickCellsWithOnlyOneCandidateLeft(), solverState);
+                if (!solverState.ChangeMade && !solverState.StepChangeMade) Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(), solverState);
+                if (!solverState.ChangeMade && !solverState.StepChangeMade) Apply(TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(), solverState);
                 if (!solverState.ChangeMade && !solverState.StepChangeMade) Apply(TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(), solverState);
             }
             while (solverState.StepChangeMade);
