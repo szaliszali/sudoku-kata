@@ -91,7 +91,6 @@ internal class Solver
 
         for (int digit = 1; digit <= board.Size; digit++)
         {
-            int mask = 1 << (digit - 1);
             for (int cellGroup = 0; cellGroup < board.Size; cellGroup++)
             {
                 int rowNumberCount = 0;
