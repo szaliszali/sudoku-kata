@@ -7,23 +7,23 @@ namespace SudokuKata.Test;
 internal class BoardTests
 {
     [Test]
-    public void EmptyBoardToString() => Approvals.Verify(new CharArrayBoard());
+    public void EmptyBoardToString() => Approvals.Verify(new Board());
 
     [Test]
-    public void EmptyBoardCode() => Approvals.Verify(new CharArrayBoard().Code);
+    public void EmptyBoardCode() => Approvals.Verify(new Board().Code);
 
     [Test]
     public void RandomBoard()
     {
         var rng = new Random(1);
-        var sut = new CharArrayBoard(new RandomBoard(rng).State);
+        var sut = new Board(new RandomBoard(rng).State);
         Approvals.Verify((sut, sut.Code));
     }
 
     [Test]
     public void SetCellToDigit()
     {
-        var sut = new CharArrayBoard();
+        var sut = new Board();
         sut.Set(1, 2, 3);
         Approvals.Verify(sut);
     }
@@ -31,7 +31,7 @@ internal class BoardTests
     [Test]
     public void GetCell()
     {
-        var sut = new CharArrayBoard();
+        var sut = new Board();
         sut.Set(1, 2, 3);
         Assert.Multiple(() =>
         {
@@ -43,7 +43,7 @@ internal class BoardTests
     [Test]
     public void ClearCell()
     {
-        var sut = new CharArrayBoard();
+        var sut = new Board();
         sut.Set(1, 2, 3);
         sut.Set(1, 2, 0);
         Approvals.Verify(sut);
@@ -53,7 +53,7 @@ internal class BoardTests
     public void ConstructFromStateArray()
     {
         var state = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
-        var sut = new CharArrayBoard(state);
+        var sut = new Board(state);
         Approvals.Verify((sut, sut.Code));
     }
 
@@ -61,21 +61,21 @@ internal class BoardTests
     public void ConstructFromStateArray_StateIsPreserved()
     {
         var state = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
-        var sut = new CharArrayBoard(state);
+        var sut = new Board(state);
         Assert.That(sut.State, Is.EqualTo(state));
     }
 
     [Test]
     public void InitialSateIsAllEmpty()
     {
-        var sut = new CharArrayBoard();
+        var sut = new Board();
         Assert.That(sut.State, Is.EqualTo(new int[9 * 9]));
     }
 
     [Test]
     public void SetSetsTheSate()
     {
-        var sut = new CharArrayBoard();
+        var sut = new Board();
         sut.Set(1, 2, 3);
         Assert.That(sut.State, Is.Not.EqualTo(new int[9 * 9]));
         Assert.That(sut.State[1 * 9 + 2], Is.EqualTo(3));

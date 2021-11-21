@@ -9,7 +9,7 @@ public class Program
 
     public static void Play(Random rng)
     {
-        CharArrayBoard board = ConstructFullyPopulatedBoard(rng);
+        Board board = ConstructFullyPopulatedBoard(rng);
 
         var finalState = board.State.ShallowCopy();
 
@@ -22,9 +22,9 @@ public class Program
         new Solver(rng, board, finalState).SolveBoard();
     }
 
-    private static CharArrayBoard ConstructFullyPopulatedBoard(Random rng)
+    private static Board ConstructFullyPopulatedBoard(Random rng)
     {
-        var board = new CharArrayBoard(new RandomBoard(rng).State);
+        var board = new Board(new RandomBoard(rng).State);
 
         Console.WriteLine();
         Console.WriteLine("Final look of the solved board:");
@@ -33,7 +33,7 @@ public class Program
         return board;
     }
 
-    private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, CharArrayBoard board)
+    private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, Board board)
     {
         int[] state = board.State;
 

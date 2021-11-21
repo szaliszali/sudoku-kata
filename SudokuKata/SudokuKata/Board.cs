@@ -1,10 +1,10 @@
 ﻿namespace SudokuKata;
 
-public class CharArrayBoard
+public class Board
 {
     private readonly List<char[]> fancyBoard = new();
 
-    public CharArrayBoard()
+    public Board()
     {
         // Prepare empty board
         string line = "+---+---+---+";
@@ -27,12 +27,12 @@ public class CharArrayBoard
         });
     }
 
-    public CharArrayBoard(string board) : this(board
+    public Board(string board) : this(board
         .Where(c => c == '.' || char.IsDigit(c))
         .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
     { }
 
-    public CharArrayBoard(int[] state) : this()
+    public Board(int[] state) : this()
     {
         for (var row = 0; row < 9; ++row)
             for (var column = 0; column < 9; ++column)

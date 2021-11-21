@@ -5,7 +5,7 @@ namespace SudokuKata;
 internal class Solver
 {
     private Random rng;
-    private CharArrayBoard board;
+    private Board board;
     private int[] finalState;
 
     private CandidatesForEachCell cellCandidates;
@@ -13,7 +13,7 @@ internal class Solver
 
     private int TotalCellCount => 9 * 9;
 
-    public Solver(Random rng, CharArrayBoard board, int[] finalState)
+    public Solver(Random rng, Board board, int[] finalState)
     {
         this.rng = rng;
         this.board = board;
