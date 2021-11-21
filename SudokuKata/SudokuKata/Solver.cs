@@ -33,7 +33,7 @@ internal class Solver
             bool stepChangeMade;
             do
             {
-                changeMade = PickCellsWithOnlyOneCandidateLeft() || TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
+                changeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
                 stepChangeMade = !changeMade && (
                     TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
                     || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock());
@@ -57,10 +57,19 @@ internal class Solver
             .GroupBy(tuple => tuple.Discriminator)
             .ToList();
 
-    private bool PickCellsWithOnlyOneCandidateLeft()
+    private bool Apply(IEnumerable<SetCellCommand> commands)
     {
-        bool changeMade = false;
+        var ret = false;
+        foreach (var command in commands)
+        {
+            SetCell(command.Location, command.Digit);
+            ret = true;
+        }
+        return ret;
+    }
 
+    private IEnumerable<SetCellCommand> PickCellsWithOnlyOneCandidateLeft()
+    {
         CellLocation[] singleCandidateIndices =
             cellCandidates.Zip(board.AllLocations(), (c, l) => (Location: l, CandidatesCount: c.NumCandidates))
                 .Where(tuple => tuple.CandidatesCount == 1)
@@ -74,13 +83,10 @@ internal class Solver
 
             int candidate = cellCandidates.Get(location).SingleCandidate;
 
-            SetCell(location, candidate);
-            changeMade = true;
+            yield return new SetCellCommand(location, candidate);
 
             Console.WriteLine("{0} can only contain {1}.", location.ShortString(), candidate);
         }
-
-        return changeMade;
     }
 
     private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
