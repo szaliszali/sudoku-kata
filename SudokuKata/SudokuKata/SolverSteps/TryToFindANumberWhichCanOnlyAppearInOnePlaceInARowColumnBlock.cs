@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-internal class TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock
+public class TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock
 {
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
