@@ -48,22 +48,16 @@ internal class Solver
 
     private List<IGrouping<int, NamedCell>> BuildACollectionNamedCellGroupsWhichMapsCellIndicesIntoDistinctGroupsRowsColumnsBlocks()
     {
-        var rowsIndices = Enumerable.Range(0, TotalCellCount)
-            .Select(index => new NamedCell(index / 9, $"row #{index / 9 + 1}", index / 9, index % 9))
+        var rowsIndices = board.AllLocations()
+            .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location.Row, location.Column))
             .GroupBy(tuple => tuple.Discriminator);
 
-        var columnIndices = Enumerable.Range(0, TotalCellCount)
-            .Select(index => new NamedCell(9 + index % 9, $"column #{index % 9 + 1}", index / 9, index % 9))
+        var columnIndices = board.AllLocations()
+            .Select(location => new NamedCell(9 + location.Column, $"column #{location.Column + 1}", location.Row, location.Column))
             .GroupBy(tuple => tuple.Discriminator);
 
-        var blockIndices = Enumerable.Range(0, TotalCellCount)
-            .Select(index => new
-            {
-                Row = index / 9,
-                Column = index % 9,
-                Index = index
-            })
-            .Select(tuple => new NamedCell(18 + 3 * (tuple.Row / 3) + tuple.Column / 3, $"block ({tuple.Row / 3 + 1}, {tuple.Column / 3 + 1})", tuple.Row, tuple.Column))
+        var blockIndices = board.AllLocations()
+            .Select(location => new NamedCell(18 + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location.Row, location.Column))
             .GroupBy(tuple => tuple.Discriminator);
 
         return rowsIndices.Concat(columnIndices).Concat(blockIndices).ToList();
