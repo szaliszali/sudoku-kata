@@ -102,4 +102,12 @@ internal class BoardTests
             Assert.That(sut.Get(1, 2), Is.EqualTo(3));
         });
     }
+
+    [Test]
+    public void AllLocations()
+    {
+        var sut = new Board();
+
+        Approvals.VerifyAll(sut.AllLocations(), "");
+    }
 }

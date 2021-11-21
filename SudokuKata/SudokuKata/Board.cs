@@ -64,4 +64,11 @@ public class Board
     {
         return string.Join(Environment.NewLine, fancyBoard.Select(s => new string(s)).ToArray());
     }
+
+    public IEnumerable<CellLocation> AllLocations()
+    {
+        for (var row = 0; row < 9; ++row)
+            for (var column = 0; column < 9; ++column)
+                yield return new CellLocation(row, column);
+    }
 }
