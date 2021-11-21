@@ -70,14 +70,14 @@ internal class Solver
         if (singleCandidateIndices.Length > 0)
         {
             int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
-            (int row, int col) = singleCandidateIndices[pickSingleCandidateIndex];
+            CellLocation location = singleCandidateIndices[pickSingleCandidateIndex];
 
-            int candidate = cellCandidates.Get(row, col).SingleCandidate;
+            int candidate = cellCandidates.Get(location).SingleCandidate;
 
-            SetCell(row, col, candidate);
+            SetCell(location, candidate);
             changeMade = true;
 
-            Console.WriteLine("({0}, {1}) can only contain {2}.", row + 1, col + 1, candidate);
+            Console.WriteLine("({0}, {1}) can only contain {2}.", location.Row + 1, location.Column + 1, candidate);
         }
 
         return changeMade;
@@ -154,7 +154,7 @@ internal class Solver
 
             string message = $"{description} can contain {digit} only at ({row + 1}, {col + 1}).";
 
-            SetCell(row, col, digit);
+            SetCell(new CellLocation(row, col), digit);
 
             changeMade = true;
 
@@ -385,8 +385,8 @@ internal class Solver
                 : col1 == col2 ? $"column #{col1 + 1}"
                 : $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
 
-            SetCell(row1, col1, finalState[index1]);
-            SetCell(row2, col2, finalState[index2]);
+            SetCell(new CellLocation(row1, col1), finalState[index1]);
+            SetCell(new CellLocation(row2, col2), finalState[index2]);
             changeMade = true;
 
             Console.WriteLine(
@@ -396,10 +396,10 @@ internal class Solver
         return changeMade;
     }
 
-    private void SetCell(int row, int column, int digit)
+    private void SetCell(CellLocation location, int digit)
     {
-        board.Set(row, column, digit);
-        cellCandidates.Get(row, column).Clear();
+        board.Set(location, digit);
+        cellCandidates.Get(location).Clear();
     }
 
     private void ExcludeCandidates(CellLocation location, IEnumerable<int> digits)

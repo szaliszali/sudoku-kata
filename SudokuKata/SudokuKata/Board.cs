@@ -44,6 +44,7 @@ public class Board
     private int[] state = new int[9 * 9]; // TODO hardcoded
     public virtual int[] State => state.ShallowCopy();
 
+    public void Set(CellLocation location, int value) => Set(location.Row, location.Column, value);
     public void Set(int row, int col, int value)
     {
         int rowToWrite = row + row / 3 + 1;
