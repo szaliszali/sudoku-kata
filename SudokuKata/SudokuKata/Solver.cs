@@ -48,7 +48,7 @@ internal class Solver
             }
             while (solverState.StepChangeMade);
 
-            if (!solverState.ChangeMade) Apply(LookIfTheBoardHasMultipleSolutions(solverState), solverState);
+            if (!solverState.ChangeMade) Apply(LookIfTheBoardHasMultipleSolutions(solverState, finalState), solverState);
 
             PrintBoardIfChanged(solverState.ChangeMade);
         }
@@ -234,7 +234,7 @@ internal class Solver
         }
     }
 
-    private IEnumerable<ISolverCommand> LookIfTheBoardHasMultipleSolutions(SolverState solverState)
+    private static IEnumerable<ISolverCommand> LookIfTheBoardHasMultipleSolutions(SolverState solverState, int[] finalState)
     {
         // This is the last chance to do something in this iteration:
         // If this attempt fails, board will not be entirely solved.
@@ -244,7 +244,7 @@ internal class Solver
 
         Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
 
-        for (int i = 0; i < TotalCellCount - 1; i++)
+        for (int i = 0; i < finalState.Length - 1; i++)
         {
             int row = i / solverState.Board.Size;
             int col = i % solverState.Board.Size;
@@ -255,7 +255,7 @@ internal class Solver
                 int blockIndex = 3 * (row / 3) + col / 3;
                 (int lower, int upper) = candidateSet.CandidatePair;
 
-                for (int j = i + 1; j < TotalCellCount; j++)
+                for (int j = i + 1; j < finalState.Length; j++)
                 {
                     int row1 = j / solverState.Board.Size;
                     int col1 = j % solverState.Board.Size;
