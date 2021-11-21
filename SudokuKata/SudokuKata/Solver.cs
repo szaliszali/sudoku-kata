@@ -195,8 +195,8 @@ internal class Solver
             twoDigitMasks
                 .SelectMany(mask =>
                     cellGroups
-                        .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Index / 9, tuple.Index % 9) == mask) == 2)
-                        .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Index / 9, tuple.Index % 9) != mask && cellCandidates.Get(tuple.Index / 9, tuple.Index % 9).HasAtLeastOneCommon(mask)))
+                        .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Row, tuple.Column) == mask) == 2)
+                        .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Row, tuple.Column) != mask && cellCandidates.Get(tuple.Row, tuple.Column).HasAtLeastOneCommon(mask)))
                         .Select(group => new Lol2(mask, @group.Key, @group.First().Description, @group)))
                 .ToList();
 

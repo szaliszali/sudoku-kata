@@ -4,7 +4,6 @@ public class NamedCellGroup
 {
     public int Discriminator { get; }
     public string Description { get; }
-    public int Index { get; }
     public int Row { get; }
     public int Column { get; }
 
@@ -12,7 +11,6 @@ public class NamedCellGroup
     {
         Discriminator = discriminator;
         Description = description;
-        Index = index;
         Row = row;
         Column = column;
     }
