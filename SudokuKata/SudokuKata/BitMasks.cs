@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata;
 
-internal class BitMasks
+internal static class BitMasks
 {
     public static readonly Dictionary<int, int> singleBitToIndex;
     public static readonly Dictionary<int, int> maskToOnesCount;
