@@ -33,7 +33,7 @@ internal class Solver
             bool stepChangeMade;
             do
             {
-                changeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock();
+                changeMade = Apply(PickCellsWithOnlyOneCandidateLeft()) || Apply(TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock());
                 stepChangeMade = !changeMade && (
                     TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
                     || TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock());
@@ -89,10 +89,8 @@ internal class Solver
         }
     }
 
-    private bool TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
+    private IEnumerable<SetCellCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock()
     {
-        bool changeMade = false;
-
         List<(string groupDescription, CellLocation location, int candidate)> candidates =
             Enumerable.Range(1, board.Size)
                 .SelectMany(digit => cellGroups
@@ -110,14 +108,10 @@ internal class Solver
 
             string message = $"{description} can contain {digit} only at {location.ShortString()}.";
 
-            SetCell(location, digit);
-
-            changeMade = true;
+            yield return new SetCellCommand(location, digit);
 
             Console.WriteLine(message);
         }
-
-        return changeMade;
     }
 
     private bool TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells()
