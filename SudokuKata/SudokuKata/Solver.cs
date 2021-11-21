@@ -25,7 +25,7 @@ internal class Solver
 
     public void SolveBoard()
     {
-        SolverState solverState = new(board);
+        SolverState solverState = new(board, rng);
 
         do
         {

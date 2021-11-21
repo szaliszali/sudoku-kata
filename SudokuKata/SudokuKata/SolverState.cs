@@ -2,17 +2,19 @@
 
 internal class SolverState
 {
-    private Board board;
+    public Board Board { get; }
+    public Random Rng { get; }
     public CandidatesForEachCell Candidates { get; private set; }
 
-    public SolverState(Board board)
+    public SolverState(Board board, Random rng)
     {
-        this.board = board;
+        Board = board;
+        Rng = rng;
     }
 
     public void SetCell(CellLocation location, int digit)
     {
-        board.Set(location, digit);
+        Board.Set(location, digit);
         Candidates.Get(location).Clear();
         ChangeMade = true;
     }
@@ -28,7 +30,7 @@ internal class SolverState
 
     internal void RefreshCandidates()
     {
-        Candidates = new CandidatesForEachCell(this.board);
+        Candidates = new CandidatesForEachCell(Board);
         ChangeMade = false;
     }
 
