@@ -51,9 +51,9 @@ internal class Solver
         board.AllLocations()
             .Select(location => new NamedCell(location.Row, $"row #{location.Row + 1}", location.Row, location.Column))
             .Concat(board.AllLocations()
-                .Select(location => new NamedCell(9 + location.Column, $"column #{location.Column + 1}", location.Row, location.Column)))
+                .Select(location => new NamedCell(board.Size + location.Column, $"column #{location.Column + 1}", location.Row, location.Column)))
             .Concat(board.AllLocations()
-                .Select(location => new NamedCell(18 + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location.Row, location.Column)))
+                .Select(location => new NamedCell(2 * board.Size + 3 * (location.Row / 3) + location.Column / 3, $"block ({location.Row / 3 + 1}, {location.Column / 3 + 1})", location.Row, location.Column)))
             .GroupBy(tuple => tuple.Discriminator)
             .ToList();
 
@@ -77,8 +77,8 @@ internal class Solver
             int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
             int singleCandidateIndex = singleCandidateIndices[pickSingleCandidateIndex];
 
-            int row = singleCandidateIndex / 9;
-            int col = singleCandidateIndex % 9;
+            int row = singleCandidateIndex / board.Size;
+            int col = singleCandidateIndex % board.Size;
 
             int candidate = cellCandidates.Get(row, col).SingleCandidate;
 
@@ -97,10 +97,10 @@ internal class Solver
 
         List<(string groupDescription, int candidateRow, int candidateCol, int candidate)> candidates = new();
 
-        for (int digit = 1; digit <= 9; digit++)
+        for (int digit = 1; digit <= board.Size; digit++)
         {
             int mask = 1 << (digit - 1);
-            for (int cellGroup = 0; cellGroup < 9; cellGroup++)
+            for (int cellGroup = 0; cellGroup < board.Size; cellGroup++)
             {
                 int rowNumberCount = 0;
                 int indexInRow = 0;
@@ -111,7 +111,7 @@ internal class Solver
                 int blockNumberCount = 0;
                 int indexInBlock = 0;
 
-                for (int indexInGroup = 0; indexInGroup < 9; indexInGroup++)
+                for (int indexInGroup = 0; indexInGroup < board.Size; indexInGroup++)
                 {
                     int blockRowIndex = (cellGroup / 3) * 3 + indexInGroup / 3;
                     int blockColIndex = (cellGroup % 3) * 3 + indexInGroup % 3;
@@ -323,8 +323,8 @@ internal class Solver
 
         for (int i = 0; i < TotalCellCount - 1; i++)
         {
-            int row = i / 9;
-            int col = i % 9;
+            int row = i / board.Size;
+            int col = i % board.Size;
 
             CandidateSet candidateSet = cellCandidates.Get(row, col);
             if (candidateSet.NumCandidates == 2)
@@ -334,8 +334,8 @@ internal class Solver
 
                 for (int j = i + 1; j < TotalCellCount; j++)
                 {
-                    int row1 = j / 9;
-                    int col1 = j % 9;
+                    int row1 = j / board.Size;
+                    int col1 = j % board.Size;
 
                     if (candidateSet == cellCandidates.Get(row1, col1))
                     {
@@ -383,10 +383,10 @@ internal class Solver
         {
             int pos = rng.Next(solutions.Count());
             (int index1, int index2, int digit1, int digit2) = solutions.ElementAt(pos);
-            int row1 = index1 / 9;
-            int col1 = index1 % 9;
-            int row2 = index2 / 9;
-            int col2 = index2 % 9;
+            int row1 = index1 / board.Size;
+            int col1 = index1 % board.Size;
+            int row2 = index2 / board.Size;
+            int col2 = index2 % board.Size;
 
             string description = string.Empty;
 
