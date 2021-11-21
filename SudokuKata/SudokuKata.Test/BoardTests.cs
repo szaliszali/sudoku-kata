@@ -110,4 +110,12 @@ internal class BoardTests
 
         Approvals.VerifyAll(sut.AllLocations(), "");
     }
+
+    [Test]
+    public void Size()
+    {
+        var sut = new Board();
+
+        Assert.That(sut.Size, Is.EqualTo(9));
+    }
 }

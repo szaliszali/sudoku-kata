@@ -2,6 +2,8 @@
 
 public class Board
 {
+    public int Size => 9;
+
     private readonly List<char[]> fancyBoard = new();
 
     public Board()
