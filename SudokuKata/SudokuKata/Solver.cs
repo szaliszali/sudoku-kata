@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace SudokuKata;
+﻿namespace SudokuKata;
 
 internal class Solver
 {
@@ -8,15 +6,10 @@ internal class Solver
     private Board board;
     private int[] finalState;
 
-    private CandidatesForEachCell cellCandidates;
-
-    private int TotalCellCount { get; }
-
     public Solver(Random rng, Board board, int[] finalState)
     {
         this.rng = rng;
         this.board = board;
-        TotalCellCount = board.AllLocations().Count();
         this.finalState = finalState;
     }
 
@@ -27,17 +20,16 @@ internal class Solver
         do
         {
             solverState.RefreshCandidates();
-            cellCandidates = solverState.Candidates;
 
             do
             {
                 solverState.StartInnerLoop();
 
-                Func<SolverState, IEnumerable<ISolverCommand>>[] steps = new[] {
-                    PickCellsWithOnlyOneCandidateLeft,
-                    TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock,
-                    TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells,
-                    TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock,
+                Func<SolverState, IEnumerable<ISolverCommand>>[] steps = new Func<SolverState, IEnumerable<ISolverCommand>>[] {
+                    storeState => SolverSteps.PickCellsWithOnlyOneCandidateLeft.Solve(storeState),
+                    storeState => SolverSteps.TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock.Solve(storeState),
+                    storeState => SolverSteps.TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells.Solve(storeState),
+                    storeState => SolverSteps.TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock.Solve(storeState),
                 };
 
                 foreach (var step in steps)
@@ -48,7 +40,7 @@ internal class Solver
             }
             while (solverState.StepChangeMade);
 
-            if (!solverState.ChangeMade) Apply(LookIfTheBoardHasMultipleSolutions(solverState, finalState), solverState);
+            if (!solverState.ChangeMade) Apply(SolverSteps.LookIfTheBoardHasMultipleSolutions.Solve(solverState, finalState), solverState);
 
             PrintBoardIfChanged(solverState.ChangeMade);
         }
@@ -62,21 +54,6 @@ internal class Solver
             command.Execute(solverState);
         }
     }
-
-    private static IEnumerable<ISolverCommand> PickCellsWithOnlyOneCandidateLeft(SolverState solverState) =>
-        SolverSteps.PickCellsWithOnlyOneCandidateLeft.Solve(solverState);
-
-    private static IEnumerable<ISolverCommand> TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock(SolverState solverState) =>
-        SolverSteps.TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock.Solve(solverState);
-
-    private static IEnumerable<ISolverCommand> TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells(SolverState solverState) =>
-        SolverSteps.TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells.Solve(solverState);
-
-    private static IEnumerable<ISolverCommand> TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock(SolverState solverState) =>
-        SolverSteps.TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock.Solve(solverState);
-
-    private static IEnumerable<ISolverCommand> LookIfTheBoardHasMultipleSolutions(SolverState solverState, int[] finalState) =>
-        SolverSteps.LookIfTheBoardHasMultipleSolutions.Solve(solverState, finalState);
 
     private void PrintBoardIfChanged(bool changeMade)
     {
