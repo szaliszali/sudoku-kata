@@ -311,7 +311,6 @@ internal class Solver
                 var valuesToClear = cellCandidates.Get(cell.Row, cell.Column).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
                 ExcludeCandidates(cell.Row, cell.Column, valuesToClear);
 
-                string separator = string.Empty;
                 StringBuilder message = new StringBuilder();
                 message.AppendJoin(", ", valuesToClear);
                 message.Append($" cannot appear in cell ({cell.Row + 1}, {cell.Column + 1}).");
