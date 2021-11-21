@@ -66,6 +66,12 @@ internal class Solver
             ret = true;
         }
         return ret;
+
+        void SetCell(CellLocation location, int digit)
+        {
+            board.Set(location, digit);
+            cellCandidates.Get(location).Clear();
+        }
     }
 
     private IEnumerable<SetCellCommand> PickCellsWithOnlyOneCandidateLeft()
@@ -339,12 +345,6 @@ internal class Solver
             Console.WriteLine(
                 $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState[index1]}->({row1 + 1}, {col1 + 1}), {finalState[index2]}->({row2 + 1}, {col2 + 1}).");
         }
-    }
-
-    private void SetCell(CellLocation location, int digit)
-    {
-        board.Set(location, digit);
-        cellCandidates.Get(location).Clear();
     }
 
     private void ExcludeCandidates(CellLocation location, IEnumerable<int> digits)
