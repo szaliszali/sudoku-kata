@@ -61,24 +61,16 @@ internal class Solver
     {
         bool changeMade = false;
 
-        int[] singleCandidateIndices =
-            cellCandidates
-                .Select((mask, index) => new
-                {
-                    CandidatesCount = mask.NumCandidates,
-                    Index = index
-                })
+        CellLocation[] singleCandidateIndices =
+            cellCandidates.Zip(board.AllLocations(), (c, l) => (Location: l, CandidatesCount: c.NumCandidates))
                 .Where(tuple => tuple.CandidatesCount == 1)
-                .Select(tuple => tuple.Index)
+                .Select(tuple => tuple.Location)
                 .ToArray();
 
         if (singleCandidateIndices.Length > 0)
         {
             int pickSingleCandidateIndex = rng.Next(singleCandidateIndices.Length);
-            int singleCandidateIndex = singleCandidateIndices[pickSingleCandidateIndex];
-
-            int row = singleCandidateIndex / board.Size;
-            int col = singleCandidateIndex % board.Size;
+            (int row, int col) = singleCandidateIndices[pickSingleCandidateIndex];
 
             int candidate = cellCandidates.Get(row, col).SingleCandidate;
 
