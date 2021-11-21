@@ -87,7 +87,7 @@ internal class LookIfTheBoardHasMultipleSolutions
             yield return new SetCellCommand(new CellLocation(row1, col1), finalState[index1]);
             yield return new SetCellCommand(new CellLocation(row2, col2), finalState[index2]);
 
-            Console.WriteLine(
+            yield return new PrintMessageCommand(
                 $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState[index1]}->({row1 + 1}, {col1 + 1}), {finalState[index2]}->({row2 + 1}, {col2 + 1}).");
         }
     }

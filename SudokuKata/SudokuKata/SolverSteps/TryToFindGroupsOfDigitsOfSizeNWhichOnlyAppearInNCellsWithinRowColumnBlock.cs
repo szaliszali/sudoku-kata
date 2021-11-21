@@ -57,7 +57,7 @@ internal class TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowCol
 
                 message.Append(" and other values cannot appear in those cells.");
 
-                Console.WriteLine(message.ToString());
+                yield return new PrintMessageCommand(message.ToString());
             }
 
             foreach (var cell in groupWithNMasks.CellsWithMask)
@@ -71,7 +71,7 @@ internal class TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowCol
                 StringBuilder message = new StringBuilder();
                 message.AppendJoin(", ", valuesToClear);
                 message.Append($" cannot appear in cell {cell.Location.ShortString()}.");
-                Console.WriteLine(message.ToString());
+                yield return new PrintMessageCommand(message.ToString());
             }
         }
     }

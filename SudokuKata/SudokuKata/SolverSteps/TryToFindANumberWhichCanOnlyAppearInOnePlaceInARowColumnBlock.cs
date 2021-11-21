@@ -23,7 +23,7 @@ internal class TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock
 
             yield return new SetCellCommand(location, digit);
 
-            Console.WriteLine(message);
+            yield return new PrintMessageCommand(message);
         }
     }
 }

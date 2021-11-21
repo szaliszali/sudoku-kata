@@ -39,7 +39,7 @@ internal class TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOth
                     CandidateSet temp = group.Mask;
                     (int lower, int upper) = temp.CandidatePair;
 
-                    Console.WriteLine(
+                    yield return new PrintMessageCommand(
                         $"Values {lower} and {upper} in {group.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
 
                     foreach (var cell in cells)
@@ -48,7 +48,7 @@ internal class TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOth
                         yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
-                        Console.WriteLine($"{valuesReport} cannot appear in {cell.Location.ShortString()}.");
+                        yield return new PrintMessageCommand($"{valuesReport} cannot appear in {cell.Location.ShortString()}.");
                     }
                 }
             }
