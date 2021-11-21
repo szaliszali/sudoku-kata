@@ -50,6 +50,7 @@ internal class SingleCandidate
 
         Assert.That(result, Is.EqualTo(new ISolverCommand[] {
             new SetCellCommand(new CellLocation(0,6),7),
+            new PrintMessageCommand("(1, 7) can only contain 7."),
         }));
     }
 
@@ -79,9 +80,11 @@ internal class SingleCandidate
         {
             Assert.That(resultWithSeed1, Is.EqualTo(new ISolverCommand[] {
                 new SetCellCommand(new CellLocation(0,6),7),
+                new PrintMessageCommand("(1, 7) can only contain 7."),
             }), "Seed 1");
             Assert.That(resultWithSeed2, Is.EqualTo(new ISolverCommand[] {
                 new SetCellCommand(new CellLocation(6,2),5),
+                new PrintMessageCommand("(7, 3) can only contain 5."),
             }), "Seed 2");
         });
     }

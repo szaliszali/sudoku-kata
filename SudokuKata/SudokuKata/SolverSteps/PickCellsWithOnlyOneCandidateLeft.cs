@@ -19,7 +19,7 @@ public class PickCellsWithOnlyOneCandidateLeft
 
             yield return new SetCellCommand(location, candidate);
 
-            Console.WriteLine("{0} can only contain {1}.", location.ShortString(), candidate);
+            yield return new PrintMessageCommand(string.Format("{0} can only contain {1}.", location.ShortString(), candidate));
         }
     }
 }
