@@ -197,7 +197,7 @@ internal class Solver
                     cellGroups
                         .Where(group => group.Count(tuple => cellCandidates.Get(tuple.Row, tuple.Column) == mask) == 2)
                         .Where(group => group.Any(tuple => cellCandidates.Get(tuple.Row, tuple.Column) != mask && cellCandidates.Get(tuple.Row, tuple.Column).HasAtLeastOneCommon(mask)))
-                        .Select(group => new Lol2(mask, @group.Key, @group.First().Description, @group)))
+                        .Select(group => new Lol2(mask, @group.First().Description, @group)))
                 .ToList();
 
         if (groups.Any())
