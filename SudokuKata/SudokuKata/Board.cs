@@ -36,9 +36,9 @@ public class Board
 
     public Board(int[] state) : this()
     {
-        for (var row = 0; row < 9; ++row)
-            for (var column = 0; column < 9; ++column)
-                Set(row, column, state[row * 9 + column]);
+        for (var row = 0; row < Size; ++row)
+            for (var column = 0; column < Size; ++column)
+                Set(row, column, state[row * Size + column]);
     }
 
     private int[] state = new int[9 * 9]; // TODO hardcoded
@@ -50,10 +50,10 @@ public class Board
         int colToWrite = col + col / 3 + 1;
 
         fancyBoard[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
-        state[row * 9 + col] = value;
+        state[row * Size + col] = value;
     }
 
-    public int Get(int row, int column) => state[row * 9 + column];
+    public int Get(int row, int column) => state[row * Size + column];
 
     public string Code =>
         string.Join(string.Empty, fancyBoard.Select(s => new string(s)).ToArray())
@@ -69,8 +69,8 @@ public class Board
 
     public IEnumerable<CellLocation> AllLocations()
     {
-        for (var row = 0; row < 9; ++row)
-            for (var column = 0; column < 9; ++column)
+        for (var row = 0; row < Size; ++row)
+            for (var column = 0; column < Size; ++column)
                 yield return new CellLocation(row, column);
     }
 }
