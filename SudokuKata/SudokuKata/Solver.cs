@@ -388,20 +388,10 @@ internal class Solver
             int row2 = index2 / board.Size;
             int col2 = index2 % board.Size;
 
-            string description = string.Empty;
-
-            if (row1 == row2)
-            {
-                description = $"row #{row1 + 1}";
-            }
-            else if (col1 == col2)
-            {
-                description = $"column #{col1 + 1}";
-            }
-            else
-            {
-                description = $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
-            }
+            string description =
+                row1 == row2 ? $"row #{row1 + 1}"
+                : col1 == col2 ? $"column #{col1 + 1}"
+                : $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
 
             SetCell(row1, col1, finalState[index1]);
             SetCell(row2, col2, finalState[index2]);
