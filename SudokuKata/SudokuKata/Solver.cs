@@ -77,7 +77,7 @@ internal class Solver
             SetCell(location, candidate);
             changeMade = true;
 
-            Console.WriteLine("({0}, {1}) can only contain {2}.", location.Row + 1, location.Column + 1, candidate);
+            Console.WriteLine("{0} can only contain {1}.", location.ShortString(), candidate);
         }
 
         return changeMade;
@@ -104,7 +104,7 @@ internal class Solver
             int index = rng.Next(candidates.Count);
             (string description, CellLocation location, int digit) = candidates.ElementAt(index);
 
-            string message = $"{description} can contain {digit} only at ({location.Row + 1}, {location.Column + 1}).";
+            string message = $"{description} can contain {digit} only at {location.ShortString()}.";
 
             SetCell(location, digit);
 
@@ -156,7 +156,7 @@ internal class Solver
                     (int lower, int upper) = temp.CandidatePair;
 
                     Console.WriteLine(
-                        $"Values {lower} and {upper} in {group.Description} are in cells ({maskCells[0].Location.Row + 1}, {maskCells[0].Location.Column + 1}) and ({maskCells[1].Location.Row + 1}, {maskCells[1].Location.Column + 1}).");
+                        $"Values {lower} and {upper} in {group.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
 
                     foreach (var cell in cells)
                     {
@@ -164,7 +164,7 @@ internal class Solver
                         ExcludeCandidates(cell.Location, valuesToRemove);
 
                         string valuesReport = string.Join(", ", valuesToRemove.ToArray());
-                        Console.WriteLine($"{valuesReport} cannot appear in ({cell.Location.Row + 1}, {cell.Location.Column + 1}).");
+                        Console.WriteLine($"{valuesReport} cannot appear in {cell.Location.ShortString()}.");
 
                         stepChangeMade = true;
                     }
@@ -225,7 +225,7 @@ internal class Solver
                 message.Append(" appear only in cells");
                 foreach (var cell in groupWithNMasks.CellsWithMask)
                 {
-                    message.Append($" ({cell.Location.Row + 1}, {cell.Location.Column + 1})");
+                    message.Append($" {cell.Location.ShortString()}");
                 }
 
                 message.Append(" and other values cannot appear in those cells.");
@@ -245,7 +245,7 @@ internal class Solver
 
                 StringBuilder message = new StringBuilder();
                 message.AppendJoin(", ", valuesToClear);
-                message.Append($" cannot appear in cell ({cell.Location.Row + 1}, {cell.Location.Column + 1}).");
+                message.Append($" cannot appear in cell {cell.Location.ShortString()}.");
                 Console.WriteLine(message.ToString());
             }
         }
