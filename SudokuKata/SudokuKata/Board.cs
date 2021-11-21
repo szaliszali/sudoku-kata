@@ -2,11 +2,21 @@
 
 public class Board
 {
-    public int Size => 9;
+    private const int DefaultSize = 9;
+
+    public int Size => DefaultSize;
 
     private readonly List<char[]> fancyBoard = new();
 
-    public Board()
+    public Board() : this(new int[DefaultSize * DefaultSize])
+    { }
+
+    public Board(string board) : this(board
+        .Where(c => c == '.' || char.IsDigit(c))
+        .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
+    { }
+
+    public Board(int[] initialState)
     {
         // Prepare empty board
         string line = "+---+---+---+";
@@ -27,21 +37,15 @@ public class Board
             middle.ToCharArray(),
             line.ToCharArray()
         });
-    }
 
-    public Board(string board) : this(board
-        .Where(c => c == '.' || char.IsDigit(c))
-        .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
-    { }
+        state = new int[Size * Size];
 
-    public Board(int[] state) : this()
-    {
         for (var row = 0; row < Size; ++row)
             for (var column = 0; column < Size; ++column)
-                Set(row, column, state[row * Size + column]);
+                Set(row, column, initialState[row * Size + column]);
     }
 
-    private int[] state = new int[9 * 9]; // TODO hardcoded
+    private readonly int[] state;
     public virtual int[] State => state.ShallowCopy();
 
     public void Set(CellLocation location, int value) => Set(location.Row, location.Column, value);
