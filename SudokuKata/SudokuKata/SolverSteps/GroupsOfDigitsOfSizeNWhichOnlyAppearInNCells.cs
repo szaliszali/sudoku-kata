@@ -4,6 +4,9 @@ namespace SudokuKata.SolverSteps;
 
 public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>
 {
+    // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
+    // All other candidates can then be removed from those cells
+
     private SolverState solverState;
 
     public GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(SolverState solverState)
@@ -13,9 +16,6 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
 
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
-        // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
-        // All other candidates can then be removed from those cells
-
         ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> step = new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState);
         return step.Execute();
     }
