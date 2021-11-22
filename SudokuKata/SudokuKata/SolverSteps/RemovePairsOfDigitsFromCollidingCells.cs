@@ -57,7 +57,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
                     solverState.CellGroups
                         .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
                         .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
-                        .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, @group.First().Description, @group)))
+                        .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, group.First().Description, group)))
                 .ToList();
     }
 
