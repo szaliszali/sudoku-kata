@@ -47,10 +47,7 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
             var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
             yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
 
-            StringBuilder message = new StringBuilder();
-            message.AppendJoin(", ", valuesToClear);
-            message.Append($" cannot appear in cell {cell.Location.ShortString()}.");
-            yield return new PrintMessageCommand(message.ToString());
+            yield return new PrintMessageCommand(new StringBuilder().AppendJoin(", ", valuesToClear).Append($" cannot appear in cell {cell.Location.ShortString()}.").ToString());
         }
     }
 
