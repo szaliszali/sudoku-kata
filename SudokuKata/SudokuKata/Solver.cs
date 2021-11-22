@@ -1,4 +1,6 @@
-﻿namespace SudokuKata;
+﻿using SudokuKata.SolverSteps;
+
+namespace SudokuKata;
 
 internal class Solver
 {
@@ -40,7 +42,11 @@ internal class Solver
             }
             while (solverState.StepChangeMade);
 
-            if (!solverState.ChangeMade) Apply(SolverSteps.BoardHasMultipleSolutions.Solve(solverState, finalState), solverState);
+            if (!solverState.ChangeMade)
+            {
+                ISolverStep step = new BoardHasMultipleSolutions(solverState, finalState);
+                Apply(step.Execute(), solverState);
+            }
 
             PrintBoardIfChanged(solverState.ChangeMade);
         }

@@ -36,7 +36,8 @@ internal class MultipleSolutions
         var solverState = new SolverState(board, new Random(1));
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.BoardHasMultipleSolutions.Solve(solverState, solvedBoard.State);
+        ISolverStep sut = new BoardHasMultipleSolutions(solverState, solvedBoard.State);
+        var result = sut.Execute();
 
         Assert.That(result, Is.Empty);
     }
@@ -74,11 +75,13 @@ internal class MultipleSolutions
             +---+---+---+");
         var solverStateWithSeed1 = new SolverState(board, new Random(1));
         solverStateWithSeed1.RefreshCandidates();
-        var resultWithSeed1 = SudokuKata.SolverSteps.BoardHasMultipleSolutions.Solve(solverStateWithSeed1, solvedBoard.State);
+        ISolverStep sutWithSeed1 = new BoardHasMultipleSolutions(solverStateWithSeed1, solvedBoard.State);
+        var resultWithSeed1 = sutWithSeed1.Execute();
 
         var solverStateWithSeed2 = new SolverState(board, new Random(2));
         solverStateWithSeed2.RefreshCandidates();
-        var resultWithSeed2 = SudokuKata.SolverSteps.BoardHasMultipleSolutions.Solve(solverStateWithSeed2, solvedBoard.State);
+        ISolverStep sutWithSeed2 = new BoardHasMultipleSolutions(solverStateWithSeed2, solvedBoard.State);
+        var resultWithSeed2 = sutWithSeed2.Execute();
 
         Assert.Multiple(() =>
         {

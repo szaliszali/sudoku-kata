@@ -5,16 +5,10 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
     private readonly SolverState solverState;
     private readonly int[] finalState;
 
-    private BoardHasMultipleSolutions(SolverState solverState, int[] finalState)
+    public BoardHasMultipleSolutions(SolverState solverState, int[] finalState)
     {
         this.solverState = solverState;
         this.finalState = finalState;
-    }
-
-    public static IEnumerable<ISolverCommand> Solve(SolverState solverState, int[] finalState)
-    {
-        ISolverStep<BoardHasMultipleSolutionsDetection> step = new BoardHasMultipleSolutions(solverState, finalState);
-        return step.Act(step.Detect());
     }
 
     IEnumerable<ISolverCommand> ISolverStep<BoardHasMultipleSolutionsDetection>.Act(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections)
