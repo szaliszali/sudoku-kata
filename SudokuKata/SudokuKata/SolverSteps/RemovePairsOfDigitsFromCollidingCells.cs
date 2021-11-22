@@ -49,7 +49,10 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
     IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Detect()
     {
         IEnumerable<CandidateSet> twoDigitMasks =
-            solverState.Candidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
+            solverState.Candidates
+            .Where(mask => mask.NumCandidates == 2)
+            .Distinct()
+            .ToList();
 
         return
             twoDigitMasks
