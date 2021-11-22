@@ -2,7 +2,7 @@
 
 public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>
 {
-    private SolverState solverState;
+    private readonly SolverState solverState;
 
     public RemovePairsOfDigitsFromCollidingCells(SolverState solverState)
     {

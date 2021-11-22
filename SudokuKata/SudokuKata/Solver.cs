@@ -4,9 +4,9 @@ namespace SudokuKata;
 
 internal class Solver
 {
-    private Random rng;
-    private Board board;
-    private int[] finalState;
+    private readonly Random rng;
+    private readonly Board board;
+    private readonly int[] finalState;
 
     public Solver(Random rng, Board board, int[] finalState)
     {

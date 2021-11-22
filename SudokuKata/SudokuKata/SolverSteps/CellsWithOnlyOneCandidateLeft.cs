@@ -2,7 +2,7 @@
 
 public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
 {
-    private SolverState solverState;
+    private readonly SolverState solverState;
 
     public CellsWithOnlyOneCandidateLeft(SolverState solverState)
     {

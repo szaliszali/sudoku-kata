@@ -2,7 +2,7 @@
 
 public class RandomBoard
 {
-    private int[] state;
+    private readonly int[] state;
 
     public int[] State => state;
 

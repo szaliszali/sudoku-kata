@@ -2,7 +2,7 @@
 
 public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>
 {
-    private SolverState solverState;
+    private readonly SolverState solverState;
 
     public NumberCanOnlyAppearInOnePlace(SolverState solverState)
     {
