@@ -17,7 +17,7 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
         // All other candidates can then be removed from those cells
 
         ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> step = new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState);
-        return step.Act(step.Detect());
+        return step.Execute();
     }
 
     IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections)

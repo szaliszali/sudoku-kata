@@ -12,7 +12,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
         ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection> step = new RemovePairsOfDigitsFromCollidingCells(solverState);
-        return step.Act(step.Detect());
+        return step.Execute();
     }
 
     IEnumerable<ISolverCommand> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Act(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)

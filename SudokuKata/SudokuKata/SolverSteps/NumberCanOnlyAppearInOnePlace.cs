@@ -12,7 +12,7 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
         ISolverStep<NumberCanOnlyAppearInOnePlaceDetection> step = new NumberCanOnlyAppearInOnePlace(solverState);
-        return step.Act(step.Detect());
+        return step.Execute();
     }
 
     IEnumerable<ISolverCommand> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Act(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections)
