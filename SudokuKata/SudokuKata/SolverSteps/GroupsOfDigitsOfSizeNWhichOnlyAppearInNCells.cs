@@ -2,41 +2,27 @@
 
 namespace SudokuKata.SolverSteps;
 
-public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
+public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>
 {
+    private SolverState solverState;
+
+    public GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(SolverState solverState)
+    {
+        this.solverState = solverState;
+    }
+
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
         // When a set of N digits only appears in N cells within row/column/block, then no other digit can appear in the same set of cells
         // All other candidates can then be removed from those cells
 
-        IEnumerable<CandidateSet> masks =
-            CandidateSet.AllPossibleCandidateSets
-                .Where(cs => cs.NumCandidates > 1)
-                .ToList();
+        ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> step = new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState);
+        return step.Act(step.Detect());
+    }
 
-        var groupsWithNMasks =
-            masks
-                .SelectMany(mask =>
-                    solverState.CellGroups
-                        .Where(group => @group.All(cell =>
-                            solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
-                        .Select(group => new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection(
-                            Mask: mask,
-                            Description: @group.First().Description,
-                            Cells: @group,
-                            CellsWithMask:
-                                @group.Where(cell => solverState.Board.Get(cell.Location) == 0 && solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask))
-                                    .ToList(),
-                            CleanableCellsCount:
-                                @group.Count(
-                                    cell => solverState.Board.Get(cell.Location) == 0 &&
-                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
-                        )))
-                .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
-                .ToList();
-
-        foreach (var groupWithNMasks in groupsWithNMasks)
+    IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections)
+    {
+        foreach (var groupWithNMasks in detections)
         {
             CandidateSet mask = groupWithNMasks.Mask;
 
@@ -73,5 +59,35 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
                 yield return new PrintMessageCommand(message.ToString());
             }
         }
+    }
+
+    IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Detect()
+    {
+        IEnumerable<CandidateSet> masks =
+        CandidateSet.AllPossibleCandidateSets
+            .Where(cs => cs.NumCandidates > 1)
+            .ToList();
+
+        return
+            masks
+                .SelectMany(mask =>
+                    solverState.CellGroups
+                        .Where(group => @group.All(cell =>
+                            solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
+                        .Select(group => new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection(
+                            Mask: mask,
+                            Description: @group.First().Description,
+                            Cells: @group,
+                            CellsWithMask:
+                                @group.Where(cell => solverState.Board.Get(cell.Location) == 0 && solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask))
+                                    .ToList(),
+                            CleanableCellsCount:
+                                @group.Count(
+                                    cell => solverState.Board.Get(cell.Location) == 0 &&
+                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
+                        )))
+                .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
+                .ToList();
     }
 }
