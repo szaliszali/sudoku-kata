@@ -19,7 +19,7 @@ public class EliminateCandidatesCommand : ISolverCommand
 
     public override string ToString()
     {
-        return $"Location: {Location}, Digits: {string.Join(", ", Digits)}";
+        return $"EliminateCandidatesCommand {{ Location: {Location}, Digits: {string.Join(", ", Digits)} }}";
     }
 
     public override bool Equals(object obj)

@@ -17,4 +17,11 @@ internal class EliminateCandidates
 
         Assert.That(solverState.Candidates.Get(1, 2).AllCandidates, Is.EqualTo(new[] { 1, 2, 5, 6, 7, 8, 9 }));
     }
+
+    [Test]
+    public void CustomToString()
+    {
+        ISolverCommand sut = new EliminateCandidatesCommand(new CellLocation(1, 2), new[] { 3, 4 });
+        Assert.That(sut.ToString(), Is.EqualTo("EliminateCandidatesCommand { Location: CellLocation { Row = 1, Column = 2 }, Digits: 3, 4 }"));
+    }
 }
