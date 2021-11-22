@@ -2,7 +2,7 @@
 
 namespace SudokuKata.SolverSteps;
 
-public class TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock
+public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
 {
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {

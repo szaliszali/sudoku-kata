@@ -29,7 +29,7 @@ internal class Solver
                     storeState => SolverSteps.CellsWithOnlyOneCandidateLeft.Solve(storeState),
                     storeState => SolverSteps.NumberCanOnlyAppearInOnePlace.Solve(storeState),
                     storeState => SolverSteps.TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells.Solve(storeState),
-                    storeState => SolverSteps.TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock.Solve(storeState),
+                    storeState => SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells.Solve(storeState),
                 };
 
                 foreach (var step in steps)
