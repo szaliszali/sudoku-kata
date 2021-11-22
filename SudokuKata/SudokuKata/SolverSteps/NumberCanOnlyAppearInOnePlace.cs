@@ -11,14 +11,11 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
 
     IEnumerable<ISolverCommand> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Act(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections)
     {
-        if (detections.Count > 0)
-        {
-            (string description, CellLocation location, int digit) = detections.PickOneRandomly(solverState.Rng);
+        (string description, CellLocation location, int digit) = detections.Single();
 
-            yield return new SetCellCommand(location, digit);
+        yield return new SetCellCommand(location, digit);
 
-            yield return new PrintMessageCommand($"{description} can contain {digit} only at {location.ShortString()}.");
-        }
+        yield return new PrintMessageCommand($"{description} can contain {digit} only at {location.ShortString()}.");
     }
 
     IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Detect()
@@ -32,5 +29,13 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
                 .ThenBy(g => g.g.First().Discriminator % solverState.Board.Size) // HACK: original code enumerated cell groups in different order
                 .Select(g => new NumberCanOnlyAppearInOnePlaceDetection(g.g.First().Description.Capitalize(), g.g.Single(c => solverState.Candidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
                 .ToList();
+    }
+
+    IEnumerable<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Pick(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections)
+    {
+        if (detections.Count > 0)
+        {
+            yield return detections.PickOneRandomly(solverState.Rng);
+        }
     }
 }

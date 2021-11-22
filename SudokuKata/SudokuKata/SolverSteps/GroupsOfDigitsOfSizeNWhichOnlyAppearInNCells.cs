@@ -80,4 +80,9 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
                 .Where(group => group.CellsWithMask.Count() == group.Mask.NumCandidates)
                 .ToList();
     }
+
+    IEnumerable<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Pick(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections)
+    {
+        return detections;
+    }
 }

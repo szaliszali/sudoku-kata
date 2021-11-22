@@ -13,7 +13,7 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
     {
         if (detections.Count > 0)
         {
-            CellLocation location = detections.PickOneRandomly(solverState.Rng);
+            CellLocation location = detections.Single();
 
             int candidate = solverState.Candidates.Get(location).SingleCandidate;
 
@@ -30,5 +30,11 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
             .Where(tuple => tuple.CandidatesCount == 1)
             .Select(tuple => tuple.Location)
             .ToArray();
+    }
+
+    IEnumerable<CellLocation> ISolverStep<CellLocation>.Pick(IReadOnlyList<CellLocation> detections)
+    {
+        if (detections.Count > 0)
+            yield return detections.PickOneRandomly(solverState.Rng);
     }
 }

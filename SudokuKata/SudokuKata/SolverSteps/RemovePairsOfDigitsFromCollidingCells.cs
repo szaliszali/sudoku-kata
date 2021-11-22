@@ -61,4 +61,9 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
                         .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, @group.First().Description, @group)))
                 .ToList();
     }
+
+    IEnumerable<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Pick(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)
+    {
+        return detections;
+    }
 }
