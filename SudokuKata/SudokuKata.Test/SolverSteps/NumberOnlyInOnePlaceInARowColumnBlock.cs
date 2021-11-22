@@ -22,7 +22,8 @@ internal class NumberOnlyInOnePlaceInARowColumnBlock
         var solverState = new SolverState(board, new Random(1));
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.NumberCanOnlyAppearInOnePlace.Solve(solverState);
+        ISolverStep sut = new NumberCanOnlyAppearInOnePlace(solverState);
+        var result = sut.Execute();
 
         Assert.That(result, Is.Empty);
     }
@@ -47,11 +48,13 @@ internal class NumberOnlyInOnePlaceInARowColumnBlock
 
         var solverStateWithSeed1 = new SolverState(board, new Random(1));
         solverStateWithSeed1.RefreshCandidates();
-        var resultWithSeed1 = SudokuKata.SolverSteps.NumberCanOnlyAppearInOnePlace.Solve(solverStateWithSeed1);
+        ISolverStep sutWithSeed1 = new NumberCanOnlyAppearInOnePlace(solverStateWithSeed1);
+        var resultWithSeed1 = sutWithSeed1.Execute();
 
         var solverStateWithSeed2 = new SolverState(board, new Random(2));
         solverStateWithSeed2.RefreshCandidates();
-        var resultWithSeed2 = SudokuKata.SolverSteps.NumberCanOnlyAppearInOnePlace.Solve(solverStateWithSeed2);
+        ISolverStep sutWithSeed2 = new NumberCanOnlyAppearInOnePlace(solverStateWithSeed2);
+        var resultWithSeed2 = sutWithSeed2.Execute();
 
         Assert.Multiple(() =>
         {
