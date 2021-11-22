@@ -11,16 +11,13 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
 
     IEnumerable<ISolverCommand> ISolverStep<CellLocation>.Act(IReadOnlyList<CellLocation> detections)
     {
-        if (detections.Count > 0)
-        {
-            CellLocation location = detections.Single();
+        CellLocation location = detections.Single();
 
-            int candidate = solverState.Candidates.Get(location).SingleCandidate;
+        int candidate = solverState.Candidates.Get(location).SingleCandidate;
 
-            yield return new SetCellCommand(location, candidate);
+        yield return new SetCellCommand(location, candidate);
 
-            yield return new PrintMessageCommand(string.Format("{0} can only contain {1}.", location.ShortString(), candidate));
-        }
+        yield return new PrintMessageCommand(string.Format("{0} can only contain {1}.", location.ShortString(), candidate));
     }
 
     IReadOnlyList<CellLocation> ISolverStep<CellLocation>.Detect()
