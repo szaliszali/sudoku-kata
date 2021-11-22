@@ -2,24 +2,7 @@
 
 internal class MultipleSolutions
 {
-    [Test]
-    public void SingleSolution()
-    {
-        var board = new Board(@"
-            +---+---+---+
-            |971|.2.|58.|
-            |832|745|19.|
-            |546|819|7.2|
-            +---+---+---+
-            |4..|..1|2.5|
-            |327|5..|9.1|
-            |1.5|..2|..8|
-            +---+---+---+
-            |2..|..6|457|
-            |654|297|8.3|
-            |7..|.5.|6.9|
-            +---+---+---+");
-        var solvedBoard = new Board(@"
+    private const string FullySolvedBoard = @"
             +---+---+---+
             |971|623|584|
             |832|745|196|
@@ -32,20 +15,8 @@ internal class MultipleSolutions
             |289|136|457|
             |654|297|813|
             |713|458|629|
-            +---+---+---+");
-        var solverState = new SolverState(board, new Random(1));
-        solverState.RefreshCandidates();
-
-        ISolverStep sut = new BoardHasMultipleSolutions(solverState, solvedBoard.State);
-        var result = sut.Execute();
-
-        Assert.That(result, Is.Empty);
-    }
-
-    [Test]
-    public void SeveralMultipleSolutionsExist_PickedByRandom()
-    {
-        var board = new Board(@"
+            +---+---+---+";
+    private const string AmbiguousBoard = @"
             +---+---+---+
             |971|.2.|58.|
             |832|7.5|19.|
@@ -58,21 +29,41 @@ internal class MultipleSolutions
             |2..|..6|457|
             |654|.97|8.3|
             |7..|.5.|6.9|
-            +---+---+---+");
-        var solvedBoard = new Board(@"
+            +---+---+---+";
+    private const string DisambiguatedBoard = @"
             +---+---+---+
-            |971|623|584|
-            |832|745|196|
-            |546|819|732|
+            |971|.2.|58.|
+            |832|745|19.|
+            |546|819|7.2|
             +---+---+---+
-            |498|361|275|
-            |327|584|961|
-            |165|972|348|
+            |4..|..1|2.5|
+            |327|5..|9.1|
+            |1.5|..2|..8|
             +---+---+---+
-            |289|136|457|
-            |654|297|813|
-            |713|458|629|
-            +---+---+---+");
+            |2..|..6|457|
+            |654|297|8.3|
+            |7..|.5.|6.9|
+            +---+---+---+";
+
+    [Test]
+    public void SingleSolution()
+    {
+        var board = new Board(DisambiguatedBoard);
+        var solvedBoard = new Board(FullySolvedBoard);
+        var solverState = new SolverState(board, new Random(1));
+        solverState.RefreshCandidates();
+
+        ISolverStep sut = new BoardHasMultipleSolutions(solverState, solvedBoard.State);
+        var result = sut.Execute();
+
+        Assert.That(result, Is.Empty);
+    }
+
+    [Test]
+    public void SeveralMultipleSolutionsExist_PickedByRandom()
+    {
+        var board = new Board(AmbiguousBoard);
+        var solvedBoard = new Board(FullySolvedBoard);
         var solverStateWithSeed1 = new SolverState(board, new Random(1));
         solverStateWithSeed1.RefreshCandidates();
         ISolverStep sutWithSeed1 = new BoardHasMultipleSolutions(solverStateWithSeed1, solvedBoard.State);
