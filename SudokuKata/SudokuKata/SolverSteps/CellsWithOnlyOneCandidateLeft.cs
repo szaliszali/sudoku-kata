@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public class PickCellsWithOnlyOneCandidateLeft
+public class CellsWithOnlyOneCandidateLeft
 {
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {

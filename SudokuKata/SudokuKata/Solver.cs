@@ -26,7 +26,7 @@ internal class Solver
                 solverState.StartInnerLoop();
 
                 Func<SolverState, IEnumerable<ISolverCommand>>[] steps = new Func<SolverState, IEnumerable<ISolverCommand>>[] {
-                    storeState => SolverSteps.PickCellsWithOnlyOneCandidateLeft.Solve(storeState),
+                    storeState => SolverSteps.CellsWithOnlyOneCandidateLeft.Solve(storeState),
                     storeState => SolverSteps.TryToFindANumberWhichCanOnlyAppearInOnePlaceInARowColumnBlock.Solve(storeState),
                     storeState => SolverSteps.TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells.Solve(storeState),
                     storeState => SolverSteps.TryToFindGroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsWithinRowColumnBlock.Solve(storeState),

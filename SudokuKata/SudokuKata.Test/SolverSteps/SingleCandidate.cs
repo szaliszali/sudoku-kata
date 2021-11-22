@@ -21,7 +21,7 @@ internal class SingleCandidate
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = PickCellsWithOnlyOneCandidateLeft.Solve(solverState);
+        var result = CellsWithOnlyOneCandidateLeft.Solve(solverState);
 
         Assert.That(result, Is.Empty);
     }
@@ -43,7 +43,7 @@ internal class SingleCandidate
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = PickCellsWithOnlyOneCandidateLeft.Solve(solverState);
+        var result = CellsWithOnlyOneCandidateLeft.Solve(solverState);
 
         Assert.That(result, Is.EqualTo(new ISolverCommand[] {
             new SetCellCommand(new CellLocation(0,6),7),
@@ -67,11 +67,11 @@ internal class SingleCandidate
 
         var solverStateWithSeed1 = new SolverState(board, new Random(1));
         solverStateWithSeed1.RefreshCandidates();
-        var resultWithSeed1 = PickCellsWithOnlyOneCandidateLeft.Solve(solverStateWithSeed1);
+        var resultWithSeed1 = CellsWithOnlyOneCandidateLeft.Solve(solverStateWithSeed1);
 
         var solverStateWithSeed2 = new SolverState(board, new Random(2));
         solverStateWithSeed2.RefreshCandidates();
-        var resultWithSeed2 = PickCellsWithOnlyOneCandidateLeft.Solve(solverStateWithSeed2);
+        var resultWithSeed2 = CellsWithOnlyOneCandidateLeft.Solve(solverStateWithSeed2);
 
         Assert.Multiple(() =>
         {
