@@ -1,9 +1,14 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public interface ISolverStep<TDetection>
+public interface ISolverStep
+{
+    IEnumerable<ISolverCommand> Execute();
+}
+
+public interface ISolverStep<TDetection> : ISolverStep
 {
     IReadOnlyList<TDetection> Detect();
     IEnumerable<ISolverCommand> Act(IReadOnlyList<TDetection> detections);
 
-    IEnumerable<ISolverCommand> Execute() => Act(Detect());
+    IEnumerable<ISolverCommand> ISolverStep.Execute() => Act(Detect());
 }
