@@ -16,42 +16,41 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
 
     IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections)
     {
-        foreach (var groupWithNMasks in detections)
+        var groupWithNMasks = detections.Single();
+
+        CandidateSet mask = groupWithNMasks.Mask;
+
+        if (groupWithNMasks.Cells
+            .Any(cell =>
+                solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
         {
-            CandidateSet mask = groupWithNMasks.Mask;
-
-            if (groupWithNMasks.Cells
-                .Any(cell =>
-                    solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                    solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
-            {
-                StringBuilder message = new StringBuilder();
-                message.Append($"In {groupWithNMasks.Description} values ");
-                message.AppendJoin($", ", mask.AllCandidates);
-                message.Append(" appear only in cells");
-                foreach (var cell in groupWithNMasks.CellsWithMask)
-                {
-                    message.Append($" {cell.Location.ShortString()}");
-                }
-
-                message.Append(" and other values cannot appear in those cells.");
-
-                yield return new PrintMessageCommand(message.ToString());
-            }
-
+            StringBuilder message = new StringBuilder();
+            message.Append($"In {groupWithNMasks.Description} values ");
+            message.AppendJoin($", ", mask.AllCandidates);
+            message.Append(" appear only in cells");
             foreach (var cell in groupWithNMasks.CellsWithMask)
             {
-                if (!solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
-                    continue;
-
-                var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
-                yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
-
-                StringBuilder message = new StringBuilder();
-                message.AppendJoin(", ", valuesToClear);
-                message.Append($" cannot appear in cell {cell.Location.ShortString()}.");
-                yield return new PrintMessageCommand(message.ToString());
+                message.Append($" {cell.Location.ShortString()}");
             }
+
+            message.Append(" and other values cannot appear in those cells.");
+
+            yield return new PrintMessageCommand(message.ToString());
+        }
+
+        foreach (var cell in groupWithNMasks.CellsWithMask)
+        {
+            if (!solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
+                continue;
+
+            var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+            yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
+
+            StringBuilder message = new StringBuilder();
+            message.AppendJoin(", ", valuesToClear);
+            message.Append($" cannot appear in cell {cell.Location.ShortString()}.");
+            yield return new PrintMessageCommand(message.ToString());
         }
     }
 
