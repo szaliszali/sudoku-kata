@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using NUnit.Framework;
-
-namespace SudokuKata.Test.SolverCommands;
+﻿namespace SudokuKata.Test.SolverCommands;
 
 internal class PrintMessage
 {

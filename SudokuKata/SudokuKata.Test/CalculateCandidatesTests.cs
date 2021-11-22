@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace SudokuKata.Test;
+﻿namespace SudokuKata.Test;
 
 internal class CalculateCandidatesTests
 {

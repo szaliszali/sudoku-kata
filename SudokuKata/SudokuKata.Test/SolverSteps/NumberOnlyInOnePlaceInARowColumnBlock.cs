@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using System;
-
-namespace SudokuKata.Test.SolverSteps;
+﻿namespace SudokuKata.Test.SolverSteps;
 
 internal class NumberOnlyInOnePlaceInARowColumnBlock
 {

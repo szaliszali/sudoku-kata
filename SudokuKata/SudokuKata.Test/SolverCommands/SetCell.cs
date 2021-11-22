@@ -1,7 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-
-namespace SudokuKata.Test.SolverCommands;
+﻿namespace SudokuKata.Test.SolverCommands;
 
 internal class SetCell
 {

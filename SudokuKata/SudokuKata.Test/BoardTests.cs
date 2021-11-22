@@ -1,8 +1,5 @@
-﻿using System;
-using ApprovalTests;
-using NUnit.Framework;
+﻿namespace SudokuKata.Test;
 
-namespace SudokuKata.Test;
 [TestFixture]
 internal class BoardTests
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using NUnit.Framework;
-
-namespace SudokuKata.Test.SolverSteps;
+﻿namespace SudokuKata.Test.SolverSteps;
 
 internal class PairsOfDigitsInTheSameRowColumnBlock
 {

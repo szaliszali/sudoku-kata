@@ -1,7 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-
-namespace SudokuKata.Test.SolverSteps;
+﻿namespace SudokuKata.Test.SolverSteps;
 
 internal class MultipleSolutions
 {

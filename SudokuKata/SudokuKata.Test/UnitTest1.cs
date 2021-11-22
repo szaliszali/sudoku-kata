@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using ApprovalTests;
-using NUnit.Framework;
-
 namespace SudokuKata.Test;
 
 public class Tests

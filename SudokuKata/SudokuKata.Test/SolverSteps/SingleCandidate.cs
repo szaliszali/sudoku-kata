@@ -1,7 +1,4 @@
-﻿using System;
-
-using NUnit.Framework;
-using SudokuKata.SolverSteps;
+﻿using SudokuKata.SolverSteps;
 
 namespace SudokuKata.Test.SolverSteps;
 
