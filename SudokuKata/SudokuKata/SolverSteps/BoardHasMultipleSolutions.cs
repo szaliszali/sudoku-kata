@@ -11,9 +11,9 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
         this.finalState = finalState;
     }
 
-    IEnumerable<ISolverCommand> ISolverStep<BoardHasMultipleSolutionsDetection>.Act(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections)
+    IEnumerable<ISolverCommand> ISolverStep<BoardHasMultipleSolutionsDetection>.Act(BoardHasMultipleSolutionsDetection detection)
     {
-        (int index1, int index2, int digit1, int digit2) = detections.Single();
+        (int index1, int index2, int digit1, int digit2) = detection;
         int row1 = index1 / solverState.Board.Size;
         int col1 = index1 % solverState.Board.Size;
         int row2 = index2 / solverState.Board.Size;

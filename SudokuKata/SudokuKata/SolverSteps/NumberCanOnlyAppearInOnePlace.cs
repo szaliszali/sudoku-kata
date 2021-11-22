@@ -9,9 +9,9 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
         this.solverState = solverState;
     }
 
-    IEnumerable<ISolverCommand> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Act(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections)
+    IEnumerable<ISolverCommand> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Act(NumberCanOnlyAppearInOnePlaceDetection detection)
     {
-        (string description, CellLocation location, int digit) = detections.Single();
+        (string description, CellLocation location, int digit) = detection;
 
         yield return new SetCellCommand(location, digit);
 

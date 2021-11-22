@@ -9,9 +9,9 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
         this.solverState = solverState;
     }
 
-    IEnumerable<ISolverCommand> ISolverStep<CellLocation>.Act(IReadOnlyList<CellLocation> detections)
+    IEnumerable<ISolverCommand> ISolverStep<CellLocation>.Act(CellLocation detection)
     {
-        CellLocation location = detections.Single();
+        CellLocation location = detection;
 
         int candidate = solverState.Candidates.Get(location).SingleCandidate;
 

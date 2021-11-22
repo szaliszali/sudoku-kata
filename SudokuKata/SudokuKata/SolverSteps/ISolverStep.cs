@@ -8,8 +8,8 @@ public interface ISolverStep
 public interface ISolverStep<TDetection> : ISolverStep
 {
     IReadOnlyList<TDetection> Detect();
-    IEnumerable<ISolverCommand> Act(IReadOnlyList<TDetection> detections);
+    IEnumerable<ISolverCommand> Act(TDetection detection);
     IEnumerable<TDetection> Pick(IReadOnlyList<TDetection> detections);
 
-    IEnumerable<ISolverCommand> ISolverStep.Execute() => Pick(Detect()).SelectMany(detection => Act(new[] { detection }));
+    IEnumerable<ISolverCommand> ISolverStep.Execute() => Pick(Detect()).SelectMany(detection => Act( detection ));
 }

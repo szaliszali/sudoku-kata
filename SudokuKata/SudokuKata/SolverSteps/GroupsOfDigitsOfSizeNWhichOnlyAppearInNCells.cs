@@ -14,9 +14,9 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
         this.solverState = solverState;
     }
 
-    IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections)
+    IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection detection)
     {
-        var groupWithNMasks = detections.Single();
+        var groupWithNMasks = detection;
 
         CandidateSet mask = groupWithNMasks.Mask;
 

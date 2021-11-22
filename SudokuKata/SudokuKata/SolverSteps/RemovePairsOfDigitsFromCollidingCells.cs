@@ -9,9 +9,9 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
         this.solverState = solverState;
     }
 
-    IEnumerable<ISolverCommand> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Act(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)
+    IEnumerable<ISolverCommand> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Act(RemovePairsOfDigitsFromCollidingCellsDetection detection)
     {
-        var group = detections.Single();
+        var group = detection;
 
         var cells =
             group.Cells
