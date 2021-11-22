@@ -9,7 +9,8 @@ internal class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells.Solve(solverState);
+        ISolverStep sut = new SudokuKata.SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState);
+        var result = sut.Execute();
 
         Assert.That(result, Is.Empty);
     }
@@ -34,7 +35,8 @@ internal class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells.Solve(solverState);
+        ISolverStep sut = new SudokuKata.SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState);
+        var result = sut.Execute();
 
         Assert.That(result, Is.EqualTo(new ISolverCommand[]
         {

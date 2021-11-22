@@ -14,12 +14,6 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
         this.solverState = solverState;
     }
 
-    public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
-    {
-        ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> step = new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState);
-        return step.Execute();
-    }
-
     IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections)
     {
         foreach (var groupWithNMasks in detections)
