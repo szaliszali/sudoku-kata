@@ -28,7 +28,7 @@ internal class Solver
                 Func<SolverState, IEnumerable<ISolverCommand>>[] steps = new Func<SolverState, IEnumerable<ISolverCommand>>[] {
                     storeState => SolverSteps.CellsWithOnlyOneCandidateLeft.Solve(storeState),
                     storeState => SolverSteps.NumberCanOnlyAppearInOnePlace.Solve(storeState),
-                    storeState => SolverSteps.TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells.Solve(storeState),
+                    storeState => SolverSteps.RemovePairsOfDigitsFromCollidingCells.Solve(storeState),
                     storeState => SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells.Solve(storeState),
                 };
 

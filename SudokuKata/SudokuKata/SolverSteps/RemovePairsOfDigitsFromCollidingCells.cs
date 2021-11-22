@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public class TryToFindPairsOfDigitsInTheSameRowColumnBlockAndRemoveThemFromOtherCollidingCells
+public class RemovePairsOfDigitsFromCollidingCells
 {
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
