@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-internal class LookIfTheBoardHasMultipleSolutions
+public class LookIfTheBoardHasMultipleSolutions
 {
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState, int[] finalState)
     {
