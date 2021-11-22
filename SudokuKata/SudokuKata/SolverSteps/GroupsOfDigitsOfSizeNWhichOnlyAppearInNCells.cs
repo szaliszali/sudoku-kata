@@ -63,31 +63,27 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
 
     IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Detect()
     {
-        IEnumerable<CandidateSet> masks =
-        CandidateSet.AllPossibleCandidateSets
-            .Where(cs => cs.NumCandidates > 1)
-            .ToList();
-
         return
-            masks
-                .SelectMany(mask =>
-                    solverState.CellGroups
-                        .Where(group => @group.All(cell =>
-                            solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
-                        .Select(group => new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection(
-                            Mask: mask,
-                            Description: @group.First().Description,
-                            Cells: @group,
-                            CellsWithMask:
-                                @group.Where(cell => solverState.Board.Get(cell.Location) == 0 && solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask))
-                                    .ToList(),
-                            CleanableCellsCount:
-                                @group.Count(
-                                    cell => solverState.Board.Get(cell.Location) == 0 &&
-                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                                            solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
-                        )))
-                .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
+            CandidateSet.AllPossibleCandidateSets
+            .Where(cs => cs.NumCandidates > 1)
+            .SelectMany(mask =>
+                solverState.CellGroups
+                    .Where(group => group.All(cell =>
+                        solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
+                    .Select(group => new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection(
+                        Mask: mask,
+                        Description: group.First().Description,
+                        Cells: group,
+                        CellsWithMask:
+                            group.Where(cell => solverState.Board.Get(cell.Location) == 0 && solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask))
+                                .ToList(),
+                        CleanableCellsCount:
+                            group.Count(
+                                cell => solverState.Board.Get(cell.Location) == 0 &&
+                                        solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
+                                        solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
+                    )))
+                .Where(group => group.CellsWithMask.Count() == group.Mask.NumCandidates)
                 .ToList();
     }
 }
