@@ -20,20 +20,19 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
                     solverState.CellGroups
                         .Where(group => @group.All(cell =>
                             solverState.Board.Get(cell.Location) == 0 || (!mask.Contains(solverState.Board.Get(cell.Location)))))
-                        .Select(group => new
-                        {
-                            Mask = mask,
-                            Description = @group.First().Description,
-                            Cells = @group,
-                            CellsWithMask =
+                        .Select(group => new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection(
+                            Mask: mask,
+                            Description: @group.First().Description,
+                            Cells: @group,
+                            CellsWithMask:
                                 @group.Where(cell => solverState.Board.Get(cell.Location) == 0 && solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask))
                                     .ToList(),
-                            CleanableCellsCount =
+                            CleanableCellsCount:
                                 @group.Count(
                                     cell => solverState.Board.Get(cell.Location) == 0 &&
                                             solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
                                             solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
-                        }))
+                        )))
                 .Where(group => @group.CellsWithMask.Count() == @group.Mask.NumCandidates)
                 .ToList();
 
