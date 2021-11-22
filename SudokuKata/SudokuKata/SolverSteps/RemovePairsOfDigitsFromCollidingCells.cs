@@ -1,6 +1,6 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<Lol2>
+public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>
 {
     private SolverState solverState;
 
@@ -11,11 +11,11 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<Lol2>
 
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
-        ISolverStep<Lol2> step = new RemovePairsOfDigitsFromCollidingCells(solverState);
+        ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection> step = new RemovePairsOfDigitsFromCollidingCells(solverState);
         return step.Act(step.Detect());
     }
 
-    IEnumerable<ISolverCommand> ISolverStep<Lol2>.Act(IReadOnlyList<Lol2> detections)
+    IEnumerable<ISolverCommand> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Act(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)
     {
         foreach (var group in detections)
         {
@@ -53,7 +53,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<Lol2>
         }
     }
 
-    IReadOnlyList<Lol2> ISolverStep<Lol2>.Detect()
+    IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Detect()
     {
         IEnumerable<CandidateSet> twoDigitMasks =
             solverState.Candidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
@@ -64,7 +64,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<Lol2>
                     solverState.CellGroups
                         .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
                         .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
-                        .Select(group => new Lol2(mask, @group.First().Description, @group)))
+                        .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, @group.First().Description, @group)))
                 .ToList();
     }
 }
