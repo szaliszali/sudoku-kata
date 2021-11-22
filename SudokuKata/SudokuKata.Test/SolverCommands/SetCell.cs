@@ -1,12 +1,20 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace SudokuKata.Test.SolverCommands;
 
 internal class SetCell
 {
     [Test]
-    public void Wip()
+    public void SetCellSetsCellToGivenDigit()
     {
-        var sut = new SetCellCommand(new CellLocation(1, 2), 3);
+        var board = new Board();
+        var solverState = new SolverState(board, new Random());
+        solverState.RefreshCandidates();
+
+        ISolverCommand sut = new SetCellCommand(new CellLocation(1, 2), 3);
+        sut.Execute(solverState);
+
+        Assert.That(board.Get(1, 2), Is.EqualTo(3));
     }
 }
