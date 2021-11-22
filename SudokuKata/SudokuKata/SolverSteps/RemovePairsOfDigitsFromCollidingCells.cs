@@ -11,38 +11,37 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
 
     IEnumerable<ISolverCommand> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Act(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)
     {
-        foreach (var group in detections)
+        var group = detections.Single();
+
+        var cells =
+            group.Cells
+                .Where(
+                    cell =>
+                        solverState.Candidates.Get(cell.Location) != group.Mask &&
+                        solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(group.Mask))
+                .ToList();
+
+        var maskCells =
+            group.Cells
+                .Where(cell => solverState.Candidates.Get(cell.Location) == group.Mask)
+                .ToArray();
+
+
+        if (cells.Any())
         {
-            var cells =
-                group.Cells
-                    .Where(
-                        cell =>
-                            solverState.Candidates.Get(cell.Location) != group.Mask &&
-                            solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(group.Mask))
-                    .ToList();
+            CandidateSet temp = group.Mask;
+            (int lower, int upper) = temp.CandidatePair;
 
-            var maskCells =
-                group.Cells
-                    .Where(cell => solverState.Candidates.Get(cell.Location) == group.Mask)
-                    .ToArray();
+            yield return new PrintMessageCommand(
+                $"Values {lower} and {upper} in {group.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
 
-
-            if (cells.Any())
+            foreach (var cell in cells)
             {
-                CandidateSet temp = group.Mask;
-                (int lower, int upper) = temp.CandidatePair;
+                List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
+                yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
 
-                yield return new PrintMessageCommand(
-                    $"Values {lower} and {upper} in {group.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
-
-                foreach (var cell in cells)
-                {
-                    List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
-                    yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
-
-                    string valuesReport = string.Join(", ", valuesToRemove.ToArray());
-                    yield return new PrintMessageCommand($"{valuesReport} cannot appear in {cell.Location.ShortString()}.");
-                }
+                string valuesReport = string.Join(", ", valuesToRemove.ToArray());
+                yield return new PrintMessageCommand($"{valuesReport} cannot appear in {cell.Location.ShortString()}.");
             }
         }
     }
