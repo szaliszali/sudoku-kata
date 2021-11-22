@@ -1,22 +1,23 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public class RemovePairsOfDigitsFromCollidingCells
+public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<Lol2>
 {
+    private SolverState solverState;
+
+    public RemovePairsOfDigitsFromCollidingCells(SolverState solverState)
+    {
+        this.solverState = solverState;
+    }
+
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
     {
-        IEnumerable<CandidateSet> twoDigitMasks =
-            solverState.Candidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
+        ISolverStep<Lol2> step = new RemovePairsOfDigitsFromCollidingCells(solverState);
+        return step.Act(step.Detect());
+    }
 
-        var groups =
-            twoDigitMasks
-                .SelectMany(mask =>
-                    solverState.CellGroups
-                        .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
-                        .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
-                        .Select(group => new Lol2(mask, @group.First().Description, @group)))
-                .ToList();
-
-        foreach (var group in groups)
+    IEnumerable<ISolverCommand> ISolverStep<Lol2>.Act(IReadOnlyList<Lol2> detections)
+    {
+        foreach (var group in detections)
         {
             var cells =
                 group.Cells
@@ -50,5 +51,20 @@ public class RemovePairsOfDigitsFromCollidingCells
                 }
             }
         }
+    }
+
+    IReadOnlyList<Lol2> ISolverStep<Lol2>.Detect()
+    {
+        IEnumerable<CandidateSet> twoDigitMasks =
+            solverState.Candidates.Where(mask => mask.NumCandidates == 2).Distinct().ToList();
+
+        return
+            twoDigitMasks
+                .SelectMany(mask =>
+                    solverState.CellGroups
+                        .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
+                        .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
+                        .Select(group => new Lol2(mask, @group.First().Description, @group)))
+                .ToList();
     }
 }
