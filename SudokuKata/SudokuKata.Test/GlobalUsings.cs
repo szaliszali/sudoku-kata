@@ -4,3 +4,5 @@ global using System.Linq;
 
 global using ApprovalTests;
 global using NUnit.Framework;
+
+global using SudokuKata.SolverSteps;
