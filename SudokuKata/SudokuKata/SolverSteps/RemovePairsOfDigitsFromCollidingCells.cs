@@ -48,20 +48,16 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
 
     IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Detect()
     {
-        IEnumerable<CandidateSet> twoDigitMasks =
+        return
             solverState.Candidates
             .Where(mask => mask.NumCandidates == 2)
             .Distinct()
+            .SelectMany(mask =>
+                solverState.CellGroups
+                    .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
+                    .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
+                    .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, group.First().Description, group)))
             .ToList();
-
-        return
-            twoDigitMasks
-                .SelectMany(mask =>
-                    solverState.CellGroups
-                        .Where(group => group.Count(tuple => solverState.Candidates.Get(tuple.Location) == mask) == 2)
-                        .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
-                        .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, group.First().Description, group)))
-                .ToList();
     }
 
     IEnumerable<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Pick(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)
