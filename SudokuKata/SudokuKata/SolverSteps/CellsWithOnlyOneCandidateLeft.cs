@@ -9,12 +9,6 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
         this.solverState = solverState;
     }
 
-    public static IEnumerable<ISolverCommand> Solve(SolverState solverState)
-    {
-        ISolverStep<CellLocation> step = new CellsWithOnlyOneCandidateLeft(solverState);
-        return step.Execute();
-    }
-
     IEnumerable<ISolverCommand> ISolverStep<CellLocation>.Act(IReadOnlyList<CellLocation> detections)
     {
         if (detections.Count > 0)
