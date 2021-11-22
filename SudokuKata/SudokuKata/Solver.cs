@@ -27,17 +27,17 @@ internal class Solver
             {
                 solverState.StartInnerLoop();
 
-                Func<SolverState, IEnumerable<ISolverCommand>>[] steps = new Func<SolverState, IEnumerable<ISolverCommand>>[] {
-                    storeState => SolverSteps.CellsWithOnlyOneCandidateLeft.Solve(storeState),
-                    storeState => SolverSteps.NumberCanOnlyAppearInOnePlace.Solve(storeState),
-                    storeState => SolverSteps.RemovePairsOfDigitsFromCollidingCells.Solve(storeState),
-                    storeState => SolverSteps.GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells.Solve(storeState),
+                ISolverStep[] steps = new ISolverStep[] {
+                    new CellsWithOnlyOneCandidateLeft(solverState),
+                    new NumberCanOnlyAppearInOnePlace(solverState),
+                    new RemovePairsOfDigitsFromCollidingCells(solverState),
+                    new GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells(solverState),
                 };
 
                 foreach (var step in steps)
                 {
                     if (solverState.ChangeMade || solverState.StepChangeMade) break;
-                    Apply(step(solverState), solverState);
+                    Apply(step.Execute(), solverState);
                 }
             }
             while (solverState.StepChangeMade);
