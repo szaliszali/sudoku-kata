@@ -17,7 +17,7 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
 
         yield return new SetCellCommand(location, candidate);
 
-        yield return new PrintMessageCommand(string.Format("{0} can only contain {1}.", location.ShortString(), candidate));
+        yield return new PrintMessageCommand($"{location.ShortString()} can only contain {candidate}.");
     }
 
     IReadOnlyList<CellLocation> ISolverStep<CellLocation>.Detect()
