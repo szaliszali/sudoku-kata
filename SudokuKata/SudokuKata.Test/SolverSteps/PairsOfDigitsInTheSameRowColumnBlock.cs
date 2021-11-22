@@ -22,7 +22,9 @@ internal class PairsOfDigitsInTheSameRowColumnBlock
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.RemovePairsOfDigitsFromCollidingCells.Solve(solverState);
+        ISolverStep sut = new RemovePairsOfDigitsFromCollidingCells(solverState);
+        var result = sut.Execute();
+
         Assert.That(result, Is.Empty);
     }
 
@@ -46,7 +48,9 @@ internal class PairsOfDigitsInTheSameRowColumnBlock
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.RemovePairsOfDigitsFromCollidingCells.Solve(solverState);
+        ISolverStep sut = new RemovePairsOfDigitsFromCollidingCells(solverState);
+        var result = sut.Execute();
+
         ISolverCommand[] expected = new ISolverCommand[] {
             new PrintMessageCommand("Values 3 and 7 in block (1, 3) are in cells (3, 7) and (3, 8)."),
             new EliminateCandidatesCommand(new CellLocation(0,6), new[]{ 3 }),
@@ -76,7 +80,9 @@ internal class PairsOfDigitsInTheSameRowColumnBlock
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        var result = SudokuKata.SolverSteps.RemovePairsOfDigitsFromCollidingCells.Solve(solverState);
+        ISolverStep sut = new RemovePairsOfDigitsFromCollidingCells(solverState);
+        var result = sut.Execute();
+
         ISolverCommand[] expected = new ISolverCommand[] {
             new PrintMessageCommand("Values 5 and 7 in row #8 are in cells (8, 2) and (8, 3)."),
             new EliminateCandidatesCommand(new CellLocation(7, 5), new[]{ 7 }),
