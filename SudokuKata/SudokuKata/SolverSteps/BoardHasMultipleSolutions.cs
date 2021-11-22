@@ -1,11 +1,11 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public class LookIfTheBoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDetection>
+public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDetection>
 {
     private readonly SolverState solverState;
     private readonly int[] finalState;
 
-    private LookIfTheBoardHasMultipleSolutions(SolverState solverState, int[] finalState)
+    private BoardHasMultipleSolutions(SolverState solverState, int[] finalState)
     {
         this.solverState = solverState;
         this.finalState = finalState;
@@ -13,7 +13,7 @@ public class LookIfTheBoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSo
 
     public static IEnumerable<ISolverCommand> Solve(SolverState solverState, int[] finalState)
     {
-        ISolverStep<BoardHasMultipleSolutionsDetection> step = new LookIfTheBoardHasMultipleSolutions(solverState, finalState);
+        ISolverStep<BoardHasMultipleSolutionsDetection> step = new BoardHasMultipleSolutions(solverState, finalState);
         return step.Act(step.Detect());
     }
 

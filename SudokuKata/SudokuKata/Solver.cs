@@ -40,7 +40,7 @@ internal class Solver
             }
             while (solverState.StepChangeMade);
 
-            if (!solverState.ChangeMade) Apply(SolverSteps.LookIfTheBoardHasMultipleSolutions.Solve(solverState, finalState), solverState);
+            if (!solverState.ChangeMade) Apply(SolverSteps.BoardHasMultipleSolutions.Solve(solverState, finalState), solverState);
 
             PrintBoardIfChanged(solverState.ChangeMade);
         }
