@@ -54,7 +54,7 @@ internal class StackBasedFilledBoardGenerator
         bool containsUnsolvableCells = false;
 
         foreach (CellLocation cell in currentBoard.AllLocations())
-            if (currentState.Get(cell.Row, cell.Column) == 0)
+            if (currentBoard.Get(cell.Row, cell.Column) == 0)
             {
                 int blockRow = cell.Row / 3;
                 int blockCol = cell.Column / 3;
@@ -63,15 +63,15 @@ internal class StackBasedFilledBoardGenerator
 
                 for (int i = 0; i < currentBoard.Size; i++)
                 {
-                    int rowDigit = currentState.Get(i, cell.Column);
+                    int rowDigit = currentBoard.Get(i, cell.Column);
                     if (rowDigit > 0)
                         isDigitUsed[rowDigit - 1] = true;
 
-                    int colDigit = currentState.Get(cell.Row, i);
+                    int colDigit = currentBoard.Get(cell.Row, i);
                     if (colDigit > 0)
                         isDigitUsed[colDigit - 1] = true;
 
-                    int blockDigit = currentState.Get(blockRow * 3 + i / 3, blockCol * 3 + i % 3);
+                    int blockDigit = currentBoard.Get(blockRow * 3 + i / 3, blockCol * 3 + i % 3);
                     if (blockDigit > 0)
                         isDigitUsed[blockDigit - 1] = true;
                 }
