@@ -61,18 +61,12 @@ internal class StackBasedFilledBoardGenerator
                 {
                     {
                         Func<CellLocation, (int row, int column)> f = cell => (i, cell.Column);
-                        (int row, int column) = f(cell);
-                        int digit = currentBoard.Get(row, column);
-                        if (digit > 0)
-                            isDigitUsed[digit - 1] = true;
+                        MarkDigitsAsUsed(currentBoard, cell, isDigitUsed, f);
                     }
 
                     {
                         Func<CellLocation, (int row, int column)> f = cell => (cell.Row, i);
-                        (int row, int column) = f(cell);
-                        int digit = currentBoard.Get(row, column);
-                        if (digit > 0)
-                            isDigitUsed[digit - 1] = true;
+                        MarkDigitsAsUsed(currentBoard, cell, isDigitUsed, f);
                     }
 
                     {
@@ -80,10 +74,7 @@ internal class StackBasedFilledBoardGenerator
                         int blockCol = cell.Column / 3;
 
                         Func<CellLocation, (int row, int column)> f = cell => (blockRow * 3 + i / 3, blockCol * 3 + i % 3);
-                        (int row, int column) = f(cell);
-                        int digit = currentBoard.Get(row, column);
-                        if (digit > 0)
-                            isDigitUsed[digit - 1] = true;
+                        MarkDigitsAsUsed(currentBoard, cell, isDigitUsed, f);
                     }
                 }
 
@@ -116,6 +107,14 @@ internal class StackBasedFilledBoardGenerator
 
         // Always try to move after expand
         command = "move";
+    }
+
+    private static void MarkDigitsAsUsed(Board currentBoard, CellLocation cell, bool[] isDigitUsed, Func<CellLocation, (int row, int column)> f)
+    {
+        (int row, int column) = f(cell);
+        int digit = currentBoard.Get(row, column);
+        if (digit > 0)
+            isDigitUsed[digit - 1] = true;
     }
 
     private void Collapse()
