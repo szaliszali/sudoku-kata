@@ -35,21 +35,17 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
     {
         Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
 
-        for (int i = 0; i < finalState.Length - 1; i++)
+        foreach ((int row, int col) in solverState.Board.AllLocations())
         {
-            int row = i / solverState.Board.Size;
-            int col = i % solverState.Board.Size;
-
             CandidateSet candidateSet = solverState.Candidates.Get(row, col);
             if (candidateSet.NumCandidates == 2)
             {
                 int blockIndex = 3 * (row / 3) + col / 3;
                 (int lower, int upper) = candidateSet.CandidatePair;
 
-                for (int j = i + 1; j < finalState.Length; j++)
+                foreach ((int row1, int col1) in solverState.Board.AllLocations())
                 {
-                    int row1 = j / solverState.Board.Size;
-                    int col1 = j % solverState.Board.Size;
+                    if (row * 9 + col >= row1 * 9 + col1) continue;
 
                     if (candidateSet == solverState.Candidates.Get(row1, col1))
                     {
@@ -57,7 +53,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
 
                         if (row == row1 || col == col1 || blockIndex == blockIndex1)
                         {
-                            candidates.Enqueue((i, j, lower, upper));
+                            candidates.Enqueue((row * 9 + col, row1 * 9 + col1, lower, upper));
                         }
                     }
                 }
