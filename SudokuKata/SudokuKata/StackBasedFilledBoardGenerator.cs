@@ -44,11 +44,15 @@ internal class StackBasedFilledBoardGenerator
 
     private void Expand()
     {
-        int[] currentState = initialState.ShallowCopy();
+        int[] currentState;
 
         if (combinedStack.Any())
         {
             currentState = combinedStack.Peek().state.ShallowCopy();
+        }
+        else
+        {
+            currentState = initialState.ShallowCopy();
         }
         Board currentBoard = new Board(currentState);
 
