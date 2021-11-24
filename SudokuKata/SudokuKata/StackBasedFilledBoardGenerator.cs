@@ -82,7 +82,7 @@ internal class StackBasedFilledBoardGenerator
                     int blockDigit = currentState.Get(blockRow * 3 + i / 3, blockCol * 3 + i % 3);
                     if (blockDigit > 0)
                         isDigitUsed[blockDigit - 1] = true;
-                } // for (i = 0..8)
+                }
 
                 int candidatesCount = isDigitUsed.Where(used => !used).Count();
 
@@ -104,7 +104,7 @@ internal class StackBasedFilledBoardGenerator
                     bestCandidatesCount = candidatesCount;
                     bestRandomValue = randomValue;
                 }
-            } // for (index = 0..81)
+            }
 
         if (!containsUnsolvableCells)
         {
