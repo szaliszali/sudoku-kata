@@ -67,17 +67,9 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             (CellLocation cell1, CellLocation cell2, int digit1, int digit2) = candidates.Dequeue();
 
             Board alternateBoard = solverState.Board.Clone();
-
-            if (finalState.Get(cell1) == digit1)
-            {
-                alternateBoard.Set(cell1, digit2);
-                alternateBoard.Set(cell2, digit1);
-            }
-            else
-            {
-                alternateBoard.Set(cell1, digit1);
-                alternateBoard.Set(cell2, digit2);
-            }
+            alternateBoard.Set(cell1, digit1);
+            alternateBoard.Set(cell2, digit2);
+            if (finalState.Get(cell1) == digit1) alternateBoard.Swap(cell1, cell2);
 
             if (new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution)
             {
