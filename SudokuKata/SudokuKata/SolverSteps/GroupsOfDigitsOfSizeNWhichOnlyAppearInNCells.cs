@@ -25,15 +25,13 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
                 solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
                 solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"In {groupWithNMasks.Description} values ");
-            message.AppendJoin($", ", mask.AllCandidates);
-            message.Append(" appear only in cells ");
-            message.AppendJoin(" ", groupWithNMasks.CellsWithMask.Select(cell => cell.Location.ShortString()));
-
-            message.Append(" and other values cannot appear in those cells.");
-
-            yield return new PrintMessageCommand(message.ToString());
+            yield return new PrintMessageCommand(new StringBuilder()
+                .Append($"In {groupWithNMasks.Description} values ")
+                .AppendJoin($", ", mask.AllCandidates)
+                .Append(" appear only in cells ")
+                .AppendJoin(" ", groupWithNMasks.CellsWithMask.Select(cell => cell.Location.ShortString()))
+                .Append(" and other values cannot appear in those cells.")
+                .ToString());
         }
 
         foreach (var cell in groupWithNMasks.CellsWithMask)
