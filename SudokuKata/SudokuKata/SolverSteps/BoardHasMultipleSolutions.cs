@@ -3,9 +3,9 @@
 public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDetection>
 {
     private readonly SolverState solverState;
-    private readonly int[] finalState;
+    private readonly Board finalState;
 
-    public BoardHasMultipleSolutions(SolverState solverState, int[] finalState)
+    public BoardHasMultipleSolutions(SolverState solverState, Board finalState)
     {
         this.solverState = solverState;
         this.finalState = finalState;
@@ -24,11 +24,11 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             : col1 == col2 ? $"column #{col1 + 1}"
             : $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
 
-        yield return new SetCellCommand(new CellLocation(row1, col1), finalState[index1]);
-        yield return new SetCellCommand(new CellLocation(row2, col2), finalState[index2]);
+        yield return new SetCellCommand(new CellLocation(row1, col1), finalState.Get(row1, col1));
+        yield return new SetCellCommand(new CellLocation(row2, col2), finalState.Get(row2, col2));
 
         yield return new PrintMessageCommand(
-            $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState[index1]}->({row1 + 1}, {col1 + 1}), {finalState[index2]}->({row2 + 1}, {col2 + 1}).");
+            $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState.Get(row1, col1)}->({row1 + 1}, {col1 + 1}), {finalState.Get(row2, col2)}->({row2 + 1}, {col2 + 1}).");
     }
 
     IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect()
@@ -71,7 +71,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
 
             Board alternateBoard = solverState.Board.Clone();
 
-            if (finalState[index1] == digit1)
+            if (finalState.Get(cell1) == digit1)
             {
                 alternateBoard.Set(cell1, digit2);
                 alternateBoard.Set(cell2, digit1);

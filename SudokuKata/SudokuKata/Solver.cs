@@ -44,7 +44,7 @@ internal class Solver
 
             if (!solverState.ChangeMade)
             {
-                ISolverStep step = new BoardHasMultipleSolutions(solverState, finalState);
+                ISolverStep step = new BoardHasMultipleSolutions(solverState, new Board(finalState));
                 Apply(step.Execute(), solverState);
             }
 

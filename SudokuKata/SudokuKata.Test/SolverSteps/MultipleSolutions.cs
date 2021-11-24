@@ -53,7 +53,7 @@ internal class MultipleSolutions
         var solverState = new SolverState(board, new Random(1));
         solverState.RefreshCandidates();
 
-        ISolverStep sut = new BoardHasMultipleSolutions(solverState, solvedBoard.State);
+        ISolverStep sut = new BoardHasMultipleSolutions(solverState, solvedBoard);
         var result = sut.Execute();
 
         Assert.That(result, Is.Empty);
@@ -66,12 +66,12 @@ internal class MultipleSolutions
         var solvedBoard = new Board(FullySolvedBoard);
         var solverStateWithSeed1 = new SolverState(board, new Random(1));
         solverStateWithSeed1.RefreshCandidates();
-        ISolverStep sutWithSeed1 = new BoardHasMultipleSolutions(solverStateWithSeed1, solvedBoard.State);
+        ISolverStep sutWithSeed1 = new BoardHasMultipleSolutions(solverStateWithSeed1, solvedBoard);
         var resultWithSeed1 = sutWithSeed1.Execute();
 
         var solverStateWithSeed2 = new SolverState(board, new Random(2));
         solverStateWithSeed2.RefreshCandidates();
-        ISolverStep sutWithSeed2 = new BoardHasMultipleSolutions(solverStateWithSeed2, solvedBoard.State);
+        ISolverStep sutWithSeed2 = new BoardHasMultipleSolutions(solverStateWithSeed2, solvedBoard);
         var resultWithSeed2 = sutWithSeed2.Execute();
 
         Assert.Multiple(() =>
