@@ -14,15 +14,11 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
     IEnumerable<ISolverCommand> ISolverStep<BoardHasMultipleSolutionsDetection>.Act(BoardHasMultipleSolutionsDetection detection)
     {
         (CellLocation cell1, CellLocation cell2, int digit1, int digit2) = detection;
-        int row1 = cell1.Row;
-        int col1 = cell1.Column;
-        int row2 = cell2.Row;
-        int col2 = cell2.Column;
 
         string description =
-            row1 == row2 ? $"row #{row1 + 1}"
-            : col1 == col2 ? $"column #{col1 + 1}"
-            : $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
+            cell1.Row == cell2.Row ? $"row #{cell1.Row + 1}"
+            : cell1.Column == cell2.Column ? $"column #{cell1.Column + 1}"
+            : $"block ({cell1.Row / 3 + 1}, {cell1.Column / 3 + 1})";
 
         yield return new SetCellCommand(cell1, finalState.Get(cell1));
         yield return new SetCellCommand(cell2, finalState.Get(cell2));
