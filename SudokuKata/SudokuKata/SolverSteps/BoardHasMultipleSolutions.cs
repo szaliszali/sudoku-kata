@@ -13,11 +13,11 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
 
     IEnumerable<ISolverCommand> ISolverStep<BoardHasMultipleSolutionsDetection>.Act(BoardHasMultipleSolutionsDetection detection)
     {
-        (int index1, int index2, int digit1, int digit2) = detection;
-        int row1 = index1 / solverState.Board.Size;
-        int col1 = index1 % solverState.Board.Size;
-        int row2 = index2 / solverState.Board.Size;
-        int col2 = index2 % solverState.Board.Size;
+        (CellLocation cell1, CellLocation cell2, int digit1, int digit2) = detection;
+        int row1 = cell1.Row;
+        int col1 = cell1.Column;
+        int row2 = cell2.Row;
+        int col2 = cell2.Column;
 
         string description =
             row1 == row2 ? $"row #{row1 + 1}"
@@ -66,9 +66,6 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
         {
             (CellLocation cell1, CellLocation cell2, int digit1, int digit2) = candidates.Dequeue();
 
-            int index1 = cell1.Row * 9 + cell1.Column;
-            int index2 = cell2.Row * 9 + cell2.Column;
-
             Board alternateBoard = solverState.Board.Clone();
 
             if (finalState.Get(cell1) == digit1)
@@ -85,7 +82,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             if (new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution)
             {
                 // Board was solved successfully even with two digits swapped
-                solutions.Add(new(index1, index2, digit1, digit2));
+                solutions.Add(new(cell1, cell2, digit1, digit2));
             }
         }
 

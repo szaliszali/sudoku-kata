@@ -1,3 +1,3 @@
 ﻿namespace SudokuKata.SolverSteps;
 
-public record BoardHasMultipleSolutionsDetection(int index1, int index2, int digit1, int digit2);
+public record BoardHasMultipleSolutionsDetection(CellLocation cell1, CellLocation cell2, int digit1, int digit2);
