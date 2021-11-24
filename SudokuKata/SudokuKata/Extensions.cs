@@ -14,5 +14,9 @@ public static class Extensions
 
     public static string Capitalize(this string input) => char.ToUpper(input[0]) + input.Substring(1);
 
-    public static T PickOneRandomly<T>(this IReadOnlyList<T> list, Random rng) => list[rng.Next(list.Count)];
+    public static IEnumerable<T> PickOneRandomly<T>(this IReadOnlyList<T> list, Random rng)
+    {
+        if (list.Count > 0)
+            yield return list[rng.Next(list.Count)];
+    }
 }

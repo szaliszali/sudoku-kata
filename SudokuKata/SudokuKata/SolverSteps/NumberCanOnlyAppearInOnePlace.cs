@@ -31,11 +31,6 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
                 .ToList();
     }
 
-    IEnumerable<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Pick(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections)
-    {
-        if (detections.Count > 0)
-        {
-            yield return detections.PickOneRandomly(solverState.Rng);
-        }
-    }
+    IEnumerable<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Pick(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections) =>
+        detections.PickOneRandomly(solverState.Rng);
 }

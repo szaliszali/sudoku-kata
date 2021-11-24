@@ -96,11 +96,6 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
         return solutions;
     }
 
-    IEnumerable<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Pick(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections)
-    {
-        if (detections.Count > 0)
-        {
-            yield return detections.PickOneRandomly(solverState.Rng);
-        }
-    }
+    IEnumerable<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Pick(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections) =>
+        detections.PickOneRandomly(solverState.Rng);
 }

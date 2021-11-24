@@ -29,9 +29,6 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
             .ToArray();
     }
 
-    IEnumerable<CellLocation> ISolverStep<CellLocation>.Pick(IReadOnlyList<CellLocation> detections)
-    {
-        if (detections.Count > 0)
-            yield return detections.PickOneRandomly(solverState.Rng);
-    }
+    IEnumerable<CellLocation> ISolverStep<CellLocation>.Pick(IReadOnlyList<CellLocation> detections) =>
+        detections.PickOneRandomly(solverState.Rng);
 }
