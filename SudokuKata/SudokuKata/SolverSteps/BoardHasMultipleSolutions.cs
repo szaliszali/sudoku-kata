@@ -35,25 +35,22 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
     {
         Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
 
-        foreach ((int row, int col) in solverState.Board.AllLocations())
+        foreach (CellLocation cell in solverState.Board.AllLocations())
         {
-            CandidateSet candidateSet = solverState.Candidates.Get(row, col);
+            CandidateSet candidateSet = solverState.Candidates.Get(cell);
             if (candidateSet.NumCandidates == 2)
             {
-                int blockIndex = 3 * (row / 3) + col / 3;
                 (int lower, int upper) = candidateSet.CandidatePair;
 
-                foreach ((int row1, int col1) in solverState.Board.AllLocations())
+                foreach (CellLocation cell1 in solverState.Board.AllLocations())
                 {
-                    if (row * 9 + col >= row1 * 9 + col1) continue;
+                    if (cell.Row * 9 + cell.Column >= cell1.Row * 9 + cell1.Column) continue;
 
-                    if (candidateSet == solverState.Candidates.Get(row1, col1))
+                    if (candidateSet == solverState.Candidates.Get(cell1.Row, cell1.Column))
                     {
-                        int blockIndex1 = 3 * (row1 / 3) + col1 / 3;
-
-                        if (row == row1 || col == col1 || blockIndex == blockIndex1)
+                        if (cell.Row == cell1.Row || cell.Column == cell1.Column || cell.BlockIndex() == cell1.BlockIndex())
                         {
-                            candidates.Enqueue((row * 9 + col, row1 * 9 + col1, lower, upper));
+                            candidates.Enqueue((cell.Row * 9 + cell.Column, cell1.Row * 9 + cell1.Column, lower, upper));
                         }
                     }
                 }
