@@ -62,17 +62,17 @@ internal class StackBasedFilledBoardGenerator
                     {
                         Func<CellLocation, (int row, int column)> f = cell => (i, cell.Column);
                         (int row, int column) = f(cell);
-                        int rowDigit = currentBoard.Get(row, column);
-                        if (rowDigit > 0)
-                            isDigitUsed[rowDigit - 1] = true;
+                        int digit = currentBoard.Get(row, column);
+                        if (digit > 0)
+                            isDigitUsed[digit - 1] = true;
                     }
 
                     {
                         Func<CellLocation, (int row, int column)> f = cell => (cell.Row, i);
                         (int row, int column) = f(cell);
-                        int colDigit = currentBoard.Get(row, column);
-                        if (colDigit > 0)
-                            isDigitUsed[colDigit - 1] = true;
+                        int digit = currentBoard.Get(row, column);
+                        if (digit > 0)
+                            isDigitUsed[digit - 1] = true;
                     }
 
                     {
@@ -81,9 +81,9 @@ internal class StackBasedFilledBoardGenerator
 
                         Func<CellLocation, (int row, int column)> f = cell => (blockRow * 3 + i / 3, blockCol * 3 + i % 3);
                         (int row, int column) = f(cell);
-                        int blockDigit = currentBoard.Get(row, column);
-                        if (blockDigit > 0)
-                            isDigitUsed[blockDigit - 1] = true;
+                        int digit = currentBoard.Get(row, column);
+                        if (digit > 0)
+                            isDigitUsed[digit - 1] = true;
                     }
                 }
 
