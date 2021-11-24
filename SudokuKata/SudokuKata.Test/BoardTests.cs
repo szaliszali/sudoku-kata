@@ -115,4 +115,23 @@ internal class BoardTests
 
         Assert.That(sut.Size, Is.EqualTo(9));
     }
+
+    [Test]
+    public void Clone_PreservesState()
+    {
+        var sut = new Board();
+        var cloned = sut.Clone();
+
+        Assert.That(sut.State, Is.EqualTo(cloned.State));
+    }
+
+    [Test]
+    public void Clone_CreatesACopy()
+    {
+        var sut = new Board();
+        var cloned = sut.Clone();
+        sut.Set(1, 2, 3);
+
+        Assert.That(sut.State, Is.Not.EqualTo(cloned.State));
+    }
 }

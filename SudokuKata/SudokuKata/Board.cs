@@ -79,4 +79,6 @@ public class Board
             for (var column = 0; column < Size; ++column)
                 yield return new CellLocation(row, column);
     }
+
+    public Board Clone() => new Board(state);
 }
