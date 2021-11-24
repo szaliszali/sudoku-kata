@@ -67,9 +67,9 @@ internal class StackBasedFilledBoardGenerator
                 int blockRow = row / 3;
                 int blockCol = col / 3;
 
-                bool[] isDigitUsed = new bool[9];
+                bool[] isDigitUsed = new bool[currentBoard.Size];
 
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < currentBoard.Size; i++)
                 {
                     int rowDigit = currentState.Get(i, col);
                     if (rowDigit > 0)
