@@ -70,15 +70,15 @@ internal class StackBasedFilledBoardGenerator
 
                 for (int i = 0; i < 9; i++)
                 {
-                    int rowDigit = currentState[9 * i + col];
+                    int rowDigit = currentState.Get(i, col);
                     if (rowDigit > 0)
                         isDigitUsed[rowDigit - 1] = true;
 
-                    int colDigit = currentState[9 * row + i];
+                    int colDigit = currentState.Get(row, i);
                     if (colDigit > 0)
                         isDigitUsed[colDigit - 1] = true;
 
-                    int blockDigit = currentState[(blockRow * 3 + i / 3) * 9 + (blockCol * 3 + i % 3)];
+                    int blockDigit = currentState.Get(blockRow * 3 + i / 3, blockCol * 3 + i % 3);
                     if (blockDigit > 0)
                         isDigitUsed[blockDigit - 1] = true;
                 } // for (i = 0..8)
