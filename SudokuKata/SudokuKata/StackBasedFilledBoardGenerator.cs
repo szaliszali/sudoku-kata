@@ -3,7 +3,7 @@
 internal class StackBasedFilledBoardGenerator
 {
     private readonly Random rng;
-    private readonly int[] initialState;
+    private readonly Board initialBoard;
     private readonly Stack<(Board board, CellLocation cell, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
 
@@ -13,10 +13,10 @@ internal class StackBasedFilledBoardGenerator
     private int[] solvedBoardState;
     public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
 
-    public StackBasedFilledBoardGenerator(Random rng, int[] initialState)
+    public StackBasedFilledBoardGenerator(Random rng, Board initialBoard)
     {
         this.rng = rng;
-        this.initialState = initialState;
+        this.initialBoard = initialBoard;
         this.combinedStack = new();
         this.lastDigitStack = new();
 
@@ -44,7 +44,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Expand()
     {
-        Board currentBoard = combinedStack.Any() ? combinedStack.Peek().board.Clone() : new Board(initialState);
+        Board currentBoard = combinedStack.Any() ? combinedStack.Peek().board.Clone() : initialBoard;
 
         CellLocation bestCell = new(-1, -1);
         bool[] bestUsedDigits = null;

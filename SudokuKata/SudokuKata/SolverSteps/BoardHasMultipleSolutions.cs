@@ -86,7 +86,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
                 alternateState[index2] = digit2;
             }
 
-            if (new StackBasedFilledBoardGenerator(solverState.Rng, alternateState).HasSolution)
+            if (new StackBasedFilledBoardGenerator(solverState.Rng, new Board(alternateState)).HasSolution)
             {
                 // Board was solved successfully even with two digits swapped
                 solutions.Add(new(index1, index2, digit1, digit2));

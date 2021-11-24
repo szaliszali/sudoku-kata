@@ -8,6 +8,6 @@ public class RandomBoard
 
     public RandomBoard(Random rng)
     {
-        state = new StackBasedFilledBoardGenerator(rng, new int[9 * 9]).SolvedBoardState;
+        state = new StackBasedFilledBoardGenerator(rng, new Board()).SolvedBoardState;
     }
 }
