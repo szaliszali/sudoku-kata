@@ -4,7 +4,7 @@ internal class StackBasedFilledBoardGenerator
 {
     private readonly Random rng;
     private readonly int[] initialState;
-    private readonly Stack<(int[] state, int rowIndex, int colIndex, bool[] usedDigits)> combinedStack;
+    private readonly Stack<(int[] state, CellLocation cell, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
 
     private string command;
@@ -52,8 +52,7 @@ internal class StackBasedFilledBoardGenerator
         }
         Board currentBoard = new Board(currentState);
 
-        int bestRow = -1;
-        int bestCol = -1;
+        CellLocation bestCell = new(-1, -1);
         bool[] bestUsedDigits = null;
         int bestCandidatesCount = -1;
         int bestRandomValue = -1;
@@ -96,8 +95,7 @@ internal class StackBasedFilledBoardGenerator
                     candidatesCount < bestCandidatesCount ||
                     (candidatesCount == bestCandidatesCount && randomValue < bestRandomValue))
                 {
-                    bestRow = cell.Row;
-                    bestCol = cell.Column;
+                    bestCell = cell;
                     bestUsedDigits = isDigitUsed;
                     bestCandidatesCount = candidatesCount;
                     bestRandomValue = randomValue;
@@ -106,7 +104,7 @@ internal class StackBasedFilledBoardGenerator
 
         if (!containsUnsolvableCells)
         {
-            combinedStack.Push((currentState, bestRow, bestCol, bestUsedDigits));
+            combinedStack.Push((currentState, bestCell, bestUsedDigits));
             lastDigitStack.Push(0); // No digit was tried at this position
         }
 
@@ -127,7 +125,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Move()
     {
-        (int[] currentState, int rowToMove, int colToMove, bool[] usedDigits) = combinedStack.Peek();
+        (int[] currentState, (int rowToMove, int colToMove), bool[] usedDigits) = combinedStack.Peek();
         int digitToMove = lastDigitStack.Pop();
 
         int movedToDigit = digitToMove + 1;
