@@ -4,7 +4,7 @@ internal class StackBasedFilledBoardGenerator
 {
     private readonly Random rng;
     private readonly int[] initialState;
-    private readonly Stack<(int[] state, CellLocation cell, bool[] usedDigits)> combinedStack;
+    private readonly Stack<(Board board, CellLocation cell, bool[] usedDigits)> combinedStack;
     private readonly Stack<int> lastDigitStack;
 
     private string command;
@@ -44,8 +44,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Expand()
     {
-        int[] currentState = combinedStack.Any() ? combinedStack.Peek().state.ShallowCopy() : initialState.ShallowCopy();
-        Board currentBoard = new Board(currentState);
+        Board currentBoard = combinedStack.Any() ? combinedStack.Peek().board.Clone() : new Board(initialState);
 
         CellLocation bestCell = new(-1, -1);
         bool[] bestUsedDigits = null;
@@ -99,7 +98,7 @@ internal class StackBasedFilledBoardGenerator
 
         if (!containsUnsolvableCells)
         {
-            combinedStack.Push((currentState, bestCell, bestUsedDigits));
+            combinedStack.Push((currentBoard, bestCell, bestUsedDigits));
             lastDigitStack.Push(0); // No digit was tried at this position
         }
 
@@ -120,7 +119,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Move()
     {
-        (int[] currentState, CellLocation move, bool[] usedDigits) = combinedStack.Peek();
+        (Board currentState, CellLocation move, bool[] usedDigits) = combinedStack.Peek();
         int digitToMove = lastDigitStack.Pop();
 
         int movedToDigit = digitToMove + 1;
@@ -139,12 +138,12 @@ internal class StackBasedFilledBoardGenerator
             usedDigits[movedToDigit - 1] = true;
             currentState.Set(move.Row, move.Column, movedToDigit);
 
-            if (currentState.Any(digit => digit == 0))
+            if (!currentState.IsSolved())
                 command = "expand";
             else
             {
                 command = "complete";
-                solvedBoardState = currentState.ShallowCopy();
+                solvedBoardState = currentState.State;
             }
         }
         else
