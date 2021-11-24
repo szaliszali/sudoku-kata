@@ -20,14 +20,12 @@ public class CellsWithOnlyOneCandidateLeft : ISolverStep<CellLocation>
         yield return new PrintMessageCommand($"{location.ShortString()} can only contain {candidate}.");
     }
 
-    IReadOnlyList<CellLocation> ISolverStep<CellLocation>.Detect()
-    {
-        return solverState.Candidates
+    IReadOnlyList<CellLocation> ISolverStep<CellLocation>.Detect() =>
+        solverState.Candidates
             .Zip(solverState.Board.AllLocations(), (c, l) => (Location: l, CandidatesCount: c.NumCandidates))
             .Where(tuple => tuple.CandidatesCount == 1)
             .Select(tuple => tuple.Location)
             .ToArray();
-    }
 
     IEnumerable<CellLocation> ISolverStep<CellLocation>.Pick(IReadOnlyList<CellLocation> detections) =>
         detections.PickOneRandomly(solverState.Rng);
