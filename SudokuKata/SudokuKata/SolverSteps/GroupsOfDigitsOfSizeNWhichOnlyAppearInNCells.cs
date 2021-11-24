@@ -35,9 +35,9 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
         }
 
         foreach (var cell in groupWithNMasks.CellsWithMask
-            .Where(cell => solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask)))
+            .Where(cell => solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
         {
-            var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+            var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(mask.AllCandidates).ToArray();
             yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
 
             yield return new PrintMessageCommand(new StringBuilder().AppendJoin(", ", valuesToClear).Append($" cannot appear in cell {cell.Location.ShortString()}.").ToString());
