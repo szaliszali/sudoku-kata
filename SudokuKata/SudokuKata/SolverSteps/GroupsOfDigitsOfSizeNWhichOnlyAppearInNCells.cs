@@ -34,15 +34,13 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
                 .ToString());
         }
 
-        foreach (var cell in groupWithNMasks.CellsWithMask)
+        foreach (var cell in groupWithNMasks.CellsWithMask
+            .Where(cell => solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask)))
         {
-            if (solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(groupWithNMasks.Mask))
-            {
-                var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
-                yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
+            var valuesToClear = solverState.Candidates.Get(cell.Location).AllCandidates.Except(groupWithNMasks.Mask.AllCandidates).ToArray();
+            yield return new EliminateCandidatesCommand(cell.Location, valuesToClear);
 
-                yield return new PrintMessageCommand(new StringBuilder().AppendJoin(", ", valuesToClear).Append($" cannot appear in cell {cell.Location.ShortString()}.").ToString());
-            }
+            yield return new PrintMessageCommand(new StringBuilder().AppendJoin(", ", valuesToClear).Append($" cannot appear in cell {cell.Location.ShortString()}.").ToString());
         }
     }
 
