@@ -81,4 +81,6 @@ public class Board
     }
 
     public Board Clone() => new Board(state);
+
+    public bool IsSolved() => state.All(c => c > 0);
 }

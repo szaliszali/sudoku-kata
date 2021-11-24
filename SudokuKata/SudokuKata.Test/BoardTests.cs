@@ -134,4 +134,33 @@ internal class BoardTests
 
         Assert.That(sut.State, Is.Not.EqualTo(cloned.State));
     }
+
+    [Test]
+    public void IsSolved()
+    {
+        var emptyBoard = new Board();
+        var partiallySolvedBoard = new Board();
+        partiallySolvedBoard.Set(1, 2, 3);
+        var fullySolvedBoard = new Board(@"
+            +---+---+---+
+            |971|623|584|
+            |832|745|196|
+            |546|819|732|
+            +---+---+---+
+            |498|361|275|
+            |327|584|961|
+            |165|972|348|
+            +---+---+---+
+            |289|136|457|
+            |654|297|813|
+            |713|458|629|
+            +---+---+---+");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(emptyBoard.IsSolved(), Is.False, "empty board");
+            Assert.That(partiallySolvedBoard.IsSolved(), Is.False, "partially solved");
+            Assert.That(fullySolvedBoard.IsSolved(), Is.True, "fully solved");
+        });
+    }
 }
