@@ -59,12 +59,12 @@ internal class StackBasedFilledBoardGenerator
 
                 for (int i = 0; i < currentBoard.Size; i++)
                 {
-                    MarkDigitsAsUsed(currentBoard, cell, isDigitUsed, cell => (i, cell.Column));
-                    MarkDigitsAsUsed(currentBoard, cell, isDigitUsed, cell => (cell.Row, i));
+                    MarkDigitsAsUsed(currentBoard, isDigitUsed, i, cell.Column);
+                    MarkDigitsAsUsed(currentBoard, isDigitUsed, cell.Row, i);
 
                     int blockRow = cell.Row / 3;
                     int blockCol = cell.Column / 3;
-                    MarkDigitsAsUsed(currentBoard, cell, isDigitUsed, cell => (blockRow * 3 + i / 3, blockCol * 3 + i % 3));
+                    MarkDigitsAsUsed(currentBoard, isDigitUsed, blockRow * 3 + i / 3, blockCol * 3 + i % 3);
                 }
 
                 int candidatesCount = isDigitUsed.Where(used => !used).Count();
@@ -98,9 +98,8 @@ internal class StackBasedFilledBoardGenerator
         command = "move";
     }
 
-    private static void MarkDigitsAsUsed(Board currentBoard, CellLocation cell, bool[] isDigitUsed, Func<CellLocation, (int row, int column)> f)
+    private static void MarkDigitsAsUsed(Board currentBoard, bool[] isDigitUsed, int row, int column)
     {
-        (int row, int column) = f(cell);
         int digit = currentBoard.Get(row, column);
         if (digit > 0)
             isDigitUsed[digit - 1] = true;
