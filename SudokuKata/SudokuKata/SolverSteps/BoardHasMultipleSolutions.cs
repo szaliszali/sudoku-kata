@@ -40,8 +40,6 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             CandidateSet candidateSet = solverState.Candidates.Get(cell);
             if (candidateSet.NumCandidates == 2)
             {
-                (int lower, int upper) = candidateSet.CandidatePair;
-
                 foreach (CellLocation cell1 in solverState.Board.AllLocations())
                 {
                     if (cell.Row * 9 + cell.Column >= cell1.Row * 9 + cell1.Column) continue;
@@ -50,6 +48,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
                     {
                         if (cell.Row == cell1.Row || cell.Column == cell1.Column || cell.BlockIndex() == cell1.BlockIndex())
                         {
+                            (int lower, int upper) = candidateSet.CandidatePair;
                             candidates.Enqueue((cell, cell1, lower, upper));
                         }
                     }
