@@ -125,7 +125,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Move()
     {
-        (int[] currentState, (int rowToMove, int colToMove), bool[] usedDigits) = combinedStack.Peek();
+        (int[] currentState, CellLocation move, bool[] usedDigits) = combinedStack.Peek();
         int digitToMove = lastDigitStack.Pop();
 
         int movedToDigit = digitToMove + 1;
@@ -135,14 +135,14 @@ internal class StackBasedFilledBoardGenerator
         if (digitToMove > 0)
         {
             usedDigits[digitToMove - 1] = false;
-            currentState.Set(rowToMove, colToMove, 0);
+            currentState.Set(move.Row, move.Column, 0);
         }
 
         if (movedToDigit <= 9)
         {
             lastDigitStack.Push(movedToDigit);
             usedDigits[movedToDigit - 1] = true;
-            currentState.Set(rowToMove, colToMove, movedToDigit);
+            currentState.Set(move.Row, move.Column, movedToDigit);
 
             if (currentState.Any(digit => digit == 0))
                 command = "expand";
