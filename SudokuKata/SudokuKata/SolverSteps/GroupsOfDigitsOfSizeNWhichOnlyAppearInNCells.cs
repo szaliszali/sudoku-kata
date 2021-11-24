@@ -27,7 +27,7 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
         {
             yield return new PrintMessageCommand(new StringBuilder()
                 .Append($"In {groupWithNMasks.Description} values ")
-                .AppendJoin($", ", mask.AllCandidates)
+                .AppendJoin(", ", mask.AllCandidates)
                 .Append(" appear only in cells ")
                 .AppendJoin(" ", groupWithNMasks.CellsWithMask.Select(cell => cell.Location.ShortString()))
                 .Append(" and other values cannot appear in those cells.")
