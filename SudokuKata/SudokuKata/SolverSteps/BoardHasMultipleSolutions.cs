@@ -33,7 +33,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
 
     IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect()
     {
-        Queue<(int index1, int index2, int digit1, int digit2)> candidates = new();
+        Queue<(CellLocation index1, CellLocation index2, int digit1, int digit2)> candidates = new();
 
         foreach (CellLocation cell in solverState.Board.AllLocations())
         {
@@ -50,7 +50,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
                     {
                         if (cell.Row == cell1.Row || cell.Column == cell1.Column || cell.BlockIndex() == cell1.BlockIndex())
                         {
-                            candidates.Enqueue((cell.Row * 9 + cell.Column, cell1.Row * 9 + cell1.Column, lower, upper));
+                            candidates.Enqueue((cell, cell1, lower, upper));
                         }
                     }
                 }
@@ -64,7 +64,10 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
 
         while (candidates.Any())
         {
-            (int index1, int index2, int digit1, int digit2) = candidates.Dequeue();
+            (CellLocation cell1, CellLocation cell2, int digit1, int digit2) = candidates.Dequeue();
+
+            int index1 = cell1.Row * 9 + cell1.Column;
+            int index2 = cell2.Row * 9 + cell2.Column;
 
             int[] alternateState = solverState.Board.State.ShallowCopy();
 
