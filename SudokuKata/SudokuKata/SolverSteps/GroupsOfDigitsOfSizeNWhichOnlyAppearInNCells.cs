@@ -28,11 +28,8 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
             StringBuilder message = new StringBuilder();
             message.Append($"In {groupWithNMasks.Description} values ");
             message.AppendJoin($", ", mask.AllCandidates);
-            message.Append(" appear only in cells");
-            foreach (var cell in groupWithNMasks.CellsWithMask)
-            {
-                message.Append($" {cell.Location.ShortString()}");
-            }
+            message.Append(" appear only in cells ");
+            message.AppendJoin(" ", groupWithNMasks.CellsWithMask.Select(cell => cell.Location.ShortString()));
 
             message.Append(" and other values cannot appear in those cells.");
 
