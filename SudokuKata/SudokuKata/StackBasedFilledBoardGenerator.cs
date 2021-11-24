@@ -119,7 +119,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Move()
     {
-        (Board currentState, CellLocation move, bool[] usedDigits) = combinedStack.Peek();
+        (Board currentBoard, CellLocation move, bool[] usedDigits) = combinedStack.Peek();
         int digitToMove = lastDigitStack.Pop();
 
         int movedToDigit = digitToMove + 1;
@@ -129,21 +129,21 @@ internal class StackBasedFilledBoardGenerator
         if (digitToMove > 0)
         {
             usedDigits[digitToMove - 1] = false;
-            currentState.Set(move.Row, move.Column, 0);
+            currentBoard.Set(move.Row, move.Column, 0);
         }
 
         if (movedToDigit <= 9)
         {
             lastDigitStack.Push(movedToDigit);
             usedDigits[movedToDigit - 1] = true;
-            currentState.Set(move.Row, move.Column, movedToDigit);
+            currentBoard.Set(move.Row, move.Column, movedToDigit);
 
-            if (!currentState.IsSolved())
+            if (!currentBoard.IsSolved())
                 command = "expand";
             else
             {
                 command = "complete";
-                solvedBoardState = currentState.State;
+                solvedBoardState = currentBoard.State;
             }
         }
         else
