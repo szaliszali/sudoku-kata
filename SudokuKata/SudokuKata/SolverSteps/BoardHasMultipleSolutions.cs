@@ -28,7 +28,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
         yield return new SetCellCommand(new CellLocation(row2, col2), finalState.Get(row2, col2));
 
         yield return new PrintMessageCommand(
-            $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState.Get(row1, col1)}->({row1 + 1}, {col1 + 1}), {finalState.Get(row2, col2)}->({row2 + 1}, {col2 + 1}).");
+            $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState.Get(row1, col1)}->{cell1.ShortString()}, {finalState.Get(row2, col2)}->{cell2.ShortString()}.");
     }
 
     IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect()
