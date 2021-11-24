@@ -62,20 +62,18 @@ internal class StackBasedFilledBoardGenerator
         foreach (CellLocation cell in currentBoard.AllLocations())
             if (currentState.Get(cell.Row, cell.Column) == 0)
             {
-                int row = cell.Row;
-                int col = cell.Column;
-                int blockRow = row / 3;
-                int blockCol = col / 3;
+                int blockRow = cell.Row / 3;
+                int blockCol = cell.Column / 3;
 
                 bool[] isDigitUsed = new bool[currentBoard.Size];
 
                 for (int i = 0; i < currentBoard.Size; i++)
                 {
-                    int rowDigit = currentState.Get(i, col);
+                    int rowDigit = currentState.Get(i, cell.Column);
                     if (rowDigit > 0)
                         isDigitUsed[rowDigit - 1] = true;
 
-                    int colDigit = currentState.Get(row, i);
+                    int colDigit = currentState.Get(cell.Row, i);
                     if (colDigit > 0)
                         isDigitUsed[colDigit - 1] = true;
 
@@ -98,8 +96,8 @@ internal class StackBasedFilledBoardGenerator
                     candidatesCount < bestCandidatesCount ||
                     (candidatesCount == bestCandidatesCount && randomValue < bestRandomValue))
                 {
-                    bestRow = row;
-                    bestCol = col;
+                    bestRow = cell.Row;
+                    bestCol = cell.Column;
                     bestUsedDigits = isDigitUsed;
                     bestCandidatesCount = candidatesCount;
                     bestRandomValue = randomValue;
