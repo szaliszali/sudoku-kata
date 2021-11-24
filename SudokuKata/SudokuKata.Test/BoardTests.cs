@@ -153,22 +153,4 @@ internal class BoardTests
             Assert.That(fullySolvedBoard.IsSolved(), Is.True, "fully solved");
         });
     }
-
-    [Test]
-    public void Swap()
-    {
-        var sut = new Board();
-        var cell1 = new CellLocation(1, 2);
-        var cell2 = new CellLocation(2, 2);
-        sut.Set(cell1, 3);
-        sut.Set(cell2, 4);
-
-        sut.Swap(cell1, cell2);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(sut.Get(cell1), Is.EqualTo(4), "second value in first cell");
-            Assert.That(sut.Get(cell2), Is.EqualTo(3), "first value in second cell");
-        });
-    }
 }

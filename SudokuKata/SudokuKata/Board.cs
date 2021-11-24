@@ -83,11 +83,4 @@ public class Board
     public Board Clone() => new Board(state);
 
     public bool IsSolved() => state.All(c => c > 0);
-
-    public void Swap(CellLocation cell1, CellLocation cell2)
-    {
-        int value1 = Get(cell1);
-        Set(cell1, Get(cell2));
-        Set(cell2, value1);
-    }
 }
