@@ -44,16 +44,7 @@ internal class StackBasedFilledBoardGenerator
 
     private void Expand()
     {
-        int[] currentState;
-
-        if (combinedStack.Any())
-        {
-            currentState = combinedStack.Peek().state.ShallowCopy();
-        }
-        else
-        {
-            currentState = initialState.ShallowCopy();
-        }
+        int[] currentState = combinedStack.Any() ? combinedStack.Peek().state.ShallowCopy() : initialState.ShallowCopy();
         Board currentBoard = new Board(currentState);
 
         CellLocation bestCell = new(-1, -1);
