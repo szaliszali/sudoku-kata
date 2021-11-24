@@ -40,10 +40,8 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             .Select(c => c.Candidate)
             .ToList();
 
-    private Queue<BoardHasMultipleSolutionsDetection> EnumerateCandidates()
+    private IEnumerable<BoardHasMultipleSolutionsDetection> EnumerateCandidates()
     {
-        Queue<BoardHasMultipleSolutionsDetection> candidates = new();
-
         foreach (CellLocation cell in solverState.Board.AllLocations())
         {
             CandidateSet candidateSet = solverState.Candidates.Get(cell);
@@ -58,14 +56,12 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
                         if (cell.Row == cell1.Row || cell.Column == cell1.Column || cell.BlockIndex() == cell1.BlockIndex())
                         {
                             (int lower, int upper) = candidateSet.CandidatePair;
-                            candidates.Enqueue(new(cell, cell1, lower, upper));
+                            yield return new(cell, cell1, lower, upper);
                         }
                     }
                 }
             }
         }
-
-        return candidates;
     }
 
     IEnumerable<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Pick(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections) =>
