@@ -27,7 +27,20 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState.Get(cell1)}->{cell1.ShortString()}, {finalState.Get(cell2)}->{cell2.ShortString()}.");
     }
 
-    IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect()
+    IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect() =>
+        EnumerateCandidates().Select(c =>
+            {
+                Board alternateBoard = solverState.Board.Clone();
+                alternateBoard.Set(c.cell1, finalState.Get(c.cell2));
+                alternateBoard.Set(c.cell2, finalState.Get(c.cell1));
+
+                return (Candidate: c, new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution);
+            })
+            .Where(c => c.HasSolution)
+            .Select(c => c.Candidate)
+            .ToList();
+
+    private Queue<BoardHasMultipleSolutionsDetection> EnumerateCandidates()
     {
         Queue<BoardHasMultipleSolutionsDetection> candidates = new();
 
@@ -52,20 +65,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             }
         }
 
-        // At this point we have the lists with pairs of cells that might pick one of two digits each
-        // Now we have to check whether that is really true - does the board have two solutions?
-
-        return candidates.Select(c =>
-        {
-            Board alternateBoard = solverState.Board.Clone();
-            alternateBoard.Set(c.cell1, finalState.Get(c.cell2));
-            alternateBoard.Set(c.cell2, finalState.Get(c.cell1));
-
-            return (Candidate: c, new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution);
-        })
-            .Where(c => c.HasSolution)
-            .Select(c => c.Candidate)
-            .ToList();
+        return candidates;
     }
 
     IEnumerable<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Pick(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections) =>
