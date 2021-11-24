@@ -28,17 +28,20 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
     }
 
     IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect() =>
-        EnumerateCandidates().Select(c =>
-            {
-                Board alternateBoard = solverState.Board.Clone();
-                alternateBoard.Set(c.cell1, finalState.Get(c.cell2));
-                alternateBoard.Set(c.cell2, finalState.Get(c.cell1));
-
-                return (Candidate: c, new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution);
-            })
+        EnumerateCandidates()
+            .Select(c => (Candidate: c, HasSolution: HasAlternateSolution(c)))
             .Where(c => c.HasSolution)
             .Select(c => c.Candidate)
             .ToList();
+
+    private bool HasAlternateSolution(BoardHasMultipleSolutionsDetection c)
+    {
+        Board alternateBoard = solverState.Board.Clone();
+        alternateBoard.Set(c.cell1, finalState.Get(c.cell2));
+        alternateBoard.Set(c.cell2, finalState.Get(c.cell1));
+
+        return new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution;
+    }
 
     private IEnumerable<BoardHasMultipleSolutionsDetection> EnumerateCandidates()
     {
