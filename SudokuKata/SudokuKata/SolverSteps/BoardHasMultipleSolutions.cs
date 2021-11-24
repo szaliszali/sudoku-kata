@@ -69,20 +69,20 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             int index1 = cell1.Row * 9 + cell1.Column;
             int index2 = cell2.Row * 9 + cell2.Column;
 
-            int[] alternateState = solverState.Board.State.ShallowCopy();
+            Board alternateBoard = solverState.Board.Clone();
 
             if (finalState[index1] == digit1)
             {
-                alternateState[index1] = digit2;
-                alternateState[index2] = digit1;
+                alternateBoard.Set(cell1, digit2);
+                alternateBoard.Set(cell2, digit1);
             }
             else
             {
-                alternateState[index1] = digit1;
-                alternateState[index2] = digit2;
+                alternateBoard.Set(cell1, digit1);
+                alternateBoard.Set(cell2, digit2);
             }
 
-            if (new StackBasedFilledBoardGenerator(solverState.Rng, new Board(alternateState)).HasSolution)
+            if (new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution)
             {
                 // Board was solved successfully even with two digits swapped
                 solutions.Add(new(index1, index2, digit1, digit2));
