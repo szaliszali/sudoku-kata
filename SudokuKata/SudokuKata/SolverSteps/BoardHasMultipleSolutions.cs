@@ -29,7 +29,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
 
     IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect()
     {
-        Queue<(CellLocation index1, CellLocation index2, int digit1, int digit2)> candidates = new();
+        Queue<BoardHasMultipleSolutionsDetection> candidates = new();
 
         foreach (CellLocation cell in solverState.Board.AllLocations())
         {
@@ -45,7 +45,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
                         if (cell.Row == cell1.Row || cell.Column == cell1.Column || cell.BlockIndex() == cell1.BlockIndex())
                         {
                             (int lower, int upper) = candidateSet.CandidatePair;
-                            candidates.Enqueue((cell, cell1, lower, upper));
+                            candidates.Enqueue(new(cell, cell1, lower, upper));
                         }
                     }
                 }
@@ -55,24 +55,17 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
         // At this point we have the lists with pairs of cells that might pick one of two digits each
         // Now we have to check whether that is really true - does the board have two solutions?
 
-        List<BoardHasMultipleSolutionsDetection> solutions = new();
-
-        while (candidates.Any())
+        return candidates.Select(c =>
         {
-            (CellLocation cell1, CellLocation cell2, int digit1, int digit2) = candidates.Dequeue();
-
             Board alternateBoard = solverState.Board.Clone();
-            alternateBoard.Set(cell1, finalState.Get(cell2));
-            alternateBoard.Set(cell2, finalState.Get(cell1));
+            alternateBoard.Set(c.cell1, finalState.Get(c.cell2));
+            alternateBoard.Set(c.cell2, finalState.Get(c.cell1));
 
-            if (new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution)
-            {
-                // Board was solved successfully even with two digits swapped
-                solutions.Add(new(cell1, cell2, digit1, digit2));
-            }
-        }
-
-        return solutions;
+            return (Candidate: c, new StackBasedFilledBoardGenerator(solverState.Rng, alternateBoard).HasSolution);
+        })
+            .Where(c => c.HasSolution)
+            .Select(c => c.Candidate)
+            .ToList();
     }
 
     IEnumerable<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Pick(IReadOnlyList<BoardHasMultipleSolutionsDetection> detections) =>
