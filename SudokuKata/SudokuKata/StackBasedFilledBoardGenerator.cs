@@ -50,6 +50,7 @@ internal class StackBasedFilledBoardGenerator
         {
             currentState = combinedStack.Peek().state.ShallowCopy();
         }
+        Board currentBoard = new Board(currentState);
 
         int bestRow = -1;
         int bestCol = -1;
@@ -58,11 +59,11 @@ internal class StackBasedFilledBoardGenerator
         int bestRandomValue = -1;
         bool containsUnsolvableCells = false;
 
-        for (int index = 0; index < currentState.Length; index++)
-            if (currentState[index] == 0)
+        foreach (CellLocation cell in currentBoard.AllLocations())
+            if (currentState.Get(cell.Row, cell.Column) == 0)
             {
-                int row = index / 9;
-                int col = index % 9;
+                int row = cell.Row;
+                int col = cell.Column;
                 int blockRow = row / 3;
                 int blockCol = col / 3;
 
