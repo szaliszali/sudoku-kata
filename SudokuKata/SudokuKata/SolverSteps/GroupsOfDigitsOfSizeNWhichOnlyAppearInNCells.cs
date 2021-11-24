@@ -64,10 +64,9 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
                             group.Count(
                                 cell => solverState.Board.Get(cell.Location) == 0 &&
                                         solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                                        solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
-                    )))
-                .Where(group => group.CellsWithMask.Count() == group.Mask.NumCandidates)
-                .ToList();
+                                        solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))))
+            .Where(group => group.CellsWithMask.Count() == group.Mask.NumCandidates)
+            .ToList();
 
     IEnumerable<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Pick(IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> detections) =>
         detections;
