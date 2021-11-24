@@ -24,11 +24,11 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             : col1 == col2 ? $"column #{col1 + 1}"
             : $"block ({row1 / 3 + 1}, {col1 / 3 + 1})";
 
-        yield return new SetCellCommand(new CellLocation(row1, col1), finalState.Get(row1, col1));
-        yield return new SetCellCommand(new CellLocation(row2, col2), finalState.Get(row2, col2));
+        yield return new SetCellCommand(cell1, finalState.Get(cell1));
+        yield return new SetCellCommand(cell2, finalState.Get(cell2));
 
         yield return new PrintMessageCommand(
-            $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState.Get(row1, col1)}->{cell1.ShortString()}, {finalState.Get(row2, col2)}->{cell2.ShortString()}.");
+            $"Guessing that {digit1} and {digit2} are arbitrary in {description} (multiple solutions): Pick {finalState.Get(cell1)}->{cell1.ShortString()}, {finalState.Get(cell2)}->{cell2.ShortString()}.");
     }
 
     IReadOnlyList<BoardHasMultipleSolutionsDetection> ISolverStep<BoardHasMultipleSolutionsDetection>.Detect()
