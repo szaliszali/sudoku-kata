@@ -62,19 +62,25 @@ internal class StackBasedFilledBoardGenerator
 
                 for (int i = 0; i < currentBoard.Size; i++)
                 {
-                    Func<CellLocation, (int row, int column)> f = cell => (i, cell.Column);
-                    (int row, int column) = f(cell);
-                    int rowDigit = currentBoard.Get(row, column);
-                    if (rowDigit > 0)
-                        isDigitUsed[rowDigit - 1] = true;
+                    {
+                        Func<CellLocation, (int row, int column)> f = cell => (i, cell.Column);
+                        (int row, int column) = f(cell);
+                        int rowDigit = currentBoard.Get(row, column);
+                        if (rowDigit > 0)
+                            isDigitUsed[rowDigit - 1] = true;
+                    }
 
-                    int colDigit = currentBoard.Get(cell.Row, i);
-                    if (colDigit > 0)
-                        isDigitUsed[colDigit - 1] = true;
+                    {
+                        int colDigit = currentBoard.Get(cell.Row, i);
+                        if (colDigit > 0)
+                            isDigitUsed[colDigit - 1] = true;
+                    }
 
-                    int blockDigit = currentBoard.Get(blockRow * 3 + i / 3, blockCol * 3 + i % 3);
-                    if (blockDigit > 0)
-                        isDigitUsed[blockDigit - 1] = true;
+                    {
+                        int blockDigit = currentBoard.Get(blockRow * 3 + i / 3, blockCol * 3 + i % 3);
+                        if (blockDigit > 0)
+                            isDigitUsed[blockDigit - 1] = true;
+                    }
                 }
 
                 int candidatesCount = isDigitUsed.Where(used => !used).Count();
