@@ -71,7 +71,9 @@ internal class StackBasedFilledBoardGenerator
                     }
 
                     {
-                        int colDigit = currentBoard.Get(cell.Row, i);
+                        Func<CellLocation, (int row, int column)> f = cell => (cell.Row, i);
+                        (int row, int column) = f(cell);
+                        int colDigit = currentBoard.Get(row, column);
                         if (colDigit > 0)
                             isDigitUsed[colDigit - 1] = true;
                     }
