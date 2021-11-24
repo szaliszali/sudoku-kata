@@ -67,7 +67,7 @@ internal class StackBasedFilledBoardGenerator
                     MarkDigitsAsUsed(currentBoard, isDigitUsed, blockRow * 3 + i / 3, blockCol * 3 + i % 3);
                 }
 
-                int candidatesCount = isDigitUsed.Where(used => !used).Count();
+                int candidatesCount = isDigitUsed.Count(used => !used);
 
                 if (candidatesCount == 0)
                 {
