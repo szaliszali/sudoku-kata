@@ -107,6 +107,14 @@ internal class BoardTests
     }
 
     [Test]
+    public void BlockSize()
+    {
+        var sut = new Board();
+
+        Assert.That(sut.BlockSize, Is.EqualTo(3));
+    }
+
+    [Test]
     public void Clone_PreservesState()
     {
         var sut = new Board();

@@ -2,8 +2,10 @@
 
 public class Board
 {
-    private const int DefaultSize = 9;
+    private const int DefaultBlockSize = 3;
+    private const int DefaultSize = DefaultBlockSize * DefaultBlockSize;
 
+    public int BlockSize => DefaultBlockSize;
     public int Size => DefaultSize;
 
     private readonly List<char[]> fancyBoard = new();
