@@ -16,29 +16,29 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
 
     IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection detection)
     {
-        var groupWithNMasks = detection;
+        var groupWithNCandidates = detection;
 
-        CandidateSet mask = groupWithNMasks.Candidates;
+        CandidateSet candidates = groupWithNCandidates.Candidates;
 
-        if (groupWithNMasks.Cells
+        if (groupWithNCandidates.Cells
             .Any(cell =>
-                solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(mask) &&
-                solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask)))
+                solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(candidates) &&
+                solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(candidates)))
         {
             yield return new PrintMessageCommand(new StringBuilder()
-                .Append($"In {groupWithNMasks.Description} values ")
-                .AppendJoin(", ", mask.AllCandidates)
+                .Append($"In {groupWithNCandidates.Description} values ")
+                .AppendJoin(", ", candidates.AllCandidates)
                 .Append(" appear only in cells ")
-                .AppendJoin(" ", groupWithNMasks.CellsWithMask.Select(cell => cell.Location.ShortString()))
+                .AppendJoin(" ", groupWithNCandidates.CellsWithMask.Select(cell => cell.Location.ShortString()))
                 .Append(" and other values cannot appear in those cells.")
                 .ToString());
         }
 
-        foreach (var cell in groupWithNMasks.CellsWithMask
-            .Where(cell => solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(mask))
+        foreach (var cell in groupWithNCandidates.CellsWithMask
+            .Where(cell => solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(candidates))
             .Select(cell=>cell.Location))
         {
-            var valuesToClear = solverState.Candidates.Get(cell).AllCandidates.Except(mask.AllCandidates).ToArray();
+            var valuesToClear = solverState.Candidates.Get(cell).AllCandidates.Except(candidates.AllCandidates).ToArray();
 
             yield return new EliminateCandidatesCommand(cell, valuesToClear);
             yield return new PrintMessageCommand(new StringBuilder().AppendJoin(", ", valuesToClear).Append($" cannot appear in cell {cell.ShortString()}.").ToString());
