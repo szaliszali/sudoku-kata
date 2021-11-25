@@ -40,7 +40,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
                     .ToList();
 
                 yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
-                yield return new PrintMessageCommand($"{string.Join(", ", valuesToRemove.ToArray())} cannot appear in {cell.Location.ShortString()}.");
+                yield return new PrintMessageCommand($"{string.Join(", ", valuesToRemove)} cannot appear in {cell.Location.ShortString()}.");
             }
         }
     }
