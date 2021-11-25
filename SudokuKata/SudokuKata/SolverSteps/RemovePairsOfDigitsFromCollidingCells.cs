@@ -24,7 +24,6 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
                 .Where(cell => solverState.Candidates.Get(cell.Location) == detection.Mask)
                 .ToArray();
 
-
         if (cells.Any())
         {
             CandidateSet temp = detection.Mask;
