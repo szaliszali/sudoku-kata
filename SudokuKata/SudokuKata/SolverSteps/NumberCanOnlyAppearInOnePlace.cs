@@ -17,18 +17,15 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
         yield return new PrintMessageCommand($"{description} can contain {digit} only at {location.ShortString()}.");
     }
 
-    IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Detect()
-    {
-        return
-            Enumerable.Range(1, solverState.Board.Size)
-                .SelectMany(digit => solverState.CellGroups
-                    .Select(g => (g, count: g.Count(c => solverState.Candidates.Get(c.Location).Contains(digit)), digit))
-                    .Where(g => g.count == 1))
-                .OrderBy(g => g.digit)
-                .ThenBy(g => g.g.First().Discriminator % solverState.Board.Size) // HACK: original code enumerated cell groups in different order
-                .Select(g => new NumberCanOnlyAppearInOnePlaceDetection(g.g.First().Description.Capitalize(), g.g.Single(c => solverState.Candidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
-                .ToList();
-    }
+    IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Detect() =>
+        Enumerable.Range(1, solverState.Board.Size)
+            .SelectMany(digit => solverState.CellGroups
+                .Select(g => (g, count: g.Count(c => solverState.Candidates.Get(c.Location).Contains(digit)), digit))
+                .Where(g => g.count == 1))
+            .OrderBy(g => g.digit)
+            .ThenBy(g => g.g.First().Discriminator % solverState.Board.Size) // HACK: original code enumerated cell groups in different order
+            .Select(g => new NumberCanOnlyAppearInOnePlaceDetection(g.g.First().Description.Capitalize(), g.g.Single(c => solverState.Candidates.Get(c.Location).Contains(g.digit)).Location, g.digit))
+            .ToList();
 
     IEnumerable<NumberCanOnlyAppearInOnePlaceDetection> ISolverStep<NumberCanOnlyAppearInOnePlaceDetection>.Pick(IReadOnlyList<NumberCanOnlyAppearInOnePlaceDetection> detections) =>
         detections.PickOneRandomly(solverState.Rng);
