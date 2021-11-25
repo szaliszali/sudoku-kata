@@ -14,7 +14,6 @@ public class NumberCanOnlyAppearInOnePlace : ISolverStep<NumberCanOnlyAppearInOn
         (string description, CellLocation location, int digit) = detection;
 
         yield return new SetCellCommand(location, digit);
-
         yield return new PrintMessageCommand($"{description} can contain {digit} only at {location.ShortString()}.");
     }
 
