@@ -2,7 +2,7 @@
 
 public record GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection
 (
-    CandidateSet Mask,
+    CandidateSet Candidates,
     string Description,
     IGrouping<int, NamedCell> Cells,
     List<NamedCell> CellsWithMask,
