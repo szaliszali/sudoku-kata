@@ -6,20 +6,20 @@ internal class CellLocationTests
     public void BlockIndex()
     {
         var board = new Board();
-        Approvals.VerifyAll(Enumerable.Range(0, 81).Select(i => new CellLocation(board, i / 9, i % 9).BlockIndex()), "");
+        Approvals.VerifyAll(board.AllLocations().Select(l => l.BlockIndex()), "");
     }
 
     [Test]
     public void BlockRow()
     {
         var board = new Board();
-        Approvals.VerifyAll(Enumerable.Range(0, 81).Select(i => new CellLocation(board, i / 9, i % 9).BlockRow()), "");
+        Approvals.VerifyAll(board.AllLocations().Select(l => l.BlockRow()), "");
     }
 
     [Test]
     public void BlockCol()
     {
         var board = new Board();
-        Approvals.VerifyAll(Enumerable.Range(0, 81).Select(i => new CellLocation(board, i / 9, i % 9).BlockCol()), "");
+        Approvals.VerifyAll(board.AllLocations().Select(l => l.BlockCol()), "");
     }
 }
