@@ -16,27 +16,25 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
 
     IEnumerable<ISolverCommand> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Act(GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection detection)
     {
-        var groupWithNCandidates = detection;
+        CandidateSet candidates = detection.Candidates;
 
-        CandidateSet candidates = groupWithNCandidates.Candidates;
-
-        if (groupWithNCandidates.Cells
+        if (detection.Cells
             .Any(cell =>
                 solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(candidates) &&
                 solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(candidates)))
         {
             yield return new PrintMessageCommand(new StringBuilder()
-                .Append($"In {groupWithNCandidates.Description} values ")
+                .Append($"In {detection.Description} values ")
                 .AppendJoin(", ", candidates.AllCandidates)
                 .Append(" appear only in cells ")
-                .AppendJoin(" ", groupWithNCandidates.CellsWithMask.Select(cell => cell.Location.ShortString()))
+                .AppendJoin(" ", detection.CellsWithMask.Select(cell => cell.Location.ShortString()))
                 .Append(" and other values cannot appear in those cells.")
                 .ToString());
         }
 
-        foreach (var cell in groupWithNCandidates.CellsWithMask
+        foreach (var cell in detection.CellsWithMask
             .Where(cell => solverState.Candidates.Get(cell.Location).HasAtLeastOneDifferent(candidates))
-            .Select(cell=>cell.Location))
+            .Select(cell => cell.Location))
         {
             var valuesToClear = solverState.Candidates.Get(cell).AllCandidates.Except(candidates.AllCandidates).ToArray();
 
