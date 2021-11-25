@@ -46,10 +46,8 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
         }
     }
 
-    IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Detect()
-    {
-        return
-            solverState.Candidates
+    IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Detect() =>
+        solverState.Candidates
             .Where(mask => mask.NumCandidates == 2)
             .Distinct()
             .SelectMany(mask =>
@@ -58,10 +56,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
                     .Where(group => group.Any(tuple => solverState.Candidates.Get(tuple.Location) != mask && solverState.Candidates.Get(tuple.Location).HasAtLeastOneCommon(mask)))
                     .Select(group => new RemovePairsOfDigitsFromCollidingCellsDetection(mask, group.First().Description, group)))
             .ToList();
-    }
 
-    IEnumerable<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Pick(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections)
-    {
-        return detections;
-    }
+    IEnumerable<RemovePairsOfDigitsFromCollidingCellsDetection> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Pick(IReadOnlyList<RemovePairsOfDigitsFromCollidingCellsDetection> detections) =>
+        detections;
 }
