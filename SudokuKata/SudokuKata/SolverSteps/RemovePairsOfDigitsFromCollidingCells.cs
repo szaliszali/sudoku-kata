@@ -19,7 +19,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
                         solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(detection.Mask))
                 .ToList();
 
-        var maskCells =
+        var cellsWithSameCandidates =
             detection.Cells
                 .Where(cell => solverState.Candidates.Get(cell.Location) == detection.Mask)
                 .ToArray();
@@ -31,7 +31,7 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
             (int lower, int upper) = temp.CandidatePair;
 
             yield return new PrintMessageCommand(
-                $"Values {lower} and {upper} in {detection.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
+                $"Values {lower} and {upper} in {detection.Description} are in cells {cellsWithSameCandidates[0].Location.ShortString()} and {cellsWithSameCandidates[1].Location.ShortString()}.");
 
             foreach (var cell in cells)
             {
