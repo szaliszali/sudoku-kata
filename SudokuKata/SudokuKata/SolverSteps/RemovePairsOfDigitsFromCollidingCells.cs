@@ -11,33 +11,31 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
 
     IEnumerable<ISolverCommand> ISolverStep<RemovePairsOfDigitsFromCollidingCellsDetection>.Act(RemovePairsOfDigitsFromCollidingCellsDetection detection)
     {
-        var group = detection;
-
         var cells =
-            group.Cells
+            detection.Cells
                 .Where(
                     cell =>
-                        solverState.Candidates.Get(cell.Location) != group.Mask &&
-                        solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(group.Mask))
+                        solverState.Candidates.Get(cell.Location) != detection.Mask &&
+                        solverState.Candidates.Get(cell.Location).HasAtLeastOneCommon(detection.Mask))
                 .ToList();
 
         var maskCells =
-            group.Cells
-                .Where(cell => solverState.Candidates.Get(cell.Location) == group.Mask)
+            detection.Cells
+                .Where(cell => solverState.Candidates.Get(cell.Location) == detection.Mask)
                 .ToArray();
 
 
         if (cells.Any())
         {
-            CandidateSet temp = group.Mask;
+            CandidateSet temp = detection.Mask;
             (int lower, int upper) = temp.CandidatePair;
 
             yield return new PrintMessageCommand(
-                $"Values {lower} and {upper} in {group.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
+                $"Values {lower} and {upper} in {detection.Description} are in cells {maskCells[0].Location.ShortString()} and {maskCells[1].Location.ShortString()}.");
 
             foreach (var cell in cells)
             {
-                List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates.Intersect(group.Mask.AllCandidates).ToList();
+                List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates.Intersect(detection.Mask.AllCandidates).ToList();
                 yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
 
                 string valuesReport = string.Join(", ", valuesToRemove.ToArray());
