@@ -59,11 +59,11 @@ internal class NumberOnlyInOnePlaceInARowColumnBlock
         Assert.Multiple(() =>
         {
             Assert.That(resultWithSeed1, Is.EqualTo(new ISolverCommand[] {
-                new SetCellCommand(new CellLocation(4,4), 1),
+                new SetCellCommand(new CellLocation(board, 4,4), 1),
                 new PrintMessageCommand("Row #5 can contain 1 only at (5, 5)."),
             }), "Seed 1");
             Assert.That(resultWithSeed2, Is.EqualTo(new ISolverCommand[] {
-                new SetCellCommand(new CellLocation(4,4), 1),
+                new SetCellCommand(new CellLocation(board, 4,4), 1),
                 new PrintMessageCommand("Block (2, 2) can contain 1 only at (5, 5)."),
             }), "Seed 2");
         });

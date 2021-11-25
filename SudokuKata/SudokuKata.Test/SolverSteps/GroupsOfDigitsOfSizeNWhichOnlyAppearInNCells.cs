@@ -41,9 +41,9 @@ internal class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells
         Assert.That(result, Is.EqualTo(new ISolverCommand[]
         {
             new PrintMessageCommand("In column #7 values 2, 9 appear only in cells (5, 7) (9, 7) and other values cannot appear in those cells."),
-            new EliminateCandidatesCommand(new CellLocation(4, 6), new[]{ 4 }),
+            new EliminateCandidatesCommand(new CellLocation(board, 4, 6), new[]{ 4 }),
             new PrintMessageCommand("4 cannot appear in cell (5, 7)."),
-            new EliminateCandidatesCommand(new CellLocation(8, 6), new[]{ 4, 8 }),
+            new EliminateCandidatesCommand(new CellLocation(board, 8, 6), new[]{ 4, 8 }),
             new PrintMessageCommand("4, 8 cannot appear in cell (9, 7)."),
         }));
     }

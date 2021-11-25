@@ -77,13 +77,13 @@ internal class MultipleSolutions
         Assert.Multiple(() =>
         {
             Assert.That(resultWithSeed1, Is.EqualTo(new ISolverCommand[] {
-                new SetCellCommand(new CellLocation(2, 6), 7),
-                new SetCellCommand(new CellLocation(2, 7), 3),
+                new SetCellCommand(new CellLocation(board, 2, 6), 7),
+                new SetCellCommand(new CellLocation(board, 2, 7), 3),
                 new PrintMessageCommand("Guessing that 3 and 7 are arbitrary in row #3 (multiple solutions): Pick 7->(3, 7), 3->(3, 8)."),
             }), "Seed 1");
             Assert.That(resultWithSeed2, Is.EqualTo(new ISolverCommand[] {
-                new SetCellCommand(new CellLocation(0, 8), 4),
-                new SetCellCommand(new CellLocation(1, 8), 6),
+                new SetCellCommand(new CellLocation(board, 0, 8), 4),
+                new SetCellCommand(new CellLocation(board, 1, 8), 6),
                 new PrintMessageCommand("Guessing that 4 and 6 are arbitrary in column #9 (multiple solutions): Pick 4->(1, 9), 6->(2, 9)."),
             }), "Seed 2");
         });

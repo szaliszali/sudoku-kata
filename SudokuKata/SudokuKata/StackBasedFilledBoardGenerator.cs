@@ -46,7 +46,7 @@ internal class StackBasedFilledBoardGenerator
     {
         Board currentBoard = combinedStack.Any() ? combinedStack.Peek().board.Clone() : initialBoard;
 
-        CellLocation bestCell = new(-1, -1);
+        CellLocation bestCell = new(currentBoard, -1, -1);
         bool[] bestUsedDigits = null;
         int bestCandidatesCount = -1;
         int bestRandomValue = -1;

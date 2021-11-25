@@ -53,7 +53,7 @@ internal class PairsOfDigitsInTheSameRowColumnBlock
 
         ISolverCommand[] expected = new ISolverCommand[] {
             new PrintMessageCommand("Values 3 and 7 in block (1, 3) are in cells (3, 7) and (3, 8)."),
-            new EliminateCandidatesCommand(new CellLocation(0,6), new[]{ 3 }),
+            new EliminateCandidatesCommand(new CellLocation(board, 0, 6), new[]{ 3 }),
             new PrintMessageCommand("3 cannot appear in (1, 7)."),
         };
         // reason of duplication: normally, the algorithm finds each pair twice, and depends on mutating the candidates during evaluation, and the first iteration would eliminate the elements, the second would not enumerate anything
@@ -85,11 +85,11 @@ internal class PairsOfDigitsInTheSameRowColumnBlock
 
         ISolverCommand[] expected = new ISolverCommand[] {
             new PrintMessageCommand("Values 5 and 7 in row #8 are in cells (8, 2) and (8, 3)."),
-            new EliminateCandidatesCommand(new CellLocation(7, 5), new[]{ 7 }),
+            new EliminateCandidatesCommand(new CellLocation(board, 7, 5), new[]{ 7 }),
             new PrintMessageCommand("7 cannot appear in (8, 6)."),
-            new EliminateCandidatesCommand(new CellLocation(7, 6), new[]{ 7 }),
+            new EliminateCandidatesCommand(new CellLocation(board, 7, 6), new[]{ 7 }),
             new PrintMessageCommand("7 cannot appear in (8, 7)."),
-            new EliminateCandidatesCommand(new CellLocation(7, 8), new[]{ 7 }),
+            new EliminateCandidatesCommand(new CellLocation(board, 7, 8), new[]{ 7 }),
             new PrintMessageCommand("7 cannot appear in (8, 9)."),
         };
         // reason of duplication: normally, the algorithm finds each pair twice, and depends on mutating the candidates during evaluation, and the first iteration would eliminate the elements, the second would not enumerate anything

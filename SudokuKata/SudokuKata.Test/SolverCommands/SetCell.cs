@@ -9,7 +9,7 @@ internal class SetCell
         var solverState = new SolverState(board, new Random());
         solverState.RefreshCandidates();
 
-        ISolverCommand sut = new SetCellCommand(new CellLocation(1, 2), 3);
+        ISolverCommand sut = new SetCellCommand(new CellLocation(board, 1, 2), 3);
         sut.Execute(solverState);
 
         Assert.That(board.Get(1, 2), Is.EqualTo(3));
