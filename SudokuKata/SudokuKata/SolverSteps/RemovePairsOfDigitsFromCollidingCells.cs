@@ -35,7 +35,9 @@ public class RemovePairsOfDigitsFromCollidingCells : ISolverStep<RemovePairsOfDi
 
             foreach (var cell in cells)
             {
-                List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates.Intersect(detection.Mask.AllCandidates).ToList();
+                List<int> valuesToRemove = solverState.Candidates.Get(cell.Location).AllCandidates
+                    .Intersect(detection.Mask.AllCandidates)
+                    .ToList();
 
                 yield return new EliminateCandidatesCommand(cell.Location, valuesToRemove);
                 yield return new PrintMessageCommand($"{string.Join(", ", valuesToRemove.ToArray())} cannot appear in {cell.Location.ShortString()}.");
