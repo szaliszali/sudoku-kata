@@ -79,18 +79,6 @@ internal class BoardTests
     }
 
     [Test]
-    public void StateGetExtensionMethod()
-    {
-        int[] sut = new int[9 * 9];
-        sut[11] = 3;
-        Assert.Multiple(() =>
-        {
-            Assert.That(sut.Get(1, 1), Is.EqualTo(0));
-            Assert.That(sut.Get(1, 2), Is.EqualTo(3));
-        });
-    }
-
-    [Test]
     public void AllLocations()
     {
         var sut = new Board();

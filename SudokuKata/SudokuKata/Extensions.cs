@@ -9,8 +9,6 @@ public static class Extensions
         return result;
     }
 
-    public static int Get(this int[] state, int row, int column) => state[row * 9 + column];
-
     public static string Capitalize(this string input) => char.ToUpper(input[0]) + input.Substring(1);
 
     public static IEnumerable<T> PickOneRandomly<T>(this IReadOnlyList<T> list, Random rng)
