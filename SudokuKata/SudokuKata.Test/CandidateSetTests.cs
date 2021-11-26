@@ -3,10 +3,12 @@
 [TestFixture]
 internal class CandidateSetTests
 {
+    private CandidateSet CreateSut() => new CandidateSet();
+
     [Test]
     public void CandidatSetIsEmptyByDefault()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         Assert.Multiple(() =>
         {
             Assert.That(sut.NumCandidates, Is.EqualTo(0));
@@ -17,7 +19,7 @@ internal class CandidateSetTests
     [Test]
     public void Include()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(3);
         Assert.Multiple(() =>
         {
@@ -29,7 +31,7 @@ internal class CandidateSetTests
     [Test]
     public void IncludeAll()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.IncludeAll();
         Assert.Multiple(() =>
         {
@@ -41,7 +43,7 @@ internal class CandidateSetTests
     [Test]
     public void Clear()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(2);
         sut.Include(5);
         sut.Clear();
@@ -51,7 +53,7 @@ internal class CandidateSetTests
     [Test]
     public void Exclude()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(2);
         sut.Include(7);
         sut.Exclude(2);
@@ -66,7 +68,7 @@ internal class CandidateSetTests
     [Test]
     public void SingleCandidate()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(3);
         Assert.That(sut.SingleCandidate, Is.EqualTo(3));
     }
@@ -74,14 +76,14 @@ internal class CandidateSetTests
     [Test]
     public void SingleCandidateThrowsIfNoCandidates()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         Assert.That(() => sut.SingleCandidate, Throws.Exception);
     }
 
     [Test]
     public void SingleCandidateThrowsIfMultipleCandidates()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(2);
         sut.Include(3);
         Assert.That(() => sut.SingleCandidate, Throws.Exception);
@@ -90,7 +92,7 @@ internal class CandidateSetTests
     [Test]
     public void CandidatePair()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(3);
         sut.Include(2);
         Assert.That(sut.CandidatePair, Is.EqualTo((2, 3)));
@@ -99,7 +101,7 @@ internal class CandidateSetTests
     [Test]
     public void CandidatePairThrowsIfLessThan2Candidates()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(3);
         Assert.That(() => sut.CandidatePair, Throws.Exception);
     }
@@ -107,7 +109,7 @@ internal class CandidateSetTests
     [Test]
     public void CandidatePairThrowsIfMoreThan2Candidates()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(3);
         sut.Include(4);
         sut.Include(5);
@@ -117,15 +119,15 @@ internal class CandidateSetTests
     [Test]
     public void HasAtLeastOneCommon()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(2);
         sut.Include(3);
 
-        var other = new CandidateSet();
+        var other = CreateSut();
         other.Include(1);
         other.Include(3);
 
-        var otherDistinct = new CandidateSet();
+        var otherDistinct = CreateSut();
         otherDistinct.Include(1);
         otherDistinct.Include(7);
 
@@ -139,22 +141,22 @@ internal class CandidateSetTests
     [Test]
     public void HasAtLeastOneDifferent()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(2);
         sut.Include(3);
 
-        var other = new CandidateSet();
+        var other = CreateSut();
         other.Include(1);
         other.Include(3);
 
-        var otherSame = new CandidateSet();
+        var otherSame = CreateSut();
         otherSame.Include(2);
         otherSame.Include(3);
 
-        var otherSubset = new CandidateSet();
+        var otherSubset = CreateSut();
         otherSubset.Include(3);
 
-        var otherSuperset = new CandidateSet();
+        var otherSuperset = CreateSut();
         otherSuperset.Include(2);
         otherSuperset.Include(3);
         otherSuperset.Include(9);
@@ -171,13 +173,13 @@ internal class CandidateSetTests
     [Test]
     public void CandidateSetEquals()
     {
-        CandidateSet sut = new CandidateSet();
+        CandidateSet sut = CreateSut();
         sut.Include(3);
 
-        CandidateSet otherSame = new CandidateSet();
+        CandidateSet otherSame = CreateSut();
         otherSame.Include(3);
 
-        CandidateSet otherDifferent = new CandidateSet();
+        CandidateSet otherDifferent = CreateSut();
         otherDifferent.Include(1);
 
         Assert.Multiple(() =>
@@ -200,7 +202,7 @@ internal class CandidateSetTests
     public void AllPossibleCandidateSets()
     {
         var sut = CandidateSet.AllPossibleCandidateSets;
-        var only9 = new CandidateSet();
+        var only9 = CreateSut();
         only9.Include(9);
         Assert.Multiple(() =>
         {
@@ -212,7 +214,7 @@ internal class CandidateSetTests
     [Test]
     public void AllCandidates()
     {
-        var sut = new CandidateSet();
+        var sut = CreateSut();
         sut.Include(2);
         sut.Include(4);
         sut.Include(9);
