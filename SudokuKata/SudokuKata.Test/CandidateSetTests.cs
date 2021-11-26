@@ -3,7 +3,7 @@
 [TestFixture]
 internal class CandidateSetTests
 {
-    private CandidateSet CreateSut() => new CandidateSet();
+    private CandidateSet CreateSut() => new CandidateSet(9);
 
     [Test]
     public void CandidatSetIsEmptyByDefault()

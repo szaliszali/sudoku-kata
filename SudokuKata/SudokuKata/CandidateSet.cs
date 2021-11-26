@@ -76,10 +76,10 @@ public class CandidateSet
 
     public static readonly IReadOnlyList<CandidateSet> AllPossibleCandidateSets;
 
-    private CandidateSet(int mask) => candidateMask = mask;
-    public CandidateSet() : this(0) { }
+    private CandidateSet(int size, int mask) => candidateMask = mask;
+    public CandidateSet(int size) : this(size, 0) { }
     static CandidateSet()
     {
-        AllPossibleCandidateSets = BitMasks.maskToOnesCount.Keys.OrderBy(m => m).Select(m => new CandidateSet(m)).ToList();
+        AllPossibleCandidateSets = BitMasks.maskToOnesCount.Keys.OrderBy(m => m).Select(m => new CandidateSet(9, m)).ToList();
     }
 }

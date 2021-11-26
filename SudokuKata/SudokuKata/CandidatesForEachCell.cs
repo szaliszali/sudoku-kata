@@ -16,7 +16,7 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
 
     private static CandidateSet Calculate(int row, int column, Board board)
     {
-        var candidates = new CandidateSet();
+        var candidates = new CandidateSet(board.Size);
         if (board.Get(row, column) == 0)
         {
             candidates.IncludeAll();

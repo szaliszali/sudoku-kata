@@ -8,7 +8,7 @@ internal class CalculateCandidatesTests
         var emptyBoard = new Board();
         var sut = new CandidatesForEachCell(emptyBoard);
 
-        CandidateSet expected = new CandidateSet();
+        CandidateSet expected = new CandidateSet(emptyBoard.Size);
         expected.IncludeAll();
 
         Assert.That(sut.Get(1, 1), Is.EqualTo(expected));
@@ -41,7 +41,7 @@ internal class CalculateCandidatesTests
             ...|...|...");
         var sut = new CandidatesForEachCell(board);
 
-        var expected = new CandidateSet();
+        var expected = new CandidateSet(board.Size);
         expected.IncludeAll();
         expected.Exclude(3);
         expected.Exclude(4);
