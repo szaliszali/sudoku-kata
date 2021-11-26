@@ -1,0 +1,40 @@
+﻿namespace SudokuKata;
+
+internal class Puzzle
+{
+    public static void CreatePuzzle(Random rng, Board board)
+    {
+        // Board is solved at this point.
+        // Now pick subset of digits as the starting position.
+        int remainingDigits = 30;
+        int maxRemovedPerBlock = 6;
+        int[,] removedPerBlock = new int[3, 3];
+        int[] positions = Enumerable.Range(0, 9 * 9).ToArray();
+
+        int removedPos = 0;
+        while (removedPos < 9 * 9 - remainingDigits)
+        {
+            int curRemainingDigits = positions.Length - removedPos;
+            int indexToPick = removedPos + rng.Next(curRemainingDigits);
+
+            int row = positions[indexToPick] / 9;
+            int col = positions[indexToPick] % 9;
+
+            int blockRowToRemove = row / 3;
+            int blockColToRemove = col / 3;
+
+            if (removedPerBlock[blockRowToRemove, blockColToRemove] >= maxRemovedPerBlock)
+                continue;
+
+            removedPerBlock[blockRowToRemove, blockColToRemove] += 1;
+
+            int temp = positions[removedPos];
+            positions[removedPos] = positions[indexToPick];
+            positions[indexToPick] = temp;
+
+            board.Set(row, col, 0);
+
+            removedPos += 1;
+        }
+    }
+}
