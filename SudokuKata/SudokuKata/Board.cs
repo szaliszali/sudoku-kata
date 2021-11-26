@@ -23,22 +23,13 @@ public class Board
         // Prepare empty board
         string line = Line('+', '-');
         string middle = Line('|', '.');
-        fancyBoard.AddRange(new[]
+        fancyBoard.Add(line.ToCharArray());
+        for (var i = 0; i < 3; ++i)
         {
-            line.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            line.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            line.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            middle.ToCharArray(),
-            line.ToCharArray()
-        });
+            for (var j = 0; j < 3; ++j)
+                fancyBoard.Add(middle.ToCharArray());
+            fancyBoard.Add(line.ToCharArray());
+        };
 
         state = new int[Size * Size];
 
