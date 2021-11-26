@@ -15,6 +15,24 @@ internal class CalculateCandidatesTests
     }
 
     [Test]
+    public void CandidatesForDefaultBoardSize()
+    {
+        var bigBoard = new Board();
+        var sut = new CandidatesForEachCell(bigBoard);
+
+        Assert.That(sut.Get(0, 0).NumCandidates, Is.EqualTo(9));
+    }
+
+    [Test]
+    public void CandidatesForDifferentBoardSize()
+    {
+        var bigBoard = new Board(4);
+        var sut = new CandidatesForEachCell(bigBoard);
+
+        Assert.That(sut.Get(0, 0).NumCandidates, Is.EqualTo(16));
+    }
+
+    [Test]
     public void CalculateCandidatesForFilledCellAreEmpty()
     {
         var board = new Board();
