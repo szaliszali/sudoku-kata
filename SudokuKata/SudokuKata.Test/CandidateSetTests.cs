@@ -206,8 +206,9 @@ internal class CandidateSetTests
         only9.Include(9);
         Assert.Multiple(() =>
         {
-            Assert.That(sut.Count, Is.EqualTo(1 << 9));
-            Assert.That(sut[256], Is.EqualTo(only9));
+            Assert.That(sut.Count, Is.EqualTo(1 << 9), "Count");
+            Assert.That(sut[255].NumCandidates, Is.EqualTo(8), "Element before the middle - all candidates set except highest");
+            Assert.That(sut[256], Is.EqualTo(only9), "Element after the middle - only the highest candidate");
         });
     }
 
