@@ -213,6 +213,20 @@ internal class CandidateSetTests
     }
 
     [Test]
+    public void AllPossibleCandidateSetsDifferentSize()
+    {
+        var sut = new Board(4).AllPossibleCandidateSets().ToArray();
+        var only4 = CreateSut();
+        only4.Include(16);
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.Count, Is.EqualTo(1 << 16), "Count");
+            Assert.That(sut[(1 << 15) - 1].NumCandidates, Is.EqualTo(15), "Element before the middle - all candidates set except highest");
+            Assert.That(sut[1 << 15], Is.EqualTo(only4), "Element after the middle - only the highest candidate");
+        });
+    }
+
+    [Test]
     public void AllCandidates()
     {
         var sut = CreateSut();

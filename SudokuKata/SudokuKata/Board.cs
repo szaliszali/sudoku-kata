@@ -81,5 +81,5 @@ public class Board
 
     public bool IsSolved() => state.All(c => c > 0);
 
-    public IEnumerable<CandidateSet> AllPossibleCandidateSets() => Enumerable.Range(0, 1 << 9).Select(m => new CandidateSet(9, m));
+    public IEnumerable<CandidateSet> AllPossibleCandidateSets() => Enumerable.Range(0, 1 << Size).Select(m => new CandidateSet(Size, m));
 }
