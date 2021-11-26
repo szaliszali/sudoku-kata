@@ -23,7 +23,7 @@ public class Board
         // Prepare empty board
         char separator = '+';
         char cellChar = '-';
-        string line = $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, 3), 3))}{separator}";
+        string line = Line(separator, cellChar);
         string middle = "|...|...|...|";
         fancyBoard.AddRange(new[]
         {
@@ -48,6 +48,9 @@ public class Board
             for (var column = 0; column < Size; ++column)
                 Set(row, column, initialState[row * Size + column]);
     }
+
+    private static string Line(char separator, char cellChar) =>
+        $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, 3), 3))}{separator}";
 
     private readonly int[] state;
     public virtual int[] State => state.ShallowCopy();
