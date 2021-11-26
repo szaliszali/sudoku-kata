@@ -35,6 +35,15 @@ public class Program
 
     private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, Board board)
     {
+        CreatePuzzle(rng, board);
+
+        Console.WriteLine();
+        Console.WriteLine("Starting look of the board to solve:");
+        Console.WriteLine(board);
+    }
+
+    private static void CreatePuzzle(Random rng, Board board)
+    {
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
         int remainingDigits = 30;
@@ -67,10 +76,6 @@ public class Program
 
             removedPos += 1;
         }
-
-        Console.WriteLine();
-        Console.WriteLine("Starting look of the board to solve:");
-        Console.WriteLine(board);
     }
 
     static void Main(string[] args)
