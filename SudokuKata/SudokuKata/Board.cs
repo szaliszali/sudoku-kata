@@ -21,9 +21,7 @@ public class Board
     public Board(int[] initialState)
     {
         // Prepare empty board
-        char separator = '+';
-        char cellChar = '-';
-        string line = Line(separator, cellChar);
+        string line = Line('+', '-');
         string middle = "|...|...|...|";
         fancyBoard.AddRange(new[]
         {
