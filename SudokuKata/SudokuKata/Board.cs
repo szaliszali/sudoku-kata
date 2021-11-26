@@ -21,7 +21,9 @@ public class Board
     public Board(int[] initialState)
     {
         // Prepare empty board
-        string line = $"+{string.Join('+', Enumerable.Repeat(new string('-', 3), 3))}+";
+        char separator = '+';
+        char cellChar = '-';
+        string line = $"+{string.Join(separator, Enumerable.Repeat(new string(cellChar, 3), 3))}+";
         string middle = "|...|...|...|";
         fancyBoard.AddRange(new[]
         {
