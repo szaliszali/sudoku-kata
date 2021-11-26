@@ -88,6 +88,6 @@ public class CandidateSet
     public CandidateSet(int size) : this(size, 0) { }
     static CandidateSet()
     {
-        AllPossibleCandidateSets = BitMasks.maskToOnesCount.Keys.OrderBy(m => m).Select(m => new CandidateSet(9, m)).ToList();
+        AllPossibleCandidateSets = Enumerable.Range(0, 1 << 9).Select(m => new CandidateSet(9, m)).ToList();
     }
 }
