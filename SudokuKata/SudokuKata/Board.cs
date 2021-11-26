@@ -24,9 +24,9 @@ public class Board
         string line = Line('+', '-');
         string middle = Line('|', '.');
         fancyBoard.Add(line.ToCharArray());
-        for (var i = 0; i < 3; ++i)
+        for (var i = 0; i < BlockSize; ++i)
         {
-            for (var j = 0; j < 3; ++j)
+            for (var j = 0; j < BlockSize; ++j)
                 fancyBoard.Add(middle.ToCharArray());
             fancyBoard.Add(line.ToCharArray());
         };
@@ -38,8 +38,8 @@ public class Board
                 Set(row, column, initialState[row * Size + column]);
     }
 
-    private static string Line(char separator, char cellChar) =>
-        $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, 3), 3))}{separator}";
+    private string Line(char separator, char cellChar) =>
+        $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, BlockSize), BlockSize))}{separator}";
 
     private readonly int[] state;
     public virtual int[] State => state.ShallowCopy();
@@ -47,8 +47,8 @@ public class Board
     public void Set(CellLocation location, int value) => Set(location.Row, location.Column, value);
     public void Set(int row, int col, int value)
     {
-        int rowToWrite = row + row / 3 + 1;
-        int colToWrite = col + col / 3 + 1;
+        int rowToWrite = row + row / BlockSize + 1;
+        int colToWrite = col + col / BlockSize + 1;
 
         fancyBoard[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
         state[row * Size + col] = value;
