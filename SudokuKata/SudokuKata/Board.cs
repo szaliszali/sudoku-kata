@@ -23,7 +23,7 @@ public class Board
         // Prepare empty board
         char separator = '+';
         char cellChar = '-';
-        string line = $"+{string.Join(separator, Enumerable.Repeat(new string(cellChar, 3), 3))}+";
+        string line = $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, 3), 3))}{separator}";
         string middle = "|...|...|...|";
         fancyBoard.AddRange(new[]
         {
