@@ -22,7 +22,7 @@ public class Board
     {
         // Prepare empty board
         string line = Line('+', '-');
-        string middle = "|...|...|...|";
+        string middle = Line('|', '.');
         fancyBoard.AddRange(new[]
         {
             line.ToCharArray(),
