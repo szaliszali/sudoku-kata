@@ -161,4 +161,10 @@ internal class BoardTests
             Assert.That(fullySolvedBoard.IsSolved(), Is.True, "fully solved");
         });
     }
+
+    [Test]
+    public void CustomSize()
+    {
+        Approvals.VerifyAll(Enumerable.Range(0, 5).Select(bs => new Board(bs)), "");
+    }
 }

@@ -3,14 +3,13 @@
 public class Board
 {
     private const int DefaultBlockSize = 3;
-    private const int DefaultSize = DefaultBlockSize * DefaultBlockSize;
 
-    public int BlockSize => DefaultBlockSize;
+    public int BlockSize { get; }
     public int Size => BlockSize * BlockSize;
 
     private readonly List<char[]> fancyBoard = new();
 
-    public Board() : this(new int[DefaultSize * DefaultSize])
+    public Board(int customBlockSize = DefaultBlockSize) : this(new int[customBlockSize * customBlockSize * customBlockSize * customBlockSize], customBlockSize)
     { }
 
     public Board(string board) : this(board
@@ -18,8 +17,10 @@ public class Board
         .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
     { }
 
-    public Board(int[] initialState)
+    public Board(int[] initialState, int customBlockSize = DefaultBlockSize)
     {
+        BlockSize = customBlockSize;
+
         // Prepare empty board
         string line = Line('+', '-');
         string middle = Line('|', '.');
