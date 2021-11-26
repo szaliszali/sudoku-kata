@@ -8,7 +8,7 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
 
     public CandidatesForEachCell(Board board)
     {
-        candidates = board.State.Select((_, index) => Calculate(index / 9, index % 9, board.State)).ToArray();
+        candidates = board.AllLocations().Select(cell => Calculate(cell.Row, cell.Column, board.State)).ToArray();
     }
 
     public CandidateSet Get(CellLocation location) => Get(location.Row, location.Column);
