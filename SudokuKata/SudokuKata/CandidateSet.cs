@@ -2,6 +2,7 @@
 
 public class CandidateSet
 {
+    private readonly int size;
     private int candidateMask;
 
     public int NumCandidates => BitMasks.maskToOnesCount[candidateMask];
@@ -76,7 +77,12 @@ public class CandidateSet
 
     public static readonly IReadOnlyList<CandidateSet> AllPossibleCandidateSets;
 
-    private CandidateSet(int size, int mask) => candidateMask = mask;
+    private CandidateSet(int size, int mask)
+    {
+        this.size = size;
+        candidateMask = mask;
+    }
+
     public CandidateSet(int size) : this(size, 0) { }
     static CandidateSet()
     {
