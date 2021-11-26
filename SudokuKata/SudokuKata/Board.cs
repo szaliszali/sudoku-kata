@@ -21,7 +21,7 @@ public class Board
     public Board(int[] initialState)
     {
         // Prepare empty board
-        string line = "+---+---+---+";
+        string line = $"+{string.Join('+', Enumerable.Repeat(new string('-', 3), 3))}+";
         string middle = "|...|...|...|";
         fancyBoard.AddRange(new[]
         {
