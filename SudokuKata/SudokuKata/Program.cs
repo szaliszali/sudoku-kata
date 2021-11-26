@@ -35,8 +35,6 @@ public class Program
 
     private static void GenerateInitalBoardFromTheCompletelySolvedOne(Random rng, Board board)
     {
-        int[] state = board.State;
-
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
         int remainingDigits = 30;
@@ -66,9 +64,6 @@ public class Program
             positions[indexToPick] = temp;
 
             board.Set(row, col, 0);
-
-            int stateIndex = 9 * row + col;
-            state[stateIndex] = 0;
 
             removedPos += 1;
         }
