@@ -77,17 +77,11 @@ public class CandidateSet
     public static bool operator ==(CandidateSet lhs, CandidateSet rhs) => lhs.Equals(rhs);
     public static bool operator !=(CandidateSet lhs, CandidateSet rhs) => !lhs.Equals(rhs);
 
-    public static readonly IReadOnlyList<CandidateSet> AllPossibleCandidateSets;
-
-    private CandidateSet(int size, int mask)
+    public CandidateSet(int size, int mask)
     {
         this.size = size;
         candidateMask = mask;
     }
 
     public CandidateSet(int size) : this(size, 0) { }
-    static CandidateSet()
-    {
-        AllPossibleCandidateSets = Enumerable.Range(0, 1 << 9).Select(m => new CandidateSet(9, m)).ToList();
-    }
 }

@@ -80,4 +80,6 @@ public class Board
     public Board Clone() => new Board(state);
 
     public bool IsSolved() => state.All(c => c > 0);
+
+    public IEnumerable<CandidateSet> AllPossibleCandidateSets() => Enumerable.Range(0, 1 << 9).Select(m => new CandidateSet(9, m));
 }

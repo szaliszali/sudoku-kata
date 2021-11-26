@@ -44,7 +44,7 @@ public class GroupsOfDigitsOfSizeNWhichOnlyAppearInNCells : ISolverStep<GroupsOf
     }
 
     IReadOnlyList<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection> ISolverStep<GroupsOfDigitsOfSizeNWhichOnlyAppearInNCellsDetection>.Detect() =>
-        CandidateSet.AllPossibleCandidateSets
+        solverState.Board.AllPossibleCandidateSets()
             .Where(cs => cs.NumCandidates > 1)
             .SelectMany(candidates =>
                 solverState.CellGroups

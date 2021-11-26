@@ -201,7 +201,7 @@ internal class CandidateSetTests
     [Test]
     public void AllPossibleCandidateSets()
     {
-        var sut = CandidateSet.AllPossibleCandidateSets;
+        var sut = new Board().AllPossibleCandidateSets().ToArray();
         var only9 = CreateSut();
         only9.Include(9);
         Assert.Multiple(() =>
