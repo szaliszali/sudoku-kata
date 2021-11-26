@@ -1,11 +1,13 @@
-﻿namespace SudokuKata;
+﻿using System.Numerics;
+
+namespace SudokuKata;
 
 public class CandidateSet
 {
     private readonly int size;
     private int candidateMask;
 
-    public int NumCandidates => BitMasks.maskToOnesCount[candidateMask];
+    public int NumCandidates => BitOperations.PopCount((uint)candidateMask);
 
     public bool Contains(int digit) => (candidateMask & (1 << digit - 1)) != 0;
 
