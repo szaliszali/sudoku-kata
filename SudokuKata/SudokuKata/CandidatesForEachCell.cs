@@ -8,13 +8,13 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
 
     public CandidatesForEachCell(Board board)
     {
-        candidates = board.AllLocations().Select(cell => Calculate(cell.Row, cell.Column, board.State)).ToArray();
+        candidates = board.AllLocations().Select(cell => Calculate(cell.Row, cell.Column, board)).ToArray();
     }
 
     public CandidateSet Get(CellLocation location) => Get(location.Row, location.Column);
     public CandidateSet Get(int row, int column) => candidates[row * 9 + column];
 
-    private static CandidateSet Calculate(int row, int column, int[] board)
+    private static CandidateSet Calculate(int row, int column, Board board)
     {
         var candidates = new CandidateSet();
         if (board.Get(row, column) == 0)
