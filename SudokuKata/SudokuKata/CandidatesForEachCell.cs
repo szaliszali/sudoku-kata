@@ -20,14 +20,14 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
         if (board.Get(row, column) == 0)
         {
             candidates.IncludeAll();
-            int blockRow = row / 3;
-            int blockCol = column / 3;
+            int blockRow = row / board.BlockSize;
+            int blockCol = column / board.BlockSize;
 
-            for (int j = 0; j < 9; j++)
+            for (int j = 0; j < board.Size; j++)
             {
                 candidates.Exclude(board.Get(row, j));
                 candidates.Exclude(board.Get(j, column));
-                candidates.Exclude(board.Get(blockRow * 3 + j / 3, blockCol * 3 + j % 3));
+                candidates.Exclude(board.Get(blockRow * board.BlockSize + j / board.BlockSize, blockCol * board.BlockSize + j % board.BlockSize));
             }
         }
         return candidates;
