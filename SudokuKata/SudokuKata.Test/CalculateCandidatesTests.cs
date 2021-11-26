@@ -78,4 +78,13 @@ internal class CalculateCandidatesTests
 
         Assert.That(sut.Get(0, 0).NumCandidates, Is.EqualTo(8));
     }
+
+    [Test]
+    public void DifferentSizeBoard()
+    {
+        var board = new Board(2);
+        var sut = new CandidatesForEachCell(board);
+
+        sut.Get(3, 3);
+    }
 }

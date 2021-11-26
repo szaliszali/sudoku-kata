@@ -4,15 +4,17 @@ namespace SudokuKata;
 
 public class CandidatesForEachCell : IEnumerable<CandidateSet>
 {
+    private readonly int boardSize;
     private readonly CandidateSet[] candidates;
 
     public CandidatesForEachCell(Board board)
     {
+        boardSize = board.Size;
         candidates = board.AllLocations().Select(cell => Calculate(cell.Row, cell.Column, board)).ToArray();
     }
 
     public CandidateSet Get(CellLocation location) => Get(location.Row, location.Column);
-    public CandidateSet Get(int row, int column) => candidates[row * 9 + column];
+    public CandidateSet Get(int row, int column) => candidates[row * boardSize + column];
 
     private static CandidateSet Calculate(int row, int column, Board board)
     {
