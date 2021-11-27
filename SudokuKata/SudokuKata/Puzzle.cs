@@ -9,6 +9,7 @@ internal class Puzzle
         (int remainingDigits, int maxRemovedPerBlock) = board.BlockSize switch
         {
             3 => (30, 6),
+            4 => (100, 10), // guess
             _ => throw new ArgumentException()
         };
         int[,] removedPerBlock = new int[board.BlockSize, board.BlockSize];

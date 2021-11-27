@@ -4,7 +4,7 @@ public class Program
 {
     static void Play()
     {
-        Play(new Random(), 3);
+        Play(new Random(), 4);
     }
 
     public static void Play(Random rng, int customBlockSize)
