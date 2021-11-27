@@ -11,7 +11,7 @@ internal class StackBasedFilledBoardGenerator
     public bool HasSolution => command == "complete";
 
     private Board solvedBoard;
-    public int[] SolvedBoardState => solvedBoard.State.ShallowCopy();
+    public Board SolvedBoard => solvedBoard.Clone();
 
     public StackBasedFilledBoardGenerator(Random rng, Board board)
     {
