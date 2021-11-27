@@ -8,7 +8,7 @@ internal class Puzzle
         // Now pick subset of digits as the starting position.
         int remainingDigits = 30;
         int maxRemovedPerBlock = 6;
-        int[,] removedPerBlock = new int[3, 3];
+        int[,] removedPerBlock = new int[board.BlockSize, board.BlockSize];
         int[] positions = Enumerable.Range(0, board.Size * board.Size).ToArray();
 
         int removedPos = 0;
@@ -20,8 +20,8 @@ internal class Puzzle
             int row = positions[indexToPick] / board.Size;
             int col = positions[indexToPick] % board.Size;
 
-            int blockRowToRemove = row / 3;
-            int blockColToRemove = col / 3;
+            int blockRowToRemove = row / board.BlockSize;
+            int blockColToRemove = col / board.BlockSize;
 
             if (removedPerBlock[blockRowToRemove, blockColToRemove] >= maxRemovedPerBlock)
                 continue;
