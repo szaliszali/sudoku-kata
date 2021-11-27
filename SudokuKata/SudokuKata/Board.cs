@@ -30,7 +30,7 @@ public class Board
             for (var j = 0; j < BlockSize; ++j)
                 fancyBoard.Add(middle.ToCharArray());
             fancyBoard.Add(line.ToCharArray());
-        };
+        }
 
         state = new int[Size * Size];
 
