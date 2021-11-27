@@ -1,4 +1,11 @@
 # Sudoku Kata
+
+- preserves functionality and the original order of all output
+- some domain concepts were introduced, duplications were reduced
+- somewhat more general than the original: can partially solve 4x4 board, maybe it's a bug, maybe need a different solver step, did not investigate
+- it can never be finished, still a lot of room for improvement, so I declare it done for now ¯\\\_(ツ)\_/¯
+
+# Original README
 Coding practice demonstrating an awfully long method. Try to refactor this method.
 
 This entire exercise consists of one function (static method Play in the Program class). It has around 1,000 lines of code and it implements entire Sudoku game following these steps:
