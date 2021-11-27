@@ -11,7 +11,7 @@ public class Program
     {
         Board board = ConstructFullyPopulatedBoard(rng);
 
-        var finalState = board.State.ShallowCopy();
+        var finalState = board.Clone();
 
         GenerateInitalBoardFromTheCompletelySolvedOne(rng, board);
 

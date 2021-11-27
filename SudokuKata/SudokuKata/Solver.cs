@@ -6,9 +6,9 @@ internal class Solver
 {
     private readonly Random rng;
     private readonly Board board;
-    private readonly int[] finalState;
+    private readonly Board finalState;
 
-    public Solver(Random rng, Board board, int[] finalState)
+    public Solver(Random rng, Board board, Board finalState)
     {
         this.rng = rng;
         this.board = board;
@@ -44,7 +44,7 @@ internal class Solver
 
             if (!solverState.ChangeMade)
             {
-                ISolverStep step = new BoardHasMultipleSolutions(solverState, new Board(finalState));
+                ISolverStep step = new BoardHasMultipleSolutions(solverState, finalState);
                 Apply(step.Execute(), solverState);
             }
 
