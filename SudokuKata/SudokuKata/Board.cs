@@ -65,10 +65,7 @@ public class Board
             .Replace("|", string.Empty)
             .Replace(".", "0");
 
-    public override string ToString()
-    {
-        return string.Join(Environment.NewLine, fancyBoard.Select(s => new string(s)).ToArray());
-    }
+    public override string ToString() => new BoardDisplay(this).ToString();
 
     public IEnumerable<CellLocation> AllLocations()
     {
