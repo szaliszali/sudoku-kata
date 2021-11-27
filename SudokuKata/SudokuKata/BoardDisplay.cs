@@ -2,10 +2,7 @@
 
 public class BoardDisplay
 {
-    public const int DefaultBlockSize = 3;
-
     public int BlockSize { get; }
-    public int Size => BlockSize * BlockSize;
 
     private readonly List<char[]> fancyBoard = new();
 
@@ -39,17 +36,8 @@ public class BoardDisplay
         fancyBoard[rowToWrite][colToWrite] = CellDisplay.ToDisplay(value);
     }
 
-    public string Code =>
-        string.Concat(fancyBoard.Select(s => new string(s)))
-            .Replace("-", string.Empty)
-            .Replace("+", string.Empty)
-            .Replace("|", string.Empty)
-            .Replace(".", "0");
-
     public override string ToString()
     {
         return string.Join(Environment.NewLine, fancyBoard.Select(s => new string(s)).ToArray());
     }
-
-    public IEnumerable<CandidateSet> AllPossibleCandidateSets() => Enumerable.Range(0, 1 << Size).Select(m => new CandidateSet(Size, m));
 }
