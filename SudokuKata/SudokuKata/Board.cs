@@ -59,11 +59,7 @@ public class Board
     public int Get(int row, int column) => state[row * Size + column];
 
     public string Code =>
-        string.Concat(fancyBoard.Select(s => new string(s)))
-            .Replace("-", string.Empty)
-            .Replace("+", string.Empty)
-            .Replace("|", string.Empty)
-            .Replace(".", "0");
+        string.Concat(State.Select(CellDisplay.ToDisplay)).Replace('.', '0');
 
     public override string ToString() => new BoardDisplay(this).ToString();
 
