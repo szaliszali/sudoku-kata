@@ -14,10 +14,10 @@ public class Board
 
     public Board(string board) : this(board
         .Where(c => c == '.' || char.IsDigit(c))
-        .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
+        .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray(), DefaultBlockSize)
     { }
 
-    private Board(int[] initialState, int customBlockSize = DefaultBlockSize)
+    private Board(int[] initialState, int customBlockSize)
     {
         BlockSize = customBlockSize;
 
@@ -77,7 +77,7 @@ public class Board
                 yield return new CellLocation(this, row, column);
     }
 
-    public Board Clone() => new Board(state);
+    public Board Clone() => new Board(state, DefaultBlockSize);
 
     public bool IsSolved() => state.All(c => c > 0);
 
