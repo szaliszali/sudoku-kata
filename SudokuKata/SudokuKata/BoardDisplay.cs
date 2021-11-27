@@ -4,13 +4,21 @@ public class BoardDisplay
 {
     public int BlockSize { get; }
 
-    private readonly List<char[]> fancyBoard = new();
+    private readonly List<char[]> fancyBoard;
 
     public BoardDisplay(Board board)
     {
         BlockSize = board.BlockSize;
 
         // Prepare empty board
+        fancyBoard = PrepareEmptyBoard();
+
+        foreach (var cell in board.AllLocations()) Set(cell, board.Get(cell));
+    }
+
+    private List<char[]> PrepareEmptyBoard()
+    {
+        List<char[]> fancyBoard = new();
         string line = Line('+', '-');
         string middle = Line('|', '.');
         fancyBoard.Add(line.ToCharArray());
@@ -20,8 +28,7 @@ public class BoardDisplay
                 fancyBoard.Add(middle.ToCharArray());
             fancyBoard.Add(line.ToCharArray());
         }
-
-        foreach (var cell in board.AllLocations()) Set(cell, board.Get(cell));
+        return fancyBoard;
     }
 
     private string Line(char separator, char cellChar) =>
