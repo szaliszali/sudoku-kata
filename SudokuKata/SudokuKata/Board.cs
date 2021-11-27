@@ -51,7 +51,7 @@ public class Board
         int rowToWrite = row + row / BlockSize + 1;
         int colToWrite = col + col / BlockSize + 1;
 
-        fancyBoard[rowToWrite][colToWrite] = value == 0 ? '.' : (char)('0' + value);
+        fancyBoard[rowToWrite][colToWrite] = CellDisplay.ToDisplay(value);
         state[row * Size + col] = value;
     }
 
