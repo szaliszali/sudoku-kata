@@ -6,8 +6,11 @@ internal class Puzzle
     {
         // Board is solved at this point.
         // Now pick subset of digits as the starting position.
-        int remainingDigits = 30;
-        int maxRemovedPerBlock = 6;
+        (int remainingDigits, int maxRemovedPerBlock) = board.BlockSize switch
+        {
+            3 => (30, 6),
+            _ => throw new ArgumentException()
+        };
         int[,] removedPerBlock = new int[board.BlockSize, board.BlockSize];
         int[] positions = Enumerable.Range(0, board.Size * board.Size).ToArray();
 
