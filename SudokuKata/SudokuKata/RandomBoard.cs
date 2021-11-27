@@ -2,12 +2,10 @@
 
 public class RandomBoard
 {
-    private readonly Board solvedBoard;
-
-    public Board Board => solvedBoard;
+    public Board Board { get; }
 
     public RandomBoard(Random rng)
     {
-        solvedBoard = new StackBasedFilledBoardGenerator(rng, new Board()).SolvedBoard;
+        Board = new StackBasedFilledBoardGenerator(rng, new Board()).SolvedBoard;
     }
 }
