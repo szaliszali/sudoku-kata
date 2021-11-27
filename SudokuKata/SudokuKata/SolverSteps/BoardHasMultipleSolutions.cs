@@ -52,7 +52,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
             {
                 foreach (CellLocation cell1 in solverState.Board.AllLocations())
                 {
-                    if (cell.Row * 9 + cell.Column >= cell1.Row * 9 + cell1.Column) continue;
+                    if (cell.Index() >= cell1.Index()) continue;
 
                     if (candidateSet == solverState.Candidates.Get(cell1.Row, cell1.Column))
                     {
