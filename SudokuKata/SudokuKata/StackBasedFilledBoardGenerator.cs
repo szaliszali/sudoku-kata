@@ -62,9 +62,9 @@ internal class StackBasedFilledBoardGenerator
                     MarkDigitsAsUsed(currentBoard, isDigitUsed, i, cell.Column);
                     MarkDigitsAsUsed(currentBoard, isDigitUsed, cell.Row, i);
 
-                    int blockRow = cell.Row / 3;
-                    int blockCol = cell.Column / 3;
-                    MarkDigitsAsUsed(currentBoard, isDigitUsed, blockRow * 3 + i / 3, blockCol * 3 + i % 3);
+                    int blockRow = cell.Row / currentBoard.BlockSize;
+                    int blockCol = cell.Column / currentBoard.BlockSize;
+                    MarkDigitsAsUsed(currentBoard, isDigitUsed, blockRow * currentBoard.BlockSize + i / currentBoard.BlockSize, blockCol * currentBoard.BlockSize + i % currentBoard.BlockSize);
                 }
 
                 int candidatesCount = isDigitUsed.Count(used => !used);
@@ -122,7 +122,7 @@ internal class StackBasedFilledBoardGenerator
         int digitToMove = lastDigitStack.Pop();
 
         int movedToDigit = digitToMove + 1;
-        while (movedToDigit <= 9 && usedDigits[movedToDigit - 1])
+        while (movedToDigit <= currentBoard.Size && usedDigits[movedToDigit - 1])
             movedToDigit += 1;
 
         if (digitToMove > 0)
@@ -131,7 +131,7 @@ internal class StackBasedFilledBoardGenerator
             currentBoard.Set(move.Row, move.Column, 0);
         }
 
-        if (movedToDigit <= 9)
+        if (movedToDigit <= currentBoard.Size)
         {
             lastDigitStack.Push(movedToDigit);
             usedDigits[movedToDigit - 1] = true;
