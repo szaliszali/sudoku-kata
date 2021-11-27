@@ -10,25 +10,25 @@ public class CandidatesForEachCell : IEnumerable<CandidateSet>
     public CandidatesForEachCell(Board board)
     {
         boardSize = board.Size;
-        candidates = board.AllLocations().Select(cell => Calculate(cell.Row, cell.Column, board)).ToArray();
+        candidates = board.AllLocations().Select(cell => Calculate(cell, board)).ToArray();
     }
 
     public CandidateSet Get(CellLocation location) => Get(location.Row, location.Column);
     public CandidateSet Get(int row, int column) => candidates[row * boardSize + column];
 
-    private static CandidateSet Calculate(int row, int column, Board board)
+    private static CandidateSet Calculate(CellLocation cell, Board board)
     {
         var candidates = new CandidateSet(board.Size);
-        if (board.Get(row, column) == 0)
+        if (board.Get(cell) == 0)
         {
             candidates.IncludeAll();
-            int blockRow = row / board.BlockSize;
-            int blockCol = column / board.BlockSize;
+            int blockRow = cell.BlockRow();
+            int blockCol = cell.BlockCol();
 
             for (int j = 0; j < board.Size; j++)
             {
-                candidates.Exclude(board.Get(row, j));
-                candidates.Exclude(board.Get(j, column));
+                candidates.Exclude(board.Get(cell.Row, j));
+                candidates.Exclude(board.Get(j, cell.Column));
                 candidates.Exclude(board.Get(blockRow * board.BlockSize + j / board.BlockSize, blockCol * board.BlockSize + j % board.BlockSize));
             }
         }
