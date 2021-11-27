@@ -53,7 +53,7 @@ internal class StackBasedFilledBoardGenerator
         bool containsUnsolvableCells = false;
 
         foreach (CellLocation cell in currentBoard.AllLocations())
-            if (currentBoard.Get(cell.Row, cell.Column) == 0)
+            if (currentBoard.Get(cell) == 0)
             {
                 bool[] isDigitUsed = new bool[currentBoard.Size];
 
