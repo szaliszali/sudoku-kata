@@ -5,6 +5,6 @@ internal class CellDisplayTest
     [Test]
     public void DigitToCharacter()
     {
-        Approvals.VerifyAll(Enumerable.Range(0, 10).Select(CellDisplay.ToDisplay), "");
+        Approvals.VerifyAll(Enumerable.Range(0, 36).Select(CellDisplay.ToDisplay), "");
     }
 }
