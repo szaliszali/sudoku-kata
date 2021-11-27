@@ -2,7 +2,7 @@
 
 public class Board
 {
-    private const int DefaultBlockSize = 3;
+    public const int DefaultBlockSize = 3;
 
     public int BlockSize { get; }
     public int Size => BlockSize * BlockSize;
