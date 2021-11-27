@@ -87,9 +87,9 @@ internal class BoardTests
     }
 
     [Test]
-    public void Clone_PreservesState()
+    public void Clone_PreservesState([Values(3, 4)] int blockSize)
     {
-        var sut = new Board();
+        var sut = new Board(blockSize);
         var cloned = sut.Clone();
 
         Assert.That(sut.State, Is.EqualTo(cloned.State));

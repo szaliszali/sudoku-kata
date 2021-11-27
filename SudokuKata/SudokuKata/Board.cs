@@ -77,7 +77,7 @@ public class Board
                 yield return new CellLocation(this, row, column);
     }
 
-    public Board Clone() => new Board(state, DefaultBlockSize);
+    public Board Clone() => new Board(state, BlockSize);
 
     public bool IsSolved() => state.All(c => c > 0);
 
