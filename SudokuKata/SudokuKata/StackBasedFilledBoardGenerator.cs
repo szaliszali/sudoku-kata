@@ -10,8 +10,8 @@ internal class StackBasedFilledBoardGenerator
     private string command;
     public bool HasSolution => command == "complete";
 
-    private int[] solvedBoardState;
-    public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
+    private Board solvedBoard;
+    public int[] SolvedBoardState => solvedBoard.State.ShallowCopy();
 
     public StackBasedFilledBoardGenerator(Random rng, Board board)
     {
@@ -142,7 +142,7 @@ internal class StackBasedFilledBoardGenerator
             else
             {
                 command = "complete";
-                solvedBoardState = currentBoard.State;
+                solvedBoard = currentBoard;
             }
         }
         else
