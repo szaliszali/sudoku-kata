@@ -59,7 +59,7 @@ public class Board
     public int Get(int row, int column) => state[row * Size + column];
 
     public string Code =>
-        string.Join(string.Empty, fancyBoard.Select(s => new string(s)).ToArray())
+        string.Concat(fancyBoard.Select(s => new string(s)))
             .Replace("-", string.Empty)
             .Replace("+", string.Empty)
             .Replace("|", string.Empty)
