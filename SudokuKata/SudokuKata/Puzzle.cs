@@ -9,16 +9,16 @@ internal class Puzzle
         int remainingDigits = 30;
         int maxRemovedPerBlock = 6;
         int[,] removedPerBlock = new int[3, 3];
-        int[] positions = Enumerable.Range(0, 9 * 9).ToArray();
+        int[] positions = Enumerable.Range(0, board.Size * board.Size).ToArray();
 
         int removedPos = 0;
-        while (removedPos < 9 * 9 - remainingDigits)
+        while (removedPos < board.Size * board.Size - remainingDigits)
         {
             int curRemainingDigits = positions.Length - removedPos;
             int indexToPick = removedPos + rng.Next(curRemainingDigits);
 
-            int row = positions[indexToPick] / 9;
-            int col = positions[indexToPick] % 9;
+            int row = positions[indexToPick] / board.Size;
+            int col = positions[indexToPick] % board.Size;
 
             int blockRowToRemove = row / 3;
             int blockColToRemove = col / 3;
