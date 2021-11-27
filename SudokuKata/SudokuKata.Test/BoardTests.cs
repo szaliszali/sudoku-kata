@@ -47,22 +47,6 @@ internal class BoardTests
     }
 
     [Test]
-    public void ConstructFromStateArray()
-    {
-        var state = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
-        var sut = new Board(state);
-        Approvals.Verify((sut, sut.Code));
-    }
-
-    [Test]
-    public void ConstructFromStateArray_StateIsPreserved()
-    {
-        var state = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
-        var sut = new Board(state);
-        Assert.That(sut.State, Is.EqualTo(state));
-    }
-
-    [Test]
     public void InitialSateIsAllEmpty()
     {
         var sut = new Board();

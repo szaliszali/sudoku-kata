@@ -17,7 +17,7 @@ public class Board
         .Select(c => c switch { '.' => 0, _ => (int)(c - '0') }).ToArray())
     { }
 
-    public Board(int[] initialState, int customBlockSize = DefaultBlockSize)
+    private Board(int[] initialState, int customBlockSize = DefaultBlockSize)
     {
         BlockSize = customBlockSize;
 
