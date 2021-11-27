@@ -10,7 +10,6 @@ public class BoardDisplay
     {
         BlockSize = board.BlockSize;
 
-        // Prepare empty board
         fancyBoard = PrepareEmptyBoard();
 
         foreach (var cell in board.AllLocations()) Set(cell, board.Get(cell));
