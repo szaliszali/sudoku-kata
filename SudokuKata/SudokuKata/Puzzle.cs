@@ -12,7 +12,7 @@ internal class Puzzle
             _ => throw new ArgumentException()
         };
         int[,] removedPerBlock = new int[board.BlockSize, board.BlockSize];
-        int[] positions = Enumerable.Range(0, board.Size * board.Size).ToArray();
+        CellLocation[] positions = board.AllLocations().ToArray();
 
         int removedPos = 0;
         while (removedPos < board.Size * board.Size - remainingDigits)
@@ -20,8 +20,8 @@ internal class Puzzle
             int curRemainingDigits = positions.Length - removedPos;
             int indexToPick = removedPos + rng.Next(curRemainingDigits);
 
-            int row = positions[indexToPick] / board.Size;
-            int col = positions[indexToPick] % board.Size;
+            int row = positions[indexToPick].Row;
+            int col = positions[indexToPick].Column;
 
             int blockRowToRemove = row / board.BlockSize;
             int blockColToRemove = col / board.BlockSize;
@@ -31,7 +31,7 @@ internal class Puzzle
 
             removedPerBlock[blockRowToRemove, blockColToRemove] += 1;
 
-            int temp = positions[removedPos];
+            CellLocation temp = positions[removedPos];
             positions[removedPos] = positions[indexToPick];
             positions[indexToPick] = temp;
 
