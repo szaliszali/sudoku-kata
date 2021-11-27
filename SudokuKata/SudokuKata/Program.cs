@@ -9,7 +9,7 @@ public class Program
 
     public static void Play(Random rng)
     {
-        Board board = ConstructFullyPopulatedBoard(rng);
+        Board board = ConstructFullyPopulatedBoard(rng, 3);
 
         var finalState = board.Clone();
 
@@ -22,9 +22,9 @@ public class Program
         new Solver(rng, board, finalState).SolveBoard();
     }
 
-    private static Board ConstructFullyPopulatedBoard(Random rng)
+    private static Board ConstructFullyPopulatedBoard(Random rng, int customBlockSize)
     {
-        var board = new RandomBoard(rng).Board;
+        var board = new RandomBoard(rng, customBlockSize).Board;
 
         Console.WriteLine();
         Console.WriteLine("Final look of the solved board:");

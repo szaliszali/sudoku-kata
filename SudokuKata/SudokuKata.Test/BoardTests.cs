@@ -13,7 +13,7 @@ internal class BoardTests
     public void RandomBoard()
     {
         var rng = new Random(1);
-        var sut = new RandomBoard(rng).Board;
+        var sut = new RandomBoard(rng, 3).Board;
         Approvals.Verify((sut, sut.Code));
     }
 
