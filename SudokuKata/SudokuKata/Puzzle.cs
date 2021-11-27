@@ -20,8 +20,10 @@ internal class Puzzle
             int curRemainingDigits = positions.Length - removedPos;
             int indexToPick = removedPos + rng.Next(curRemainingDigits);
 
-            int row = positions[indexToPick].Row;
-            int col = positions[indexToPick].Column;
+            CellLocation pickedCell = positions[indexToPick];
+
+            int row = pickedCell.Row;
+            int col = pickedCell.Column;
 
             int blockRowToRemove = row / board.BlockSize;
             int blockColToRemove = col / board.BlockSize;
@@ -32,7 +34,7 @@ internal class Puzzle
             removedPerBlock[blockRowToRemove, blockColToRemove] += 1;
 
             CellLocation temp = positions[removedPos];
-            positions[removedPos] = positions[indexToPick];
+            positions[removedPos] = pickedCell;
             positions[indexToPick] = temp;
 
             board.Set(row, col, 0);
