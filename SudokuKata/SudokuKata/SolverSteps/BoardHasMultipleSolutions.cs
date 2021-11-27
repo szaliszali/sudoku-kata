@@ -18,7 +18,7 @@ public class BoardHasMultipleSolutions : ISolverStep<BoardHasMultipleSolutionsDe
         string description =
             cell1.Row == cell2.Row ? $"row #{cell1.Row + 1}"
             : cell1.Column == cell2.Column ? $"column #{cell1.Column + 1}"
-            : $"block ({cell1.Row / 3 + 1}, {cell1.Column / 3 + 1})";
+            : $"block ({cell1.BlockRow() + 1 }, {cell1.BlockCol() + 1})";
 
         yield return new SetCellCommand(cell1, finalState.Get(cell1));
         yield return new SetCellCommand(cell2, finalState.Get(cell2));
