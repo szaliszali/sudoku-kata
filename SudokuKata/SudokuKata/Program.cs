@@ -4,12 +4,12 @@ public class Program
 {
     static void Play()
     {
-        Play(new Random());
+        Play(new Random(), 3);
     }
 
-    public static void Play(Random rng)
+    public static void Play(Random rng, int customBlockSize)
     {
-        Board board = ConstructFullyPopulatedBoard(rng, 3);
+        Board board = ConstructFullyPopulatedBoard(rng, customBlockSize);
 
         var finalState = board.Clone();
 

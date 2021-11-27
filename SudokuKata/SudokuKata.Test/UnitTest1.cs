@@ -15,7 +15,7 @@ public class Tests
 
         for (var i = 0; i < 10; i++)
         {
-            Program.Play(new Random(i));
+            Program.Play(new Random(i), 3);
         }
 
         Approvals.Verify(output);
