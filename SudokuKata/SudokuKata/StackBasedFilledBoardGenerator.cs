@@ -13,10 +13,10 @@ internal class StackBasedFilledBoardGenerator
     private int[] solvedBoardState;
     public int[] SolvedBoardState => solvedBoardState.ShallowCopy();
 
-    public StackBasedFilledBoardGenerator(Random rng, Board initialBoard)
+    public StackBasedFilledBoardGenerator(Random rng, Board board)
     {
         this.rng = rng;
-        this.initialBoard = initialBoard;
+        this.initialBoard = board.Clone();
         this.combinedStack = new();
         this.lastDigitStack = new();
 
