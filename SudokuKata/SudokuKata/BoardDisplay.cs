@@ -24,16 +24,11 @@ public class BoardDisplay
             fancyBoard.Add(line.ToCharArray());
         }
 
-        state = new int[Size * Size];
-
         foreach (var cell in board.AllLocations()) Set(cell, board.Get(cell));
     }
 
     private string Line(char separator, char cellChar) =>
         $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, BlockSize), BlockSize))}{separator}";
-
-    private readonly int[] state;
-    public virtual int[] State => state.ShallowCopy();
 
     public void Set(CellLocation location, int value) => Set(location.Row, location.Column, value);
     public void Set(int row, int col, int value)
@@ -42,11 +37,7 @@ public class BoardDisplay
         int colToWrite = col + col / BlockSize + 1;
 
         fancyBoard[rowToWrite][colToWrite] = CellDisplay.ToDisplay(value);
-        state[row * Size + col] = value;
     }
-
-    public int Get(CellLocation location) => Get(location.Row, location.Column);
-    public int Get(int row, int column) => state[row * Size + column];
 
     public string Code =>
         string.Concat(fancyBoard.Select(s => new string(s)))
