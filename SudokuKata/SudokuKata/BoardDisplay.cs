@@ -34,11 +34,10 @@ public class BoardDisplay
     private string Line(char separator, char cellChar) =>
         $"{separator}{string.Join(separator, Enumerable.Repeat(new string(cellChar, BlockSize), BlockSize))}{separator}";
 
-    public void Set(CellLocation location, int value) => Set(location.Row, location.Column, value);
-    public void Set(int row, int col, int value)
+    public void Set(CellLocation location, int value)
     {
-        int rowToWrite = row + row / BlockSize + 1;
-        int colToWrite = col + col / BlockSize + 1;
+        int rowToWrite = location.Row + location.Row / BlockSize + 1;
+        int colToWrite = location.Column + location.Column / BlockSize + 1;
 
         fancyBoard[rowToWrite][colToWrite] = CellDisplay.ToDisplay(value);
     }
