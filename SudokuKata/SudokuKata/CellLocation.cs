@@ -9,4 +9,6 @@ public record struct CellLocation(Board board, int Row, int Column)
     public int BlockCol() => Column / board.BlockSize;
 
     public override string ToString() => $"CellLocation {{ Row = {Row}, Column = {Column} }}";
+
+    public int Index() => Row * board.Size + Column;
 }
